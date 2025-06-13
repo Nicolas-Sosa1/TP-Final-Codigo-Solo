@@ -1,0 +1,11 @@
+# Ignorar la carpeta .vs
+.vs/
+
+# Ignorar la carpeta packages (dependencias de NuGet)
+packages/
+
+# Ignorar la carpeta obj (archivos intermedios de compilaciĆ³n)
+obj/
+
+# Otros archivos que generalmente se deben ignorar en proyectos C#
+bin/
