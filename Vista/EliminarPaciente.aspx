@@ -19,7 +19,7 @@
             &nbsp;<asp:RequiredFieldValidator ID="rfvEliminar" runat="server" ErrorMessage="Debe ingresar un DNI" ControlToValidate="txtEliminarPaciente" ForeColor="Red" ValidationGroup="1">*</asp:RequiredFieldValidator>
             &nbsp;<asp:RegularExpressionValidator ID="revEliminar" runat="server" ErrorMessage="Debe ingresar 8 numeros" ControlToValidate="txtEliminarPaciente" ForeColor="Red" ValidationExpression="^\d{8}$" ValidationGroup="1">*</asp:RegularExpressionValidator>
             &nbsp;&nbsp;
-            <asp:Button ID="btnEliminarPaciente" runat="server" Text="Eliminar paciente" ValidationGroup="1" />
+            <asp:Button ID="btnEliminarPaciente" runat="server" Text="Eliminar paciente" ValidationGroup="1" OnClick="btnEliminarPaciente_Click" />
             <br /><br />
             <asp:Label ID="lblMensaje" runat="server" Text=""></asp:Label>
             <asp:ValidationSummary ID="vsEliminar" runat="server" ForeColor="Red" ValidationGroup="1" />

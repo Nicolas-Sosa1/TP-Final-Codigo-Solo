@@ -61,6 +61,7 @@ namespace Datos
         }
 
 
+
         private void ArmarParametrosLocalidadesPorProvincia(ref SqlCommand sqlCommand, Provincias provincias)
         {
            
@@ -104,7 +105,20 @@ namespace Datos
             return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spAgregarPaciente");
         }
 
-        
+
+        private void ArmarParametrosBajaPaciente(ref SqlCommand Comando, Pacientes pacientes)
+        {
+            SqlParameter SqlParametros = new SqlParameter();
+            SqlParametros = Comando.Parameters.Add("@DNI", SqlDbType.Int);
+            SqlParametros.Value = pacientes.getDni();
+        }
+
+        public int DarBajaPaciente(Pacientes pacientes)
+        {
+            SqlCommand comando = new SqlCommand();
+            ArmarParametrosBajaPaciente(ref comando, pacientes);
+            return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spEliminarPaciente");
+        }
 
 
     }
@@ -149,5 +163,16 @@ BEGIN
         @Email,
         @Telefono
     )
+END
+*/
+
+/*
+ CREATE PROCEDURE spEliminarPaciente
+    @DNI CHAR(8)
+AS
+BEGIN
+    UPDATE Pacientes
+    SET Estado = 0
+    WHERE DNI = @DNI
 END
 */

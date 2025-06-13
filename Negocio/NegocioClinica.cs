@@ -47,5 +47,22 @@ namespace Negocio
             return dao.agregarPaciente(pacientes);
         }
 
+        public bool eliminarPaciente(string dni)
+        {
+            //Validar id existente 
+            Dao dao = new Dao();
+            Pacientes pacientes = new Pacientes();
+            pacientes.setDni(dni);
+            int op = dao.DarBajaPaciente(pacientes);
+            if (op == 1)
+                return true;
+            else
+                return false;
+        }
+
+        
+
+
+
     }
 }
