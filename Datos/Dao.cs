@@ -113,6 +113,7 @@ namespace Datos
             SqlParametros.Value = pacientes.getDni();
         }
 
+
         public int DarBajaPaciente(Pacientes pacientes)
         {
             SqlCommand comando = new SqlCommand();
@@ -120,6 +121,18 @@ namespace Datos
             return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spEliminarPaciente");
         }
 
+        private void ArmarParametrosBajaMedico(ref SqlCommand Comando, Medicos medicos)
+        {
+            SqlParameter SqlParametros = new SqlParameter();
+            SqlParametros = Comando.Parameters.Add("@Legajo", SqlDbType.Char);
+            SqlParametros.Value = medicos.GetLegajo();
+        }
+        public int DarBajaMedico(Medicos medicos)
+        {
+            SqlCommand comando = new SqlCommand();
+            ArmarParametrosBajaMedico(ref comando, medicos);
+            return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spEliminarMedico");
+        }
 
     }
 }
@@ -174,5 +187,17 @@ BEGIN
     UPDATE Pacientes
     SET Estado = 0
     WHERE DNI = @DNI
+END
+*/
+
+
+/*
+  CREATE PROCEDURE spEliminarMedico
+    @Legajo CHAR(6)
+AS
+BEGIN
+    UPDATE Medicos
+    SET Estado = 0
+    WHERE Legajo = @Legajo
 END
 */

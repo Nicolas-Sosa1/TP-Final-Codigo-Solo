@@ -60,7 +60,19 @@ namespace Negocio
                 return false;
         }
 
-        
+        public bool eliminarMedico(string legajo)
+        {
+            //Validar id existente 
+            Dao dao = new Dao();
+            Medicos medicos = new Medicos();
+            medicos.SetLegajo(legajo);
+            int op = dao.DarBajaMedico(medicos);
+            if (op == 1)
+                return true;
+            else
+                return false;
+        }
+
 
 
 

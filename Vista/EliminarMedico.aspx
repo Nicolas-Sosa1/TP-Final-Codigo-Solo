@@ -19,7 +19,7 @@
             &nbsp;<asp:RequiredFieldValidator ID="rfvEliminar" runat="server" ErrorMessage="Debe ingresar un legajo" ControlToValidate="txtEliminarMedico" ForeColor="Red" ValidationGroup="1">*</asp:RequiredFieldValidator>
             &nbsp;<asp:RegularExpressionValidator ID="revEliminar" runat="server" ErrorMessage="Debe ingresar 6 numeros" ControlToValidate="txtEliminarMedico" ForeColor="Red" ValidationExpression="^\d{6}$" ValidationGroup="1">*</asp:RegularExpressionValidator>
             &nbsp;&nbsp;
-            <asp:Button ID="btnEliminarMedico" runat="server" Text="Eliminar medico" ValidationGroup="1" />
+            <asp:Button ID="btnEliminarMedico" runat="server" Text="Eliminar medico" ValidationGroup="1" OnClick="btnEliminarMedico_Click" />
             <br /><br />
             <asp:Label ID="lblMensaje" runat="server" Text=""></asp:Label>
             <asp:ValidationSummary ID="vsEliminar" runat="server" ForeColor="Red" ValidationGroup="1" />
