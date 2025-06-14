@@ -28,6 +28,54 @@ namespace Datos
             return dataTable;
         }
 
+        public DataTable ObtenerTodosLosPacientes()
+        {
+            string consulta = @"
+        SELECT 
+            p.DNI AS 'Documento',
+            p.Nombre AS 'Nombre',
+            p.Apellido AS 'Apellido',
+            s.Descripcion_Sexo AS 'Sexo',
+            p.Nacionalidad AS 'Nacionalidad',
+            p.FechaNacimiento AS 'Fecha de nacimiento',
+            p.Direccion AS 'Dirección',
+            l.DescripcionLocalidad AS 'Localidad',
+            p.Email AS 'Correo electrónico',
+            p.Telefono AS 'Teléfono',
+            p.Estado AS 'Estado'
+        FROM Pacientes p
+        JOIN Sexo s ON p.Id_Sexo = s.Id_Sexo
+        JOIN Localidades l ON p.Id_Localidad = l.Id_Localidad";
+
+            return accesoDatos.ObtenerTabla("Pacientes", consulta);
+        }
+
+        public DataTable ObtenerTodosLosMedicos()
+        {
+            string consulta = @"
+        SELECT 
+            m.Legajo AS 'Legajo',
+            m.DNI AS 'Documento',
+            m.Nombre AS 'Nombre',
+            m.Apellido AS 'Apellido',
+            s.Descripcion_Sexo AS 'Sexo',
+            m.Nacionalidad AS 'Nacionalidad',
+            m.FechaNacimiento AS 'Fecha de nacimiento',
+            m.Direccion AS 'Dirección',
+            l.DescripcionLocalidad AS 'Localidad',
+            e.DescripcionEspecialidad AS 'Especialidad',
+            m.Email AS 'Correo electrónico',
+            m.Telefono AS 'Teléfono',
+            m.Estado AS 'Estado'
+        FROM Medicos m
+        JOIN Sexo s ON m.Id_Sexo = s.Id_Sexo
+        JOIN Localidades l ON m.Id_Localidad = l.Id_Localidad
+        JOIN Especialidades e ON m.Id_Especialidad = e.Id_Especialidad";
+
+            return accesoDatos.ObtenerTabla("Medicos", consulta);
+        }
+
+
         public DataTable ObtenerTodasLasEspecialidades()
         {
             DataTable dataTable = accesoDatos.ObtenerTabla("Especialidades", "SELECT * FROM Especialidades");
@@ -134,8 +182,84 @@ namespace Datos
             return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spEliminarMedico");
         }
 
+
+        public DataTable validarLogin(string usuario, string contraseña)
+        {
+            string sql = "SELECT * FROM Usuarios WHERE NombreUsuario = @NombreUsuario AND Contrasena = @Contrasena";
+
+            SqlCommand comando = new SqlCommand(sql);
+
+            SqlParameter parametroUsuario = new SqlParameter("@NombreUsuario", SqlDbType.VarChar, 50); // Ajustá el tamaño a tu DB
+            parametroUsuario.Value = usuario;
+            comando.Parameters.Add(parametroUsuario);
+
+            SqlParameter parametroContrasena = new SqlParameter("@Contrasena", SqlDbType.VarChar, 50); // Ajustá el tamaño a tu DB
+            parametroContrasena.Value = contraseña;
+            comando.Parameters.Add(parametroContrasena);
+
+            return accesoDatos.ObtenerTablaConParametros("Usuarios", comando);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        private void ArmarParametrosAgregarMedico(ref SqlCommand Comando, Medicos medicos)
+        {
+            SqlParameter SqlParametros = new SqlParameter();
+            SqlParametros = Comando.Parameters.Add("@Legajo", SqlDbType.Char);
+            SqlParametros.Value = medicos.GetLegajo();
+            SqlParametros = Comando.Parameters.Add("@DNIDNI", SqlDbType.Char);
+            SqlParametros.Value = medicos.GetDNI();
+            SqlParametros = Comando.Parameters.Add("@Nombre", SqlDbType.VarChar);
+            SqlParametros.Value = medicos.GetNombre();
+            SqlParametros = Comando.Parameters.Add("@Apellido", SqlDbType.VarChar);
+            SqlParametros.Value = medicos.GetApellido();
+            SqlParametros = Comando.Parameters.Add("@Id_Sexo", SqlDbType.Int);
+            SqlParametros.Value = medicos.GetId_Sexo();
+            SqlParametros = Comando.Parameters.Add("@Nacionalidad", SqlDbType.VarChar);
+            SqlParametros.Value = medicos.GetNacionalidad();
+            SqlParametros = Comando.Parameters.Add("@FechaNacimiento", SqlDbType.Date);
+            SqlParametros.Value = medicos.GetFechaNacimiento();
+            SqlParametros = Comando.Parameters.Add("@Direccion", SqlDbType.VarChar);
+            SqlParametros.Value = medicos.GetDireccion();
+            SqlParametros = Comando.Parameters.Add("@Id_Localidad", SqlDbType.Int);
+            SqlParametros.Value = medicos.GetId_Localidad();
+            SqlParametros = Comando.Parameters.Add("@Email", SqlDbType.VarChar);
+            SqlParametros.Value = medicos.GetEmail();
+            SqlParametros = Comando.Parameters.Add("@Telefono", SqlDbType.VarChar);
+            SqlParametros.Value = medicos.GetTelefono();
+
+
+
+        }
+
+
+        public int agregarMedico(Medicos medicos)
+        {
+            SqlCommand comando = new SqlCommand();
+            ArmarParametrosAgregarMedico(ref comando, medicos);
+            return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spAgregarMedico");
+        }
+
     }
 }
+/*
+ * 
+ * 
+ */
 
 /*
  CREATE PROCEDURE spAgregarPaciente

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -97,6 +98,41 @@ namespace Vista
             ddlDiasAtencion.DataValueField = "Id_Dia";
             ddlDiasAtencion.DataBind();
             ddlDiasAtencion.Items.Insert(0, new ListItem("-- Seleccione un dia --", "0"));
+
+        }
+
+        protected void btnAgregarMedico_Click(object sender, EventArgs e)
+        {
+            Pacientes pacientes = new Pacientes();
+            pacientes.setDni(txtDNI.Text);
+            pacientes.setNombre(txtNombre.Text);
+            pacientes.setApellido(txtApellido.Text);
+            pacientes.setId_Sexo(Convert.ToInt32(ddlSexo.SelectedValue));
+            pacientes.setNacionalidad(txtNacionalidad.Text);
+            pacientes.setFechaNacimiento(DateTime.Parse(txtFechaNac.Text));
+            pacientes.setDireccion(txtDireccion.Text);
+            pacientes.setId_Localidad(Convert.ToInt32(ddlLocalidad.SelectedValue));
+            pacientes.setEmail(txtCorreo.Text);
+            pacientes.setTelefono(txtTelefono.Text);
+
+            int resultado = negocioClinica.agregarPaciente(pacientes);
+
+            if (resultado > 0)
+            {
+                lblMensaje.Text = "Sucursal agregada con éxito.";
+                lblMensaje.ForeColor = Color.Green;
+            }
+            else
+            {
+                lblMensaje.Text = "Ocurrió un error al agregar la sucursal.";
+                lblMensaje.ForeColor = Color.Red;
+            }
+
+            limpiarCampos();
+        }
+
+        public void limpiarCampos()
+        {
 
         }
     }

@@ -73,6 +73,40 @@ namespace Negocio
                 return false;
         }
 
+        public DataTable getTablaPacientes()
+        {
+            Dao dao = new Dao();
+            return dao.ObtenerTodosLosPacientes();
+        }
+
+        public DataTable getTablaMedicos()
+        {
+            Dao dao = new Dao();
+            return dao.ObtenerTodosLosMedicos();
+        }
+
+
+
+
+        public DataTable validarLogin(string usuario, string contrasena)
+        {
+            Dao dao = new Dao();
+            return dao.validarLogin(usuario, contrasena);
+        }
+
+
+
+
+
+
+
+
+        public int agregarMedico(Medicos medicos)
+        {
+            Dao dao = new Dao();
+            return dao.agregarMedico(medicos);
+        }
+
 
 
 

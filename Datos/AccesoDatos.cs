@@ -51,6 +51,7 @@ namespace Datos
             return dataSet.Tables[NombreTabla];
         }
 
+
         public int EjecutarProcedimientoAlmacenado(SqlCommand Comando, String NombreSP)
         {
             int FilasCambiadas;
@@ -64,6 +65,21 @@ namespace Datos
             Conexion.Close();
             return FilasCambiadas;
         }
+
+
+        public DataTable ObtenerTablaConParametros(string nombreTabla, SqlCommand comando)
+        {
+            DataSet ds = new DataSet();
+            SqlConnection conexion = ObtenerConexion();
+            comando.Connection = conexion;
+
+            SqlDataAdapter adaptador = new SqlDataAdapter(comando);
+            adaptador.Fill(ds, nombreTabla);
+            conexion.Close();
+
+            return ds.Tables[nombreTabla];
+        }
+
 
 
     }

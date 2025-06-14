@@ -40,8 +40,10 @@
             <asp:Button ID="btnMostrar" runat="server" Text="Mostrar Todos" />
             <br /><br />
             <asp:ValidationSummary ID="vsBuscar" runat="server" ForeColor="Red" ValidationGroup="1" />
-            <br /><br />
-            <asp:GridView ID="gvPacientes" runat="server"></asp:GridView>     
+            <br />
+            <asp:GridView ID="gvPacientes" runat="server">
+            </asp:GridView>
+            <br />
         </div>
     </form>
 </body>
