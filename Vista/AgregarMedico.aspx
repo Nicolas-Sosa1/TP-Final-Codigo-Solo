@@ -83,11 +83,9 @@
             <asp:RequiredFieldValidator ID="rfvEspecialidad" runat="server" ControlToValidate="ddlEspecialidades" ErrorMessage="Debe seleccionar una especialidad" ForeColor="Red" ValidationGroup="1">*</asp:RequiredFieldValidator>
             <br /><br />
             Dias de atención:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:DropDownList ID="ddlDiasAtencion" runat="server" Width="200px" ValidationGroup="1"></asp:DropDownList>
-            &nbsp;<asp:RequiredFieldValidator ID="rfvDiasAtencion" runat="server" ControlToValidate="ddlDiasAtencion" ErrorMessage="Debe seleccionar un dia de atencion" ForeColor="Red" ValidationGroup="1">*</asp:RequiredFieldValidator>
-            <br /><br />
+            &nbsp;<br /><br />
             Horario de atención:&nbsp; <asp:DropDownList ID="ddlHorarioAtencion" runat="server" Width="200px" ValidationGroup="1"></asp:DropDownList>
-            &nbsp;<asp:RequiredFieldValidator ID="rfvHorarioAtencion" runat="server" ControlToValidate="ddlHorarioAtencion" ErrorMessage="Debe seleccionar un Horario" ForeColor="Red" ValidationGroup="1">*</asp:RequiredFieldValidator>
-            <br /><br />
+            &nbsp;<br /><br />
             Crear usuario:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <asp:TextBox ID="txtUsuario" runat="server" ValidationGroup="1"></asp:TextBox>
             <asp:RequiredFieldValidator ID="rfvUsuario" runat="server" ErrorMessage="Debe ingresar un Usuario" ControlToValidate="txtUsuario" ForeColor="Red" ValidationGroup="1">*</asp:RequiredFieldValidator>

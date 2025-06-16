@@ -254,6 +254,8 @@ namespace Datos
             SqlParametros.Value = medicos.GetEmail();
             SqlParametros = Comando.Parameters.Add("@Telefono", SqlDbType.VarChar);
             SqlParametros.Value = medicos.GetTelefono();
+            SqlParametros = Comando.Parameters.Add("@Id_Especialidad", SqlDbType.Int);
+            SqlParametros.Value = medicos.GetId_Especialidad();
 
 
 
@@ -277,6 +279,8 @@ namespace Datos
             SqlParametros.Value = usuarios.GetContrasena();
             SqlParametros = Comando.Parameters.Add("@TipoUsuario", SqlDbType.VarChar);
             SqlParametros.Value = usuarios.GetTipoUsuario();
+            SqlParametros = Comando.Parameters.Add("@Legajo_Medico", SqlDbType.Char);
+            SqlParametros.Value = usuarios.GetLegajo_Medico();
 
 
         }

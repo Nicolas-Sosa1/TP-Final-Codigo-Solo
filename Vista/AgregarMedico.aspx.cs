@@ -115,32 +115,37 @@ namespace Vista
 
         protected void btnAgregarMedico_Click(object sender, EventArgs e)
         {
-            Pacientes pacientes = new Pacientes();
-            pacientes.setDni(txtDNI.Text);
-            pacientes.setNombre(txtNombre.Text);
-            pacientes.setApellido(txtApellido.Text);
-            pacientes.setId_Sexo(Convert.ToInt32(ddlSexo.SelectedValue));
-            pacientes.setNacionalidad(txtNacionalidad.Text);
-            pacientes.setFechaNacimiento(DateTime.Parse(txtFechaNac.Text));
-            pacientes.setDireccion(txtDireccion.Text);
-            pacientes.setId_Localidad(Convert.ToInt32(ddlLocalidad.SelectedValue));
-            pacientes.setEmail(txtCorreo.Text);
-            pacientes.setTelefono(txtTelefono.Text);
+            Medicos medico = new Medicos();
+            medico.SetLegajo(txtLegajo.Text);
+            medico.SetDNI(txtDNI.Text);
+            medico.SetNombre(txtNombre.Text);
+            medico.SetApellido(txtApellido.Text);
+            medico.SetId_Sexo(int.Parse(ddlSexo.SelectedValue));
+            medico.SetNacionalidad(txtNacionalidad.Text);
+            medico.SetFechaNacimiento(DateTime.Parse(txtFechaNac.Text));
+            medico.SetDireccion(txtDireccion.Text);
+            medico.SetId_Localidad(int.Parse(ddlLocalidad.SelectedValue));
+            medico.SetEmail(txtCorreo.Text);
+            medico.SetTelefono(txtTelefono.Text);
+            medico.SetId_Especialidad(int.Parse(ddlEspecialidades.SelectedValue));
 
-            int resultado = negocioClinica.agregarPaciente(pacientes);
 
-            if (resultado > 0)
+            Usuarios usuario = new Usuarios();
+            usuario.SetNombreUsuario(txtUsuario.Text);
+            usuario.SetContrasena(txtContra.Text);
+            usuario.SetTipoUsuario("Medico");
+            usuario.SetLegajo_Medico(txtLegajo.Text);
+
+            string resultado = negocioClinica.RegistrarMedicoYUsuario(medico, usuario);
+
+            if (resultado == "OK")
             {
-                lblMensaje.Text = "Medico agregada con éxito.";
-                lblMensaje.ForeColor = Color.Green;
+                lblMensaje.Text = "✔ Registro exitoso.";
             }
             else
             {
-                lblMensaje.Text = "Ocurrió un error al agregar la sucursal.";
-                lblMensaje.ForeColor = Color.Red;
+                lblMensaje.Text = "✘ " + resultado;
             }
-
-            limpiarCampos();
         }
 
         public void limpiarCampos()

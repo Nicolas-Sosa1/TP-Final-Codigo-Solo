@@ -91,21 +91,34 @@ namespace Negocio
             return dao.ObtenerTodosLosMedicos();
         }
 
-
-
-
-
-        public int agregarMedico(Medicos medicos)
+        public string RegistrarMedicoYUsuario(Medicos medico, Usuarios usuario)
         {
             Dao dao = new Dao();
-            return dao.agregarMedico(medicos);
+
+            int resultadoMedico = dao.agregarMedico(medico); // ← Usás el método del DAO
+
+            if (resultadoMedico <= 0)
+            {
+                return "Error al registrar al médico.";
+            }
+
+            usuario.SetLegajo_Medico(medico.GetLegajo()); // Asociás el legajo médico al usuario
+
+            int resultadoUsuario = dao.agregarUsuario(usuario); // ← También desde DAO
+
+            if (resultadoUsuario <= 0)
+            {
+                // opcional: dao.eliminarMedico(medico.GetLegajo());
+                return "El médico fue registrado, pero ocurrió un error al registrar el usuario.";
+            }
+
+            return "OK";
         }
 
-        public int agregarUsuario(Usuarios usuarios)
-        {
-            Dao dao = new Dao();
-            return dao.agregarUsuario(usuarios);
-        }
+
+
+
+
 
 
         public DataTable BuscarMedicos(string criterio)
