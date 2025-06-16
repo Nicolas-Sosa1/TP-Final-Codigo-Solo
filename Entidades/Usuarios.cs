@@ -6,64 +6,65 @@ using System.Threading.Tasks;
 
 namespace Entidades
 {
-    internal class Usuarios
+    public class Usuarios
     {
-        private int id_Usuario;
-        private string nombreUsuario;
-        private string contrasena;
-        private string tipoUsuario;
-        private string legajo_Medico;
+        private int Id_Usuario;
+        private string NombreUsuario;
+        private string Contrasena;
+        private string TipoUsuario;
+        private string Id_Administrador;
+        private string Legajo_Medico;
 
         // Getters y Setters
 
         public int GetId_Usuario()
         {
-            return id_Usuario;
+            return Id_Usuario;
         }
 
         public void SetId_Usuario(int id)
         {
-            id_Usuario = id;
+            Id_Usuario = id;
         }
 
         public string GetNombreUsuario()
         {
-            return nombreUsuario;
+            return NombreUsuario;
         }
 
         public void SetNombreUsuario(string nombre)
         {
-            nombreUsuario = nombre;
+            NombreUsuario = nombre;
         }
 
         public string GetContrasena()
         {
-            return contrasena;
+            return Contrasena;
         }
 
         public void SetContrasena(string pass)
         {
-            contrasena = pass;
+            Contrasena = pass;
         }
 
         public string GetTipoUsuario()
         {
-            return tipoUsuario;
+            return TipoUsuario;
         }
 
         public void SetTipoUsuario(string tipo)
         {
-            tipoUsuario = tipo;
+            TipoUsuario = tipo;
         }
 
         public string GetLegajo_Medico()
         {
-            return legajo_Medico;
+            return Legajo_Medico;
         }
 
         public void SetLegajo_Medico(string legajo)
         {
-            legajo_Medico = legajo;
+            Legajo_Medico = legajo;
         }
     }
 }

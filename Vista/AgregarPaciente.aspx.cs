@@ -97,12 +97,12 @@ namespace Vista
 
             if (resultado > 0)
             {
-                lblMensaje.Text = "Sucursal agregada con éxito.";
+                lblMensaje.Text = "Paciente agregado con éxito.";
                 lblMensaje.ForeColor = Color.Green;
             }
             else
             {
-                lblMensaje.Text = "Ocurrió un error al agregar la sucursal.";
+                lblMensaje.Text = "Ocurrió un error al agregar el Paciente.";
                 lblMensaje.ForeColor = Color.Red;
             }
 

@@ -94,24 +94,19 @@ namespace Negocio
 
 
 
-        public DataTable validarLogin(string usuario, string contrasena)
-        {
-            Dao dao = new Dao();
-            return dao.validarLogin(usuario, contrasena);
-        }
-
-
-
-
-
-
-
 
         public int agregarMedico(Medicos medicos)
         {
             Dao dao = new Dao();
             return dao.agregarMedico(medicos);
         }
+
+        public int agregarUsuario(Usuarios usuarios)
+        {
+            Dao dao = new Dao();
+            return dao.agregarUsuario(usuarios);
+        }
+
 
         public DataTable BuscarMedicos(string criterio)
         {
@@ -120,6 +115,11 @@ namespace Negocio
         }
 
 
+        public DataTable validarLogin(string usuario, string contrasena)
+        {
+            Dao dao = new Dao();
+            return dao.validarLogin(usuario, contrasena);
+        }
 
     }
 }

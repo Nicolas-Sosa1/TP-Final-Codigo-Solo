@@ -27,14 +27,14 @@ namespace Vista
 
             if (eliminado == true)
             {
-                lblMensaje.Text = "La sucursal se ha eliminado con éxito.";
+                lblMensaje.Text = "El paciente se ha eliminado con éxito.";
                 LimpiarCampos();
                 lblMensaje.ForeColor = Color.Green;
             }
 
             else
             {
-                lblMensaje.Text = "No se encontró una sucursal con ese ID.";
+                lblMensaje.Text = "No se encontró un paciente con ese DNI.";
                 lblMensaje.ForeColor = Color.Red;
             }
 

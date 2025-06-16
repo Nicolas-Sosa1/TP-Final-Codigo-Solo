@@ -234,7 +234,7 @@ namespace Datos
             SqlParameter SqlParametros = new SqlParameter();
             SqlParametros = Comando.Parameters.Add("@Legajo", SqlDbType.Char);
             SqlParametros.Value = medicos.GetLegajo();
-            SqlParametros = Comando.Parameters.Add("@DNIDNI", SqlDbType.Char);
+            SqlParametros = Comando.Parameters.Add("@DNI", SqlDbType.Char);
             SqlParametros.Value = medicos.GetDNI();
             SqlParametros = Comando.Parameters.Add("@Nombre", SqlDbType.VarChar);
             SqlParametros.Value = medicos.GetNombre();
@@ -265,6 +265,27 @@ namespace Datos
             SqlCommand comando = new SqlCommand();
             ArmarParametrosAgregarMedico(ref comando, medicos);
             return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spAgregarMedico");
+        }
+
+
+        private void ArmarParametrosAgregarUsuario(ref SqlCommand Comando, Usuarios usuarios)
+        {
+            SqlParameter SqlParametros = new SqlParameter();
+            SqlParametros = Comando.Parameters.Add("@NombreUsuario", SqlDbType.VarChar);
+            SqlParametros.Value = usuarios.GetNombreUsuario();
+            SqlParametros = Comando.Parameters.Add("@Contrasena", SqlDbType.VarChar);
+            SqlParametros.Value = usuarios.GetContrasena();
+            SqlParametros = Comando.Parameters.Add("@TipoUsuario", SqlDbType.VarChar);
+            SqlParametros.Value = usuarios.GetTipoUsuario();
+
+
+        }
+
+        public int agregarUsuario(Usuarios usuarios)
+        {
+            SqlCommand comando = new SqlCommand();
+            ArmarParametrosAgregarUsuario(ref comando, usuarios);
+            return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spAgregarUsuario");
         }
 
 

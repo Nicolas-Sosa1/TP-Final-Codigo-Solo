@@ -131,7 +131,7 @@ namespace Vista
 
             if (resultado > 0)
             {
-                lblMensaje.Text = "Sucursal agregada con éxito.";
+                lblMensaje.Text = "Medico agregada con éxito.";
                 lblMensaje.ForeColor = Color.Green;
             }
             else
