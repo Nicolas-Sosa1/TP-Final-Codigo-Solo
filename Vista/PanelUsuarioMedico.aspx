@@ -15,6 +15,25 @@
             <br /><br />
             Usuario:&nbsp;&nbsp;
             <asp:Label ID="lblUsuario" runat="server" Text=""></asp:Label>
+            <br />
+            <asp:HyperLink ID="hlCerrar" runat="server" NavigateUrl="~/CerrarSesion.aspx">Cerrar sesion</asp:HyperLink>
+            <br />
+            <br />
+            Buscar por nombre de paciente:&nbsp;&nbsp; <asp:TextBox ID="txtNombre" runat="server" Width="200px"></asp:TextBox>
+            <br />
+            <br />
+            Buscar por numero de turno:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <asp:TextBox ID="txtTurno" runat="server" Width="200px"></asp:TextBox>
+            <br />
+            <br />
+            Buscar por estado del turno:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <asp:DropDownList ID="ddlBuscarEstado" runat="server" Width="200px">
+            </asp:DropDownList>
+            <br />
+            <br />
+            <asp:Button ID="btnFiltrar" runat="server" Text="Filtrar" />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <asp:Button ID="btnMostrar" runat="server" Text="Mostrar todos" />
             <br /><br />
             <asp:GridView ID="gvTurnos" runat="server" AutoGenerateColumns="False" AutoGenerateEditButton="True">
                 <Columns>
