@@ -113,6 +113,11 @@ namespace Negocio
             return dao.agregarMedico(medicos);
         }
 
+        public DataTable BuscarMedicos(string criterio)
+        {
+            Dao dao = new Dao();
+            return dao.BuscarMedicos(criterio);
+        }
 
 
 

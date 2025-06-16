@@ -267,12 +267,41 @@ namespace Datos
             return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spAgregarMedico");
         }
 
+
+        public DataTable BuscarMedicos(string criterio)
+        {
+            SqlCommand comando = new SqlCommand(@"
+            SELECT 
+                m.Legajo,
+                m.DNI AS Documento,
+                m.Nombre,
+                m.Apellido,
+                s.Descripcion_Sexo AS Sexo,
+                m.Nacionalidad,
+                m.FechaNacimiento,
+                m.Direccion,
+                l.DescripcionLocalidad AS Localidad,
+                e.DescripcionEspecialidad AS Especialidad,
+                m.Email AS [Correo electrónico],
+                m.Telefono,
+                m.Estado
+            FROM Medicos m
+            JOIN Sexo s ON m.Id_Sexo = s.Id_Sexo
+            JOIN Localidades l ON m.Id_Localidad = l.Id_Localidad
+            JOIN Especialidades e ON m.Id_Especialidad = e.Id_Especialidad
+            WHERE 
+                m.Nombre LIKE '%' + @Criterio + '%' OR
+                m.Apellido LIKE '%' + @Criterio + '%' OR
+                m.DNI LIKE '%' + @Criterio + '%';");
+
+            comando.Parameters.AddWithValue("@Criterio", criterio);
+
+            return accesoDatos.ObtenerTablaConParametros("Medicos", comando);
+        }
+
     }
 }
-/*
- * 
- * 
- */
+
 
 /*
  CREATE PROCEDURE spAgregarPaciente

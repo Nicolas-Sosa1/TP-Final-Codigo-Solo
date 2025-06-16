@@ -36,5 +36,11 @@ namespace Vista
         {
             cargarGridView();
         }
+
+        protected void btnFiltrar_Click(object sender, EventArgs e)
+        {
+            
+
+        }
     }
 }

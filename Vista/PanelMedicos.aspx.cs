@@ -34,6 +34,25 @@ namespace Vista
         protected void btnMostrar_Click(object sender, EventArgs e)
         {
             cargarGridView();
+            limpiarTodos();
+        }
+
+        protected void btnFiltrar_Click(object sender, EventArgs e)
+        {
+            string criterio = txtBuscar.Text.Trim();
+
+            if (!string.IsNullOrEmpty(criterio))
+            {
+                DataTable dt = negocioClinica.BuscarMedicos(criterio);
+                gvMedicos.DataSource = dt;
+                gvMedicos.DataBind();
+            }
+           
+        }
+
+        private void limpiarTodos()
+        {
+
         }
     }
 }
