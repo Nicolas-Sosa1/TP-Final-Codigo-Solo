@@ -90,6 +90,19 @@ namespace Datos
 
         }
 
+        public DataTable ObtenerTodosLosHorarios()
+        {
+            string consulta = @"
+        SELECT 
+            Id_Horario,
+            CAST(Id_Horario AS VARCHAR(10)) + ' - ' + 
+            CONVERT(VARCHAR(5), HoraDesde, 108) + ' - ' + 
+            CONVERT(VARCHAR(5), HoraHasta, 108) AS DescripcionHorario
+        FROM Horarios";
+
+            return accesoDatos.ObtenerTabla("Horarios", consulta);
+        }
+
 
         public DataTable ObtenerLocalidadesPorProvincia(Provincias provincia)
         {

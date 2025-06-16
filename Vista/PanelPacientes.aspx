@@ -37,7 +37,7 @@
             &nbsp;&nbsp;
             <asp:Button ID="btnFiltrar" runat="server" Text="Filtrar" ValidationGroup="1" />
             &nbsp;&nbsp;
-            <asp:Button ID="btnMostrar" runat="server" Text="Mostrar Todos" />
+            <asp:Button ID="btnMostrar" runat="server" Text="Mostrar Todos" OnClick="btnMostrar_Click" />
             <br /><br />
             <asp:ValidationSummary ID="vsBuscar" runat="server" ForeColor="Red" ValidationGroup="1" />
             <br />

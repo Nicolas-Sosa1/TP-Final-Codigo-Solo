@@ -41,6 +41,12 @@ namespace Negocio
             return dao.ObtenerTodosLosDias();
         }
 
+        public DataTable getTablaHorarios()
+        {
+            Dao dao = new Dao();
+            return dao.ObtenerTodosLosHorarios();
+        }
+
         public int agregarPaciente(Pacientes pacientes)
         {
             Dao dao = new Dao();

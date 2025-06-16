@@ -30,5 +30,10 @@ namespace Vista
             gvMedicos.DataBind();
 
         }
+
+        protected void btnMostrar_Click(object sender, EventArgs e)
+        {
+            cargarGridView();
+        }
     }
 }

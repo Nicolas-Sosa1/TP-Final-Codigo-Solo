@@ -25,6 +25,7 @@ namespace Vista
                 cargaDdlEspecialidades();
                 cargarDdlSexo();
                 cargarDdlDias();
+                cargarDdlHorarios();
             }
         }
 
@@ -86,7 +87,7 @@ namespace Vista
             ddlEspecialidades.DataTextField = "DescripcionEspecialidad";
             ddlEspecialidades.DataValueField = "Id_Especialidad";
             ddlEspecialidades.DataBind();
-            ddlEspecialidades.Items.Insert(0, new ListItem("-- Seleccione provincia --", "0"));
+            ddlEspecialidades.Items.Insert(0, new ListItem("-- Seleccione una especialidad --", "0"));
 
         }
 
@@ -99,6 +100,17 @@ namespace Vista
             ddlDiasAtencion.DataBind();
             ddlDiasAtencion.Items.Insert(0, new ListItem("-- Seleccione un dia --", "0"));
 
+        }
+
+        public void cargarDdlHorarios()
+        {
+            DataTable horarios = negocioClinica.getTablaHorarios();
+            ddlHorarioAtencion.DataSource = horarios;
+            ddlHorarioAtencion.DataTextField = "DescripcionHorario";
+            ddlHorarioAtencion.DataValueField = "Id_Horario";        
+            ddlHorarioAtencion.DataBind();
+
+            ddlHorarioAtencion.Items.Insert(0, new ListItem("-- Seleccione un horario --", "0"));
         }
 
         protected void btnAgregarMedico_Click(object sender, EventArgs e)
