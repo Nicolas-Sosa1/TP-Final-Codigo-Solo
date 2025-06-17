@@ -65,9 +65,9 @@
                     <EditItemTemplate>
                         <asp:Label ID="editObservaciones" runat="server" Text=""></asp:Label>
                     </EditItemTemplate>
-                    <ItemTemplate>
-                        <asp:Label ID="lblObservaciones" runat="server" Text=""></asp:Label>
-                    </ItemTemplate>
+                         <ItemTemplate>
+                             <asp:TextBox ID="txtObservaciones" runat="server"></asp:TextBox>
+                         </ItemTemplate>
                     </asp:TemplateField>
                 </Columns>
 
