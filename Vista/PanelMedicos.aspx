@@ -41,7 +41,7 @@
             <br /><br />
             <asp:ValidationSummary ID="vsBuscar" runat="server" ForeColor="Red" ValidationGroup="1" />
             <br /><br />
-            <asp:GridView ID="gvMedicos" runat="server"></asp:GridView>   
+            <asp:GridView ID="gvMedicos" runat="server" AutoGenerateEditButton="True"></asp:GridView>   
         </div>
     </form>
 </body>

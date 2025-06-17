@@ -42,5 +42,22 @@ namespace Vista
             
 
         }
+
+        protected void gvPacientes_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvPacientes.EditIndex = e.NewEditIndex;
+            cargarGridView();
+        }
+
+        protected void gvPacientes_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvPacientes.EditIndex = -1;
+            cargarGridView();
+        }
+
+        protected void gvPacientes_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            
+        }
     }
 }

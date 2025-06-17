@@ -214,21 +214,6 @@ namespace Datos
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         private void ArmarParametrosAgregarMedico(ref SqlCommand Comando, Medicos medicos)
         {
             SqlParameter SqlParametros = new SqlParameter();
@@ -291,6 +276,51 @@ namespace Datos
             ArmarParametrosAgregarUsuario(ref comando, usuarios);
             return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spAgregarUsuario");
         }
+
+
+
+        private void ArmarParametrosActualizarPaciente(ref SqlCommand Comando, Pacientes pacientes)
+        {
+            SqlParameter SqlParametros = new SqlParameter();
+            SqlParametros = Comando.Parameters.Add("@DNI", SqlDbType.Char);
+            SqlParametros.Value = pacientes.getDni();
+            SqlParametros = Comando.Parameters.Add("@Nombre", SqlDbType.VarChar);
+            SqlParametros.Value = pacientes.getNombre();
+            SqlParametros = Comando.Parameters.Add("@Apellido", SqlDbType.VarChar);
+            SqlParametros.Value = pacientes.getApellido();
+            SqlParametros = Comando.Parameters.Add("@Id_Sexo", SqlDbType.Int);
+            SqlParametros.Value = pacientes.getId_Sexo();
+            SqlParametros = Comando.Parameters.Add("@Nacionalidad", SqlDbType.VarChar);
+            SqlParametros.Value = pacientes.getNacionalidad();
+            SqlParametros = Comando.Parameters.Add("@FechaNacimiento", SqlDbType.Date);
+            SqlParametros.Value = pacientes.getFechaNacimiento();
+            SqlParametros = Comando.Parameters.Add("@Direccion", SqlDbType.VarChar);
+            SqlParametros.Value = pacientes.getDireccion();
+            SqlParametros = Comando.Parameters.Add("@Id_Localidad", SqlDbType.Int);
+            SqlParametros.Value = pacientes.getId_Localidad();
+            SqlParametros = Comando.Parameters.Add("@Email", SqlDbType.VarChar);
+            SqlParametros.Value = pacientes.getEmail();
+            SqlParametros = Comando.Parameters.Add("@Telefono", SqlDbType.VarChar);
+            SqlParametros.Value = pacientes.getTelefono();
+            SqlParametros = Comando.Parameters.Add("@Estado", SqlDbType.Bit);
+            SqlParametros.Value = pacientes.getEstado();
+
+
+        }
+
+        public int actualizarPaciente(Pacientes pacientes)
+        {
+
+            SqlCommand comando = new SqlCommand();
+            ArmarParametrosActualizarPaciente(ref comando, pacientes);
+            return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spActualizarPaciente");
+        }
+
+
+
+
+
+
 
 
         public DataTable BuscarMedicos(string criterio)

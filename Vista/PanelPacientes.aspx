@@ -41,7 +41,7 @@
             <br /><br />
             <asp:ValidationSummary ID="vsBuscar" runat="server" ForeColor="Red" ValidationGroup="1" />
             <br />
-            <asp:GridView ID="gvPacientes" runat="server">
+            <asp:GridView ID="gvPacientes" runat="server" AutoGenerateEditButton="True" OnRowCancelingEdit="gvPacientes_RowCancelingEdit" OnRowEditing="gvPacientes_RowEditing" OnRowUpdating="gvPacientes_RowUpdating">
             </asp:GridView>
             <br />
         </div>

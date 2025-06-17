@@ -115,6 +115,11 @@ namespace Negocio
             return "OK";
         }
 
+        public void ActualizarPaciente(Pacientes paciente)
+        {
+            Dao dao = new Dao();
+            dao.actualizarPaciente(paciente);
+        }
 
 
 
