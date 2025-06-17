@@ -115,6 +115,33 @@ namespace Negocio
             return "OK";
         }
 
+        public void RegistrarFechasAtencion(string legajoMedico, List<int> diasSeleccionados, int idHorario)
+        {
+            Dao dao = new Dao();
+            DataTable fechas = dao.ObtenerTodasLasFechas();
+
+            foreach (DataRow fila in fechas.Rows)
+            {
+                DateTime fecha = Convert.ToDateTime(fila["Fecha"]);
+                int diaSemana = ((int)fecha.DayOfWeek + 1); // Lunes = 1, ..., Domingo = 7
+
+                if (diasSeleccionados.Contains(diaSemana))
+                {
+                    // 0. Asegurar existencia del par en DiasXHorarios
+                    dao.insertarDiasXHorarios(diaSemana, idHorario);
+
+                    // 1. Insertar en tabla intermedia (solo si existe en DiasXHorarios)
+                    dao.insertarDiasXHorariosXFechas(diaSemana, idHorario, fecha);
+
+                    // 2. Insertar en tabla final con legajo del médico
+                    dao.insertarDiasXHorariosXFechasXMedico(diaSemana, idHorario, fecha, legajoMedico);
+                }
+            }
+        }
+
+
+
+
         public void ActualizarPaciente(Pacientes paciente)
         {
             Dao dao = new Dao();

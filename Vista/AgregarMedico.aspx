@@ -82,8 +82,9 @@
             &nbsp;
             <asp:RequiredFieldValidator ID="rfvEspecialidad" runat="server" ControlToValidate="ddlEspecialidades" ErrorMessage="Debe seleccionar una especialidad" ForeColor="Red" ValidationGroup="1">*</asp:RequiredFieldValidator>
             <br /><br />
-            Dias de atención:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:DropDownList ID="ddlDiasAtencion" runat="server" Width="200px" ValidationGroup="1"></asp:DropDownList>
-            &nbsp;<br /><br />
+            Dias de atención:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBoxList ID="cblDias" runat="server">
+            </asp:CheckBoxList>
+            <br /><br />
             Horario de atención:&nbsp; <asp:DropDownList ID="ddlHorarioAtencion" runat="server" Width="200px" ValidationGroup="1"></asp:DropDownList>
             &nbsp;<br /><br />
             Crear usuario:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

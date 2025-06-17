@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DiasHorariosFechasMedico.cs" />
+    <Compile Include="DiasXHorarios.cs" />
+    <Compile Include="DiasXHorariosXFechas.cs" />
     <Compile Include="Medicos.cs" />
     <Compile Include="Pacientes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

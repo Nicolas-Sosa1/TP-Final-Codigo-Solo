@@ -278,6 +278,68 @@ namespace Datos
         }
 
 
+        //Seccion Dias Horarios FECHA
+        //------------------------------------------------------------------------------------------------
+        private void ArmarParametrosDiasXHorarios(ref SqlCommand comando, int idDia, int idHorario)
+        {
+            comando.Parameters.Add("@Id_Dia", SqlDbType.Int).Value = idDia;
+            comando.Parameters.Add("@Id_Horario", SqlDbType.Int).Value = idHorario;
+        }
+
+        public int insertarDiasXHorarios(int idDia, int idHorario)
+        {
+            SqlCommand comando = new SqlCommand();
+            ArmarParametrosDiasXHorarios(ref comando, idDia, idHorario);
+            return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spInsertarDiasXHorarios");
+        }
+
+
+        private void ArmarParametrosDiasXHorariosXFechas(ref SqlCommand comando, int idDia, int idHorario, DateTime fecha)
+        {
+            comando.Parameters.Add("@Id_Dia", SqlDbType.Int).Value = idDia;
+            comando.Parameters.Add("@Id_Horario", SqlDbType.Int).Value = idHorario;
+            comando.Parameters.Add("@Fecha", SqlDbType.Date).Value = fecha;
+
+        }
+
+        public int insertarDiasXHorariosXFechas(int idDia, int idHorario, DateTime fecha)
+        {
+            SqlCommand comando = new SqlCommand();
+            ArmarParametrosDiasXHorariosXFechas(ref comando, idDia, idHorario, fecha);
+            return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spInsertarDiasXHorariosXFechas");
+        }
+
+
+
+        private void ArmarParametrosDiasXHorariosXFechasXMedico(ref SqlCommand comando, int idDia, int idHorario, DateTime fecha, string legajoMedico)
+        {
+            comando.Parameters.Add("@Id_Dia", SqlDbType.Int).Value = idDia;
+            comando.Parameters.Add("@Id_Horario", SqlDbType.Int).Value = idHorario;
+            comando.Parameters.Add("@Fecha", SqlDbType.Date).Value = fecha;
+            comando.Parameters.Add("@Legajo_Medico", SqlDbType.Char).Value = legajoMedico;
+        }
+
+        public int insertarDiasXHorariosXFechasXMedico(int idDia, int idHorario, DateTime fecha, string legajoMedico)
+        {
+            SqlCommand comando = new SqlCommand();
+            ArmarParametrosDiasXHorariosXFechasXMedico(ref comando, idDia, idHorario, fecha, legajoMedico);
+            return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spInsertarDiasXHorariosXFechasXMedico");
+        }
+
+        public DataTable ObtenerTodasLasFechas()
+        {
+            string consulta = "SELECT Fecha FROM Fechas";
+            return accesoDatos.ObtenerTabla("Fechas", consulta);
+        }
+
+        //-------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+        /*ver luego*/
 
         private void ArmarParametrosActualizarPaciente(ref SqlCommand Comando, Pacientes pacientes)
         {
@@ -315,11 +377,6 @@ namespace Datos
             ArmarParametrosActualizarPaciente(ref comando, pacientes);
             return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spActualizarPaciente");
         }
-
-
-
-
-
 
 
 

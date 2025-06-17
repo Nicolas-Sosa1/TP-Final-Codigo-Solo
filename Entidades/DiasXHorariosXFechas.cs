@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Entidades
 {
-    public class DiasHorariosFechasMedico
+    public class DiasXHorariosXFechas
     {
         // Atributos
         private int idDia;
         private int idHorario;
         private DateTime fecha;
-        private string legajoMedico;
+       
 
         // Getters y Setters
         public int GetIdDia()
@@ -45,14 +45,6 @@ namespace Entidades
             fecha = f;
         }
 
-        public string GetLegajoMedico()
-        {
-            return legajoMedico;
-        }
-
-        public void SetLegajoMedico(string legajo)
-        {
-            legajoMedico = legajo;
-        }
+      
     }
 }

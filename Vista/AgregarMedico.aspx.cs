@@ -94,11 +94,11 @@ namespace Vista
         public void cargarDdlDias()
         {
             DataTable dataTable = negocioClinica.getTablaDias();
-            ddlDiasAtencion.DataSource = dataTable;
-            ddlDiasAtencion.DataTextField = "DescripcionDia";
-            ddlDiasAtencion.DataValueField = "Id_Dia";
-            ddlDiasAtencion.DataBind();
-            ddlDiasAtencion.Items.Insert(0, new ListItem("-- Seleccione un dia --", "0"));
+            cblDias.DataSource = dataTable;
+            cblDias.DataTextField = "DescripcionDia";
+            cblDias.DataValueField = "Id_Dia";
+            cblDias.DataBind();
+           
 
         }
 
@@ -140,12 +140,23 @@ namespace Vista
 
             if (resultado == "OK")
             {
-                lblMensaje.Text = "✔ Registro exitoso.";
+                // Obtener días seleccionados
+                List<int> diasSeleccionados = new List<int>();
+                foreach (ListItem item in cblDias.Items)
+                {
+                    if (item.Selected)
+                        diasSeleccionados.Add(int.Parse(item.Value)); // Valores: 1 a 7
+                }
+
+                // Obtener horario
+                int idHorario = int.Parse(ddlHorarioAtencion.SelectedValue);
+
+                // Registrar las fechas que corresponden a esos días
+                negocioClinica.RegistrarFechasAtencion(medico.GetLegajo(), diasSeleccionados, idHorario);
+
+                lblMensaje.Text = "✔ Registro exitoso con fechas de atención.";
             }
-            else
-            {
-                lblMensaje.Text = "✘ " + resultado;
-            }
+
         }
 
         public void limpiarCampos()
