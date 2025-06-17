@@ -11,7 +11,20 @@ namespace Vista
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            string user;
+            user = Session["Usuario"].ToString();
+            lblUsuario.Text = user;
+        }
 
+        protected void btnSi_Click(object sender, EventArgs e)
+        {
+            Session["Usuario"] = null;
+            Server.Transfer("Inicio.aspx");
+        }
+
+        protected void btnNo_Click(object sender, EventArgs e)
+        {
+            // Falta verificar que tipo de usuario es y volver al form que le corresponda
         }
     }
 }

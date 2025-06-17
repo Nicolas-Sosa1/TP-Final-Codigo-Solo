@@ -11,10 +11,9 @@ namespace Vista
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Mas adelante, validar que lo ingresado en txtUsuario corresponda a un usuario existente en la base de datos
-            //string user;
-            //user = Request["txtUsuario"].ToString();
-            //lblUsuario.Text = user;
+            string user;
+            user = Session["Usuario"].ToString();
+            lblUsuario.Text = user;
         }
 
         protected void btnPacientes_Click(object sender, EventArgs e)

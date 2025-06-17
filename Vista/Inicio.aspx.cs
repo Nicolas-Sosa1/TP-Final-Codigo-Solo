@@ -30,7 +30,7 @@ namespace Vista
 
                 Session["Usuario"] = usuario;
 
-                if (tipo == "Administrador")
+                if (tipo == "Admin")
                 {
                     Session["IdAdministrador"] = dt.Rows[0]["Id_Administrador"];
                     Response.Redirect("PanelUsuarioAdministrador.aspx");

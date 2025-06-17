@@ -10,7 +10,7 @@ namespace Datos
 {
     public class AccesoDatos
     {
-        string cadenaConexion = @"Data Source=DESKTOP-Q0EVBE4\SQLEXPRESS;Initial Catalog = ClinicaMedicaPruebaFinal1; Integrated Security = True";
+        string cadenaConexion = @"Data Source=LOCALHOST\SQLEXPRESS;Initial Catalog = ClinicaMedicaPruebaFinal1; Integrated Security = True";
 
         public SqlConnection ObtenerConexion()
         {

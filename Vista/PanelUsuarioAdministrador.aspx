@@ -23,7 +23,7 @@
             <br /><br />
             <asp:Button ID="btnInformes" runat="server" Text="Informes" Width="200px" OnClick="btnInformes_Click" />
             <br /><br /><br />
-            <asp:HyperLink ID="hlLogOut" runat="server" NavigateUrl="~/Inicio.aspx">Cerrar sesion</asp:HyperLink>
+            <asp:HyperLink ID="hlLogOut" runat="server" NavigateUrl="~/CerrarSesion.aspx">Cerrar sesion</asp:HyperLink>
         </div>
     </form>
 </body>
