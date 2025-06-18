@@ -29,6 +29,7 @@ namespace Vista
                 string tipo = dt.Rows[0]["TipoUsuario"].ToString();
 
                 Session["Usuario"] = usuario;
+                Session["TipoUsuario"] = tipo;
 
                 if (tipo == "Admin")
                 {

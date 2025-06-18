@@ -18,13 +18,20 @@ namespace Vista
 
         protected void btnSi_Click(object sender, EventArgs e)
         {
+            // Reiniciar variables Session
             Session["Usuario"] = null;
+            Session["TipoUsuario"] = null;
             Server.Transfer("Inicio.aspx");
         }
 
         protected void btnNo_Click(object sender, EventArgs e)
         {
-            // Falta verificar que tipo de usuario es y volver al form que le corresponda
+            string tipo = Session["TipoUsuario"].ToString();
+
+            if (tipo == "Admin")
+                Server.Transfer("PanelUsuarioAdministrador.aspx");
+            if (tipo == "Medico")
+                Server.Transfer("PanelUsuarioMedico.aspx");
         }
     }
 }

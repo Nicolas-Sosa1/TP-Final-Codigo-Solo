@@ -45,7 +45,8 @@ namespace Datos
             p.Estado AS 'Estado'
         FROM Pacientes p
         JOIN Sexo s ON p.Id_Sexo = s.Id_Sexo
-        JOIN Localidades l ON p.Id_Localidad = l.Id_Localidad";
+        JOIN Localidades l ON p.Id_Localidad = l.Id_Localidad
+        WHERE p.Estado = 1";
 
             return accesoDatos.ObtenerTabla("Pacientes", consulta);
         }
@@ -70,7 +71,8 @@ namespace Datos
         FROM Medicos m
         JOIN Sexo s ON m.Id_Sexo = s.Id_Sexo
         JOIN Localidades l ON m.Id_Localidad = l.Id_Localidad
-        JOIN Especialidades e ON m.Id_Especialidad = e.Id_Especialidad";
+        JOIN Especialidades e ON m.Id_Especialidad = e.Id_Especialidad
+        WHERE p.Estado = 1";
 
             return accesoDatos.ObtenerTabla("Medicos", consulta);
         }
