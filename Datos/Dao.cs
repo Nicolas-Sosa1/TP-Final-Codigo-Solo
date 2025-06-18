@@ -72,7 +72,7 @@ namespace Datos
         JOIN Sexo s ON m.Id_Sexo = s.Id_Sexo
         JOIN Localidades l ON m.Id_Localidad = l.Id_Localidad
         JOIN Especialidades e ON m.Id_Especialidad = e.Id_Especialidad
-        WHERE p.Estado = 1";
+        WHERE m.Estado = 1";
 
             return accesoDatos.ObtenerTabla("Medicos", consulta);
         }
@@ -334,7 +334,139 @@ namespace Datos
             return accesoDatos.ObtenerTabla("Fechas", consulta);
         }
 
+
+
         //-------------------------------------------------------------------------------------------------
+
+
+
+        //Seccion Asignar Turno
+        //------------------------------------------------------------------------------------------------
+
+        private void ArmarParametrosTurno(ref SqlCommand comando, Turnos turno)
+        {
+            SqlParameter SqlParametros = new SqlParameter();
+            SqlParametros = comando.Parameters.Add("@Id_Dia", SqlDbType.Int);
+            SqlParametros.Value = turno.getId_Dia();
+            SqlParametros = comando.Parameters.Add("@Id_Horario", SqlDbType.Int);
+            SqlParametros.Value = turno.getId_Horario();
+            SqlParametros = comando.Parameters.Add("@Fecha", SqlDbType.Date);
+            SqlParametros.Value = turno.getFecha();
+            SqlParametros = comando.Parameters.Add("@Legajo_Medico", SqlDbType.Char);
+            SqlParametros.Value = turno.getLegajo_Medico();
+            SqlParametros = comando.Parameters.Add("@DNI_Paciente", SqlDbType.Char);
+            SqlParametros.Value = turno.getDNI_Paciente();
+            SqlParametros = comando.Parameters.Add("@Hora", SqlDbType.Time);
+            SqlParametros.Value = turno.getHora();
+            SqlParametros = comando.Parameters.Add("@EstadoTurno", SqlDbType.VarChar);
+            SqlParametros.Value = turno.getEstadoTurno();
+            SqlParametros = comando.Parameters.Add("@Observacion", SqlDbType.VarChar);
+            SqlParametros.Value = turno.getObservacion();
+        }
+
+        public int InsertarTurno(Turnos turno)
+        {
+            SqlCommand comando = new SqlCommand();
+            ArmarParametrosTurno(ref comando, turno);
+            return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spInsertarTurno");
+        }
+
+
+        public DataTable GetMedicosPorEspecialidad(int idEspecialidad)
+        {
+            string consulta = $@"
+        SELECT Legajo, (Nombre + ' ' + Apellido) AS NombreCompleto
+        FROM Medicos
+        WHERE Id_Especialidad = {idEspecialidad} AND Estado = 1";
+
+            return accesoDatos.ObtenerTabla("Medicos", consulta);
+        }
+
+
+        public DataTable ObtenerDiasDisponibles(int legajo, DateTime fecha)
+        {
+            string consulta = $@"
+        SELECT DISTINCT d.Id_Dia, di.DescripcionDia
+        FROM DiasXHorariosXFechasXMedico d
+        JOIN Dias di ON d.Id_Dia = di.Id_Dia
+        WHERE d.Legajo_Medico = '{legajo}'
+          AND d.Fecha = '{fecha:yyyy-MM-dd}'";
+
+            return accesoDatos.ObtenerTabla("DiasDisponibles", consulta);
+        }
+
+        public DataTable ObtenerHorariosDisponibles(int idDia, int legajo, DateTime fecha)
+        {
+            string consulta = $@"
+        SELECT h.Id_Horario, h.HoraDesde, h.HoraHasta
+        FROM DiasXHorariosXFechasXMedico d
+        JOIN Horarios h ON d.Id_Horario = h.Id_Horario
+        WHERE d.Id_Dia = {idDia}
+          AND d.Legajo_Medico = '{legajo}'
+          AND d.Fecha = '{fecha:yyyy-MM-dd}'";
+
+            return accesoDatos.ObtenerTabla("HorariosDisponibles", consulta);
+        }
+
+
+        public DataTable ObtenerHorasDisponibles(int idDia, int idHorario, DateTime fecha, string legajo)
+        {
+            // Paso 1: Obtener rango horario
+            string queryRango = $@"
+        SELECT HoraDesde, HoraHasta
+        FROM Horarios
+        WHERE Id_Horario = {idHorario}";
+            DataTable tablaRango = accesoDatos.ObtenerTabla("Rango", queryRango);
+
+            if (tablaRango.Rows.Count == 0) return new DataTable();
+
+            TimeSpan desde = (TimeSpan)tablaRango.Rows[0]["HoraDesde"];
+            TimeSpan hasta = (TimeSpan)tablaRango.Rows[0]["HoraHasta"];
+
+            // Paso 2: Traer las horas ya asignadas como turnos
+            string queryOcupadas = $@"
+        SELECT Hora
+        FROM Turnos
+        WHERE Fecha = '{fecha:yyyy-MM-dd}'
+          AND Legajo_Medico = '{legajo}'";
+            DataTable ocupadas = accesoDatos.ObtenerTabla("Ocupadas", queryOcupadas);
+
+            HashSet<TimeSpan> horasOcupadas = new HashSet<TimeSpan>(
+                ocupadas.Rows.Cast<DataRow>().Select(r => (TimeSpan)r["Hora"])
+            );
+
+            // Paso 3: Generar horas posibles por bloques de 1 hora
+            DataTable disponibles = new DataTable();
+            disponibles.Columns.Add("Hora", typeof(string));
+
+            for (TimeSpan h = desde; h.Add(TimeSpan.FromHours(1)) <= hasta; h = h.Add(TimeSpan.FromHours(1)))
+            {
+                if (!horasOcupadas.Contains(h))
+                {
+                    disponibles.Rows.Add(h.ToString(@"hh\:mm"));
+                }
+            }
+
+            return disponibles;
+        }
+
+        public bool ExisteTurno(string legajo, DateTime fecha, TimeSpan hora)
+        {
+            string consulta = $@"
+        SELECT COUNT(*) FROM Turnos
+        WHERE Legajo_Medico = '{legajo}'
+          AND Fecha = '{fecha:yyyy-MM-dd}'
+          AND Hora = '{hora}'";
+
+            DataTable tabla = accesoDatos.ObtenerTabla("Turnos", consulta);
+            return Convert.ToInt32(tabla.Rows[0][0]) > 0;
+        }
+
+        //-------------------------------------------------------------------------------------------------
+
+
+
+
 
 
 

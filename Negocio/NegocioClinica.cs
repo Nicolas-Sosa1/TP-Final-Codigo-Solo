@@ -140,6 +140,52 @@ namespace Negocio
         }
 
 
+        //Seccion AsignarTurno---------------------------------------------------------------
+        public bool RegistrarTurno(Turnos turnos)
+        {
+            Dao dao = new Dao();
+            int filas = dao.InsertarTurno(turnos);
+            return filas > 0;
+        }
+
+        public DataTable GetMedicosPorEspecialidad(int idEspecialidad)
+        {
+            Dao dao = new Dao();
+            return dao.GetMedicosPorEspecialidad(idEspecialidad);
+        }
+
+        public DataTable ObtenerDiasDisponibles(int legajo, DateTime fecha)
+        {
+            Dao dao = new Dao();
+            return dao.ObtenerDiasDisponibles(legajo, fecha);
+        }
+
+        public DataTable ObtenerHorariosDisponibles(int idDia, int legajo, DateTime fecha)
+        {
+            Dao dao = new Dao();
+            return dao.ObtenerHorariosDisponibles(idDia, legajo, fecha);
+        }
+
+        public DataTable ObtenerHorasDisponibles(int idDia, int idHorario, DateTime fecha, string legajo)
+        {
+            Dao dao = new Dao();
+            return dao.ObtenerHorasDisponibles(idDia, idHorario, fecha, legajo);
+        }
+
+        public bool ExisteTurno(string legajo, DateTime fecha, TimeSpan hora)
+        {
+            Dao dao = new Dao();
+            return dao.ExisteTurno(legajo, fecha, hora);
+        }
+
+
+        //-------------------------------------------------------------------------------------
+
+
+
+
+
+
 
 
         public void ActualizarPaciente(Pacientes paciente)
