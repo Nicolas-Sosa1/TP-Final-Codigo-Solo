@@ -21,28 +21,37 @@ namespace Vista
             string dni = txtEliminarPaciente.Text;
 
             NegocioClinica negocio = new NegocioClinica();
+            string resultado = negocio.eliminarPaciente(dni);
 
-            bool eliminado = negocio.eliminarPaciente(dni);
-
-            if (eliminado == true)
+            switch (resultado)
             {
-                lblMensaje.Text = "El paciente se ha eliminado con éxito.";
-                LimpiarCampos();
-                lblMensaje.ForeColor = Color.Green;
+                case "ok":
+                    lblMensaje.Text = "✅ El paciente se ha eliminado con éxito.";
+                    lblMensaje.ForeColor = Color.Green;
+                    LimpiarCampos();
+                    break;
+
+                case "yaBaja":
+                    lblMensaje.Text = "⚠️ El paciente ya estaba dado de baja.";
+                    lblMensaje.ForeColor = Color.OrangeRed;
+                    break;
+
+                case "noExiste":
+                    lblMensaje.Text = "❌ No se encontró un paciente con ese DNI.";
+                    lblMensaje.ForeColor = Color.Red;
+                    break;
+
+                default:
+                    lblMensaje.Text = "❌ Error al intentar eliminar el paciente.";
+                    lblMensaje.ForeColor = Color.Red;
+                    break;
             }
-
-            else
-            {
-                lblMensaje.Text = "No se encontró un paciente con ese DNI.";
-                lblMensaje.ForeColor = Color.Red;
-            }
-
-
         }
+
 
         public void LimpiarCampos()
         {
-
+            txtEliminarPaciente.Text = "";
         }
     }
 }

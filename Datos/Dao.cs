@@ -16,6 +16,8 @@ namespace Datos
     {
         AccesoDatos accesoDatos = new AccesoDatos();
 
+
+        //Cargar tablas-----------------------------------------------------------------------
         public DataTable ObtenerTodasLasProvincias()
         {
             DataTable dataTable = accesoDatos.ObtenerTabla("Provincias", "SELECT * FROM Provincias");
@@ -106,6 +108,34 @@ namespace Datos
         }
 
 
+        //-----------------------------------------------------------------------------------------
+
+
+        //login-----------------------------------------------------------------------------------------
+
+        public DataTable validarLogin(string usuario, string contraseña)
+        {
+            string sql = "SELECT * FROM Usuarios WHERE NombreUsuario = @NombreUsuario AND Contrasena = @Contrasena";
+
+            SqlCommand comando = new SqlCommand(sql);
+
+            SqlParameter parametroUsuario = new SqlParameter("@NombreUsuario", SqlDbType.VarChar, 50); // Ajustá el tamaño a tu DB
+            parametroUsuario.Value = usuario;
+            comando.Parameters.Add(parametroUsuario);
+
+            SqlParameter parametroContrasena = new SqlParameter("@Contrasena", SqlDbType.VarChar, 50); // Ajustá el tamaño a tu DB
+            parametroContrasena.Value = contraseña;
+            comando.Parameters.Add(parametroContrasena);
+
+            return accesoDatos.ObtenerTablaConParametros("Usuarios", comando);
+        }
+
+        //-----------------------------------------------------------------------------------------
+
+
+
+        //Mostrar Localidades dependiendo la provincia----------------------------------------------------
+
         public DataTable ObtenerLocalidadesPorProvincia(Provincias provincia)
         {
             string consulta = "SELECT * FROM Localidades WHERE Id_Provincia = @idProvincia";
@@ -132,6 +162,15 @@ namespace Datos
             SqlParametros = sqlCommand.Parameters.Add("@idProvincia", SqlDbType.Int);
             SqlParametros.Value = provincias.getId_Provincia();
         }
+
+        //-----------------------------------------------------------------------------------
+
+
+
+
+
+
+        //Agregar nuevo paciente mediante interfaz----------------------------------------------------
 
         private void ArmarParametrosAgregarPaciente(ref SqlCommand Comando, Pacientes pacientes)
         {
@@ -169,6 +208,11 @@ namespace Datos
         }
 
 
+        //------------------------------------------------------------------------------------------
+
+
+        //Dar de baja paciente mediante interfaz----------------------------------------------------
+
         private void ArmarParametrosBajaPaciente(ref SqlCommand Comando, Pacientes pacientes)
         {
             SqlParameter SqlParametros = new SqlParameter();
@@ -184,6 +228,30 @@ namespace Datos
             return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spEliminarPaciente");
         }
 
+
+        public bool ExistePacienteYActivo(string dni, out bool yaBaja)
+        {
+            yaBaja = false;
+            string consulta = "SELECT Estado FROM Pacientes WHERE DNI = @DNI";
+            SqlCommand cmd = new SqlCommand(consulta);
+            cmd.Parameters.AddWithValue("@DNI", dni);
+
+            DataTable tabla = accesoDatos.ObtenerTablaConParametros("Pacientes", cmd);
+
+            if (tabla.Rows.Count == 0)
+                return false;
+
+            bool estado = Convert.ToBoolean(tabla.Rows[0]["Estado"]);
+            yaBaja = !estado;
+
+            return true;
+        }
+
+        //--------------------------------------------------------------------------------------
+
+
+
+        //Dar de baja medico mediante interfaz----------------------------------------------------
         private void ArmarParametrosBajaMedico(ref SqlCommand Comando, Medicos medicos)
         {
             SqlParameter SqlParametros = new SqlParameter();
@@ -197,25 +265,36 @@ namespace Datos
             return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spEliminarMedico");
         }
 
-
-        public DataTable validarLogin(string usuario, string contraseña)
+        public bool ExisteMedicoYActivo(string legajo, out bool yaBaja)
         {
-            string sql = "SELECT * FROM Usuarios WHERE NombreUsuario = @NombreUsuario AND Contrasena = @Contrasena";
+            yaBaja = false;
+            string consulta = "SELECT Estado FROM Medicos WHERE Legajo = @Legajo";
+            SqlCommand cmd = new SqlCommand(consulta);
+            cmd.Parameters.AddWithValue("@Legajo", legajo);
 
-            SqlCommand comando = new SqlCommand(sql);
+            DataTable tabla = accesoDatos.ObtenerTablaConParametros("Medicos", cmd);
 
-            SqlParameter parametroUsuario = new SqlParameter("@NombreUsuario", SqlDbType.VarChar, 50); // Ajustá el tamaño a tu DB
-            parametroUsuario.Value = usuario;
-            comando.Parameters.Add(parametroUsuario);
+            if (tabla.Rows.Count == 0)
+            {
+                return false; // no existe
+            }
 
-            SqlParameter parametroContrasena = new SqlParameter("@Contrasena", SqlDbType.VarChar, 50); // Ajustá el tamaño a tu DB
-            parametroContrasena.Value = contraseña;
-            comando.Parameters.Add(parametroContrasena);
+            bool estado = Convert.ToBoolean(tabla.Rows[0]["Estado"]);
+            yaBaja = !estado; // si estado == false → ya estaba de baja
 
-            return accesoDatos.ObtenerTablaConParametros("Usuarios", comando);
+            return true;
         }
 
 
+        //--------------------------------------------------------------------------------------
+
+
+
+
+        //Agregar medico mediante interfaz---------------------------------------------------------------
+
+
+        //agregar solo la parte de la tabla Medico-----------------------------------------------------
         private void ArmarParametrosAgregarMedico(ref SqlCommand Comando, Medicos medicos)
         {
             SqlParameter SqlParametros = new SqlParameter();
@@ -256,7 +335,10 @@ namespace Datos
             return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spAgregarMedico");
         }
 
+        //--------------------------------------------------------------------------------------
 
+
+        //agregar solo la parte de la tabla Usuarios-----------------------------------------------------
         private void ArmarParametrosAgregarUsuario(ref SqlCommand Comando, Usuarios usuarios)
         {
             SqlParameter SqlParametros = new SqlParameter();
@@ -279,8 +361,11 @@ namespace Datos
             return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spAgregarUsuario");
         }
 
+        //--------------------------------------------------------------------------------------
 
-        //Seccion Dias Horarios FECHA
+
+
+        //agregar solo la parte de la tabla DiasXHorarios
         //------------------------------------------------------------------------------------------------
         private void ArmarParametrosDiasXHorarios(ref SqlCommand comando, int idDia, int idHorario)
         {
@@ -294,8 +379,11 @@ namespace Datos
             ArmarParametrosDiasXHorarios(ref comando, idDia, idHorario);
             return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spInsertarDiasXHorarios");
         }
+        //------------------------------------------------------------------------------------------------
 
 
+        //agregar solo la parte de la tabla DiasXHorariosXFechas
+        //------------------------------------------------------------------------------------------------
         private void ArmarParametrosDiasXHorariosXFechas(ref SqlCommand comando, int idDia, int idHorario, DateTime fecha)
         {
             comando.Parameters.Add("@Id_Dia", SqlDbType.Int).Value = idDia;
@@ -311,8 +399,11 @@ namespace Datos
             return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spInsertarDiasXHorariosXFechas");
         }
 
+        //------------------------------------------------------------------------------------------------
 
 
+        //agregar solo la parte de la tabla DiasXHorariosXFechasXMedico
+        //------------------------------------------------------------------------------------------------
         private void ArmarParametrosDiasXHorariosXFechasXMedico(ref SqlCommand comando, int idDia, int idHorario, DateTime fecha, string legajoMedico)
         {
             comando.Parameters.Add("@Id_Dia", SqlDbType.Int).Value = idDia;
@@ -327,6 +418,9 @@ namespace Datos
             ArmarParametrosDiasXHorariosXFechasXMedico(ref comando, idDia, idHorario, fecha, legajoMedico);
             return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spInsertarDiasXHorariosXFechasXMedico");
         }
+
+        //------------------------------------------------------------------------------------------------
+
 
         public DataTable ObtenerTodasLasFechas()
         {
@@ -466,13 +560,6 @@ namespace Datos
 
 
 
-
-
-
-
-
-
-
         /*ver luego*/
 
         private void ArmarParametrosActualizarPaciente(ref SqlCommand Comando, Pacientes pacientes)
@@ -514,6 +601,7 @@ namespace Datos
 
 
 
+
         public DataTable BuscarMedicos(string criterio)
         {
             SqlCommand comando = new SqlCommand(@"
@@ -549,67 +637,3 @@ namespace Datos
 }
 
 
-/*
- CREATE PROCEDURE spAgregarPaciente
-    @DNI CHAR(8),
-    @Nombre VARCHAR(50),
-    @Apellido VARCHAR(50),
-    @Id_Sexo INT,
-    @Nacionalidad VARCHAR(50),
-    @FechaNacimiento DATE,
-    @Direccion VARCHAR(50),
-    @Id_Localidad INT,
-    @Email VARCHAR(50),
-    @Telefono VARCHAR(50)
-AS
-BEGIN
-    INSERT INTO Pacientes (
-        DNI,
-        Nombre,
-        Apellido,
-        Id_Sexo,
-        Nacionalidad,
-        FechaNacimiento,
-        Direccion,
-        Id_Localidad,
-        Email,
-        Telefono
-        -- Estado no se incluye porque tiene DEFAULT 1
-    )
-    VALUES (
-        @DNI,
-        @Nombre,
-        @Apellido,
-        @Id_Sexo,
-        @Nacionalidad,
-        @FechaNacimiento,
-        @Direccion,
-        @Id_Localidad,
-        @Email,
-        @Telefono
-    )
-END
-*/
-
-/*
- CREATE PROCEDURE spEliminarPaciente
-    @DNI CHAR(8)
-AS
-BEGIN
-    UPDATE Pacientes
-    SET Estado = 0
-    WHERE DNI = @DNI
-END
-*/
-
-
-/*
-  CREATE PROCEDURE spEliminarMedico
-    @Legajo CHAR(6)
-AS
-BEGIN
-    UPDATE Medicos
-    SET Estado = 0
-    WHERE Legajo = @Legajo
-END
-*/

@@ -53,31 +53,50 @@ namespace Negocio
             return dao.agregarPaciente(pacientes);
         }
 
-        public bool eliminarPaciente(string dni)
+        public string eliminarPaciente(string dni)
         {
-            //Validar id existente 
             Dao dao = new Dao();
-            Pacientes pacientes = new Pacientes();
-            pacientes.setDni(dni);
-            int op = dao.DarBajaPaciente(pacientes);
-            if (op == 1)
-                return true;
-            else
-                return false;
+            bool yaBaja;
+            bool existe = dao.ExistePacienteYActivo(dni, out yaBaja);
+
+            if (!existe)
+                return "noExiste";
+
+            if (yaBaja)
+                return "yaBaja";
+
+            Pacientes paciente = new Pacientes();
+            paciente.setDni(dni);
+            int op = dao.DarBajaPaciente(paciente);
+
+            return (op == 1) ? "ok" : "error";
         }
 
-        public bool eliminarMedico(string legajo)
+
+        public string eliminarMedico(string legajo)
         {
-            //Validar id existente 
             Dao dao = new Dao();
+            bool yaBaja;
+            bool existe = dao.ExisteMedicoYActivo(legajo, out yaBaja);
+
+            if (!existe)
+                return "noExiste";
+
+            if (yaBaja)
+                return "yaBaja";
+
+            // Dar de baja (Estado = 0)
             Medicos medicos = new Medicos();
             medicos.SetLegajo(legajo);
             int op = dao.DarBajaMedico(medicos);
-            if (op == 1)
-                return true;
-            else
-                return false;
+
+            return (op == 1) ? "ok" : "error";
         }
+
+
+
+
+
 
         public DataTable getTablaPacientes()
         {

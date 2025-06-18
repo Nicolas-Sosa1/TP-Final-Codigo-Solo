@@ -16,33 +16,42 @@ namespace Vista
         {
             UnobtrusiveValidationMode = UnobtrusiveValidationMode.None;
         }
-
         protected void btnEliminarMedico_Click(object sender, EventArgs e)
         {
             string legajo = txtEliminarMedico.Text;
 
             NegocioClinica negocio = new NegocioClinica();
+            string resultado = negocio.eliminarMedico(legajo);
 
-            bool eliminado = negocio.eliminarMedico(legajo);
-
-            if (eliminado == true)
+            switch (resultado)
             {
-                lblMensaje.Text = "El paciente se ha eliminado con éxito.";
-                LimpiarCampos();
-                lblMensaje.ForeColor = Color.Green;
-            }
+                case "ok":
+                    lblMensaje.Text = "✅ El médico se ha eliminado (dado de baja) con éxito.";
+                    lblMensaje.ForeColor = Color.Green;
+                    LimpiarCampos();
+                    break;
 
-            else
-            {
-                lblMensaje.Text = "No se encontró un paciente con ese DNI.";
-                lblMensaje.ForeColor = Color.Red;
-            }
+                case "yaBaja":
+                    lblMensaje.Text = "⚠️ El médico ya estaba dado de baja.";
+                    lblMensaje.ForeColor = Color.OrangeRed;
+                    break;
 
+                case "noExiste":
+                    lblMensaje.Text = "❌ No se encontró un médico con ese legajo.";
+                    lblMensaje.ForeColor = Color.Red;
+                    break;
+
+                default:
+                    lblMensaje.Text = "❌ Error al intentar eliminar el médico.";
+                    lblMensaje.ForeColor = Color.Red;
+                    break;
+            }
         }
+
 
         private void LimpiarCampos()
         {
-
+            txtEliminarMedico.Text = "";
         }
     }
 }
