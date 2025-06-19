@@ -35,13 +35,13 @@ namespace Vista
             ddlProvincia.DataTextField = "DescripcionProvincia";
             ddlProvincia.DataValueField = "Id_Provincia";
             ddlProvincia.DataBind();
-            ddlProvincia.Items.Insert(0, new ListItem("-- Seleccione provincia --", "0"));
+            ddlProvincia.Items.Insert(0, new ListItem("-- Seleccione provincia --", ""));
 
         }
 
         protected void ddlProvincia_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ddlProvincia.SelectedValue != "0")
+            if (!string.IsNullOrEmpty(ddlProvincia.SelectedValue) && ddlProvincia.SelectedValue != "0")
             {
                 // Crear y llenar el objeto Provincias
                 Provincias provinciaSeleccionada = new Provincias();
@@ -56,14 +56,14 @@ namespace Vista
                 ddlLocalidad.DataValueField = "Id_Localidad";
                 ddlLocalidad.DataBind();
 
-                ddlLocalidad.Items.Insert(0, new ListItem("-- Seleccione localidad --", "0"));
+                ddlLocalidad.Items.Insert(0, new ListItem("-- Seleccione localidad --", ""));
             }
             else
             {
 
                 // Limpia si no hay provincia seleccionada
                 ddlLocalidad.Items.Clear();
-                ddlLocalidad.Items.Insert(0, new ListItem("-- Seleccione localidad --", "0"));
+                ddlLocalidad.Items.Insert(0, new ListItem("-- Seleccione localidad --", ""));
 
             }
         }
@@ -75,7 +75,7 @@ namespace Vista
             ddlSexo.DataTextField = "Descripcion_Sexo";
             ddlSexo.DataValueField = "Id_Sexo";
             ddlSexo.DataBind();
-            ddlSexo.Items.Insert(0, new ListItem("-- Seleccione un sexo --", "0"));
+            ddlSexo.Items.Insert(0, new ListItem("-- Seleccione un sexo --", ""));
 
         }
 
