@@ -34,20 +34,21 @@ namespace Datos
         {
             string consulta = @"
         SELECT 
-            p.DNI AS 'Documento',
+            p.DNI AS 'DNI',
             p.Nombre AS 'Nombre',
             p.Apellido AS 'Apellido',
             s.Descripcion_Sexo AS 'Sexo',
             p.Nacionalidad AS 'Nacionalidad',
-            p.FechaNacimiento AS 'Fecha de nacimiento',
-            p.Direccion AS 'Dirección',
+            p.FechaNacimiento AS 'FechaNacimiento',
+            p.Direccion AS 'Direccion',
             l.DescripcionLocalidad AS 'Localidad',
-            p.Email AS 'Correo electrónico',
-            p.Telefono AS 'Teléfono',
-            p.Estado AS 'Estado'
+            pr.DescripcionProvincia AS 'Provincia',
+            p.Email AS 'CorreoElectronico',
+            p.Telefono AS 'Telefono'
         FROM Pacientes p
         JOIN Sexo s ON p.Id_Sexo = s.Id_Sexo
         JOIN Localidades l ON p.Id_Localidad = l.Id_Localidad
+        JOIN Provincias pr ON p.Id_Provincia = pr.Id_Provincia
         WHERE p.Estado = 1";
 
             return accesoDatos.ObtenerTabla("Pacientes", consulta);
@@ -191,11 +192,13 @@ namespace Datos
             SqlParametros.Value = pacientes.getDireccion();
             SqlParametros = Comando.Parameters.Add("@Id_Localidad", SqlDbType.Int);
             SqlParametros.Value = pacientes.getId_Localidad();
+            SqlParametros = Comando.Parameters.Add("@Id_Provincia", SqlDbType.Int);
+            SqlParametros.Value = pacientes.getId_Provincia();
             SqlParametros = Comando.Parameters.Add("@Email", SqlDbType.VarChar);
             SqlParametros.Value = pacientes.getEmail();
             SqlParametros = Comando.Parameters.Add("@Telefono", SqlDbType.VarChar);
             SqlParametros.Value = pacientes.getTelefono();
-
+            Console.WriteLine("ID Provincia enviado: " + pacientes.getId_Provincia());
 
         }
 

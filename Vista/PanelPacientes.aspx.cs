@@ -57,7 +57,9 @@ namespace Vista
 
         protected void gvPacientes_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
-            
+            string dni = ((Label)gvPacientes.Rows[e.RowIndex].FindControl("lbl_eit_dni")).Text;
+            string nombre = ((TextBox)gvPacientes.Rows[e.RowIndex].FindControl("txt_eit_nombre")).Text;
+            string apellido = ((TextBox)gvPacientes.Rows[e.RowIndex].FindControl("txt_eit_apellido")).Text;
         }
     }
 }

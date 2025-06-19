@@ -90,6 +90,7 @@ namespace Vista
             pacientes.setFechaNacimiento(DateTime.Parse(txtFechaNac.Text));
             pacientes.setDireccion(txtDireccion.Text);
             pacientes.setId_Localidad(Convert.ToInt32(ddlLocalidad.SelectedValue));
+            pacientes.setId_Provincia(Convert.ToInt32(ddlProvincia.SelectedValue));
             pacientes.setEmail(txtCorreo.Text);
             pacientes.setTelefono(txtTelefono.Text);
 
