@@ -33,26 +33,30 @@ namespace Datos
         public DataTable ObtenerTodosLosPacientes()
         {
             string consulta = @"
-        SELECT 
-            p.DNI AS 'DNI',
-            p.Nombre AS 'Nombre',
-            p.Apellido AS 'Apellido',
-            s.Descripcion_Sexo AS 'Sexo',
-            p.Nacionalidad AS 'Nacionalidad',
-            p.FechaNacimiento AS 'FechaNacimiento',
-            p.Direccion AS 'Direccion',
-            l.DescripcionLocalidad AS 'Localidad',
-            pr.DescripcionProvincia AS 'Provincia',
-            p.Email AS 'CorreoElectronico',
-            p.Telefono AS 'Telefono'
-        FROM Pacientes p
-        JOIN Sexo s ON p.Id_Sexo = s.Id_Sexo
-        JOIN Localidades l ON p.Id_Localidad = l.Id_Localidad
-        JOIN Provincias pr ON p.Id_Provincia = pr.Id_Provincia
-        WHERE p.Estado = 1";
+    SELECT 
+        p.DNI AS 'Documento',
+        p.Nombre AS 'Nombre',
+        p.Apellido AS 'Apellido',
+        s.Descripcion_Sexo AS 'Sexo',
+        p.Nacionalidad AS 'Nacionalidad',
+        p.FechaNacimiento AS 'FechaNacimiento',
+        p.Direccion AS 'Direccion',
+        l.DescripcionLocalidad AS 'Localidad',
+        pr.DescripcionProvincia AS 'Provincia',
+        l.Id_Provincia AS Id_Provincia,          
+        l.Id_Localidad AS Id_Localidad,              
+        p.Email AS 'CorreoElectronico',
+        p.Telefono AS 'Telefono',
+        p.Estado AS 'Estado'
+    FROM Pacientes p
+    JOIN Sexo s ON p.Id_Sexo = s.Id_Sexo
+    JOIN Localidades l ON p.Id_Localidad = l.Id_Localidad
+    JOIN Provincias pr ON l.Id_Provincia = pr.Id_Provincia
+    WHERE p.Estado = 1";
 
             return accesoDatos.ObtenerTabla("Pacientes", consulta);
         }
+
 
         public DataTable ObtenerTodosLosMedicos()
         {
@@ -64,12 +68,12 @@ namespace Datos
             m.Apellido AS 'Apellido',
             s.Descripcion_Sexo AS 'Sexo',
             m.Nacionalidad AS 'Nacionalidad',
-            m.FechaNacimiento AS 'Fecha de nacimiento',
-            m.Direccion AS 'Dirección',
+            m.FechaNacimiento AS 'FechaNacimiento',
+            m.Direccion AS 'Direccion',
             l.DescripcionLocalidad AS 'Localidad',
             e.DescripcionEspecialidad AS 'Especialidad',
-            m.Email AS 'Correo electrónico',
-            m.Telefono AS 'Teléfono',
+            m.Email AS 'CorreoElectronico',
+            m.Telefono AS 'Telefono',
             m.Estado AS 'Estado'
         FROM Medicos m
         JOIN Sexo s ON m.Id_Sexo = s.Id_Sexo
@@ -192,13 +196,11 @@ namespace Datos
             SqlParametros.Value = pacientes.getDireccion();
             SqlParametros = Comando.Parameters.Add("@Id_Localidad", SqlDbType.Int);
             SqlParametros.Value = pacientes.getId_Localidad();
-            SqlParametros = Comando.Parameters.Add("@Id_Provincia", SqlDbType.Int);
-            SqlParametros.Value = pacientes.getId_Provincia();
             SqlParametros = Comando.Parameters.Add("@Email", SqlDbType.VarChar);
             SqlParametros.Value = pacientes.getEmail();
             SqlParametros = Comando.Parameters.Add("@Telefono", SqlDbType.VarChar);
             SqlParametros.Value = pacientes.getTelefono();
-            Console.WriteLine("ID Provincia enviado: " + pacientes.getId_Provincia());
+
 
         }
 
@@ -588,8 +590,7 @@ namespace Datos
             SqlParametros.Value = pacientes.getEmail();
             SqlParametros = Comando.Parameters.Add("@Telefono", SqlDbType.VarChar);
             SqlParametros.Value = pacientes.getTelefono();
-            SqlParametros = Comando.Parameters.Add("@Estado", SqlDbType.Bit);
-            SqlParametros.Value = pacientes.getEstado();
+            
 
 
         }
@@ -600,6 +601,17 @@ namespace Datos
             SqlCommand comando = new SqlCommand();
             ArmarParametrosActualizarPaciente(ref comando, pacientes);
             return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spActualizarPaciente");
+        }
+
+
+        public DataTable ObtenerLocalidadesPorProvincia(int idProvincia)
+        {
+            string consulta = "SELECT * FROM Localidades WHERE Id_Provincia = @Id_Provincia";
+
+            SqlCommand comando = new SqlCommand(consulta);
+            comando.Parameters.AddWithValue("@Id_Provincia", idProvincia);
+
+            return accesoDatos.ObtenerTablaConParametros("Localidades", comando);
         }
 
 

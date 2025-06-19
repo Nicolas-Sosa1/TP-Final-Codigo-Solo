@@ -203,7 +203,11 @@ namespace Negocio
 
 
 
-
+        public DataTable ObtenerLocalidadesPorProvincia(int idProvincia)
+        {
+            Dao dao = new Dao();
+            return dao.ObtenerLocalidadesPorProvincia(idProvincia);
+        }
 
 
 

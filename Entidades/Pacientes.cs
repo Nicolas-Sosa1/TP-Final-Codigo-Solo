@@ -16,7 +16,6 @@ namespace Entidades
         private DateTime FechaNacimiento;
         private string Direccion;
         private int Id_Localidad;
-        private int Id_Provincia;
         private string Email;
         private string Telefono;
         private bool Estado;
@@ -53,11 +52,6 @@ namespace Entidades
         public void setId_Localidad(int id_Localidad)
         {
             Id_Localidad = id_Localidad;
-        }
-
-        public void setId_Provincia(int id_Provincia)
-        {
-            Id_Provincia = id_Provincia;
         }
         public void setEmail(string email)
         {
@@ -110,11 +104,6 @@ namespace Entidades
         public int getId_Localidad()
         {
             return Id_Localidad;
-        }
-
-        public int getId_Provincia()
-        {
-            return Id_Provincia;
         }
 
         public string getEmail()
