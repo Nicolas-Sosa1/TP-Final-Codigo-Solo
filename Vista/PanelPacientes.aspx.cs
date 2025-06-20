@@ -116,6 +116,7 @@ namespace Vista
             {
                 int idLocalidad = Convert.ToInt32(DataBinder.Eval(e.Row.DataItem, "Id_Localidad"));
                 int idProvincia = Convert.ToInt32(DataBinder.Eval(e.Row.DataItem, "Id_Provincia"));
+                int Id_Sexo = Convert.ToInt32(DataBinder.Eval(e.Row.DataItem, "Id_Sexo"));
 
                 // ddlProvincia
                 DropDownList ddlProvincia = (DropDownList)e.Row.FindControl("ddlProvincia");
@@ -133,13 +134,13 @@ namespace Vista
                 ddlLocalidad.DataBind();
                 ddlLocalidad.SelectedValue = idLocalidad.ToString();
 
-                // ddlLocalidad
+                // ddlSexo
                 DropDownList ddlSexo = (DropDownList)e.Row.FindControl("ddlSexo");
                 ddlSexo.DataSource = negocioClinica.getTablaSexo();
                 ddlSexo.DataTextField = "Descripcion_Sexo";
                 ddlSexo.DataValueField = "Id_Sexo";
                 ddlSexo.DataBind();
-                ddlSexo.SelectedValue = ddlSexo.ToString();
+                ddlSexo.SelectedValue = Id_Sexo.ToString();
             }
 
         }

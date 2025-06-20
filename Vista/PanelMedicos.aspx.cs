@@ -52,7 +52,130 @@ namespace Vista
 
         private void limpiarTodos()
         {
+            txtBuscar.Text = "";
+        }
 
+        protected void gvMedicos_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvMedicos.EditIndex = -1;
+            cargarGridView();
+        }
+
+        protected void gvMedicos_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvMedicos.EditIndex = e.NewEditIndex;
+            cargarGridView();
+        }
+
+        protected void gvMedicos_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            GridViewRow row = gvMedicos.Rows[e.RowIndex];
+
+            Medicos medicos = new Medicos();
+
+            medicos.SetLegajo(((Label)row.FindControl("lbl_eit_legajo")).Text);
+            medicos.SetDNI(((Label)row.FindControl("lbl_eit_dni")).Text);
+            medicos.SetNombre(((TextBox)row.FindControl("txt_eit_nombre")).Text);
+            medicos.SetApellido(((TextBox)row.FindControl("txt_eit_apellido")).Text);
+
+            DropDownList ddlSexo = (DropDownList)row.FindControl("ddlSexo");
+            medicos.SetId_Sexo(int.Parse(ddlSexo.SelectedValue));
+
+            medicos.SetNacionalidad(((TextBox)row.FindControl("txt_eit_nacionalidad")).Text);
+
+            TextBox txtFecha = (TextBox)row.FindControl("txt_eit_fecha_nac");
+            medicos.SetFechaNacimiento(DateTime.Parse(txtFecha.Text));
+
+            medicos.SetDireccion(((TextBox)row.FindControl("txt_eit_direccion")).Text);
+
+            DropDownList ddlLocalidad = (DropDownList)row.FindControl("ddlLocalidad");
+            medicos.SetId_Localidad(int.Parse(ddlLocalidad.SelectedValue));
+
+            medicos.SetEmail(((TextBox)row.FindControl("txt_eit_correo")).Text);
+            medicos.SetTelefono(((TextBox)row.FindControl("txt_eit_telefono")).Text);
+
+            DropDownList ddlEspecialidades = (DropDownList)row.FindControl("ddlEspecialidades");
+            medicos.SetId_Especialidad(int.Parse(ddlEspecialidades.SelectedValue));
+
+
+            Usuarios usuario = new Usuarios();
+            usuario.SetNombreUsuario(((TextBox)row.FindControl("txt_eit_usuario")).Text);
+            usuario.SetContrasena(((TextBox)row.FindControl("txt_eit_contrasena")).Text);
+            usuario.SetTipoUsuario("Medico");  // fijo si es solo para médicos
+            usuario.SetLegajo_Medico(((Label)row.FindControl("lbl_eit_legajo")).Text);
+
+
+
+
+            negocioClinica.ActualizarMedico(medicos);
+            negocioClinica.ActualizarUsuario(usuario);
+
+            gvMedicos.EditIndex = -1;
+            cargarGridView();
+
+        }
+
+        protected void ddlProvincia_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DropDownList ddlProvincia = (DropDownList)sender;
+            GridViewRow row = (GridViewRow)ddlProvincia.NamingContainer;
+
+            if (row != null)
+            {
+                DropDownList ddlLocalidad = (DropDownList)row.FindControl("ddlLocalidad");
+                int idProvincia = int.Parse(ddlProvincia.SelectedValue);
+
+                ddlLocalidad.DataSource = negocioClinica.ObtenerLocalidadesPorProvincia(idProvincia);
+                ddlLocalidad.DataTextField = "DescripcionLocalidad";
+                ddlLocalidad.DataValueField = "Id_Localidad";
+                ddlLocalidad.DataBind();
+
+                ddlLocalidad.Items.Insert(0, new ListItem("Seleccione", ""));
+            }
+        }
+
+        protected void gvMedicos_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow && e.Row.RowState.HasFlag(DataControlRowState.Edit))
+            {
+                // Obtener los IDs necesarios desde el DataItem
+                int idLocalidad = Convert.ToInt32(DataBinder.Eval(e.Row.DataItem, "Id_Localidad"));
+                int idProvincia = Convert.ToInt32(DataBinder.Eval(e.Row.DataItem, "Id_Provincia"));
+                int idEspecialidad = Convert.ToInt32(DataBinder.Eval(e.Row.DataItem, "Id_Especialidad"));
+                int idSexo = Convert.ToInt32(DataBinder.Eval(e.Row.DataItem, "Id_Sexo"));
+
+                // Cargar ddlProvincia
+                DropDownList ddlProvincia = (DropDownList)e.Row.FindControl("ddlProvincia");
+                ddlProvincia.DataSource = negocioClinica.getTablaProvincias();
+                ddlProvincia.DataTextField = "DescripcionProvincia";
+                ddlProvincia.DataValueField = "Id_Provincia";
+                ddlProvincia.DataBind();
+                ddlProvincia.SelectedValue = idProvincia.ToString();
+
+                // Cargar ddlLocalidad (según la provincia actual)
+                DropDownList ddlLocalidad = (DropDownList)e.Row.FindControl("ddlLocalidad");
+                ddlLocalidad.DataSource = negocioClinica.ObtenerLocalidadesPorProvincia(idProvincia);
+                ddlLocalidad.DataTextField = "DescripcionLocalidad";
+                ddlLocalidad.DataValueField = "Id_Localidad";
+                ddlLocalidad.DataBind();
+                ddlLocalidad.SelectedValue = idLocalidad.ToString();
+
+                // Cargar ddlSexo
+                DropDownList ddlSexo = (DropDownList)e.Row.FindControl("ddlSexo");
+                ddlSexo.DataSource = negocioClinica.getTablaSexo();
+                ddlSexo.DataTextField = "Descripcion_Sexo";
+                ddlSexo.DataValueField = "Id_Sexo";
+                ddlSexo.DataBind();
+                ddlSexo.SelectedValue = idSexo.ToString();
+
+                // Cargar ddlEspecialidades
+                DropDownList ddlEspecialidades = (DropDownList)e.Row.FindControl("ddlEspecialidades");
+                ddlEspecialidades.DataSource = negocioClinica.getTablaEspecialidades();
+                ddlEspecialidades.DataTextField = "DescripcionEspecialidad"; 
+                ddlEspecialidades.DataValueField = "Id_Especialidad";
+                ddlEspecialidades.DataBind();
+                ddlEspecialidades.SelectedValue = idEspecialidad.ToString();
+            }
         }
     }
 }

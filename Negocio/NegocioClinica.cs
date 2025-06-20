@@ -217,8 +217,17 @@ namespace Negocio
             dao.actualizarPaciente(paciente);
         }
 
+        public void ActualizarMedico(Medicos medicos)
+        {
+            Dao dao = new Dao();
+            dao.actualizarMedico(medicos);
+        }
 
-
+        public void ActualizarUsuario(Usuarios usuarios)
+        {
+            Dao dao = new Dao();
+            dao.actualizarUsuario(usuarios);
+        }
 
 
 

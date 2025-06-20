@@ -38,6 +38,7 @@ namespace Datos
         p.Nombre AS 'Nombre',
         p.Apellido AS 'Apellido',
         s.Descripcion_Sexo AS 'Sexo',
+        P.Id_Sexo AS Id_Sexo,
         p.Nacionalidad AS 'Nacionalidad',
         p.FechaNacimiento AS 'FechaNacimiento',
         p.Direccion AS 'Direccion',
@@ -61,25 +62,36 @@ namespace Datos
         public DataTable ObtenerTodosLosMedicos()
         {
             string consulta = @"
-        SELECT 
-            m.Legajo AS 'Legajo',
-            m.DNI AS 'Documento',
-            m.Nombre AS 'Nombre',
-            m.Apellido AS 'Apellido',
-            s.Descripcion_Sexo AS 'Sexo',
-            m.Nacionalidad AS 'Nacionalidad',
-            m.FechaNacimiento AS 'FechaNacimiento',
-            m.Direccion AS 'Direccion',
-            l.DescripcionLocalidad AS 'Localidad',
-            e.DescripcionEspecialidad AS 'Especialidad',
-            m.Email AS 'CorreoElectronico',
-            m.Telefono AS 'Telefono',
-            m.Estado AS 'Estado'
-        FROM Medicos m
-        JOIN Sexo s ON m.Id_Sexo = s.Id_Sexo
-        JOIN Localidades l ON m.Id_Localidad = l.Id_Localidad
-        JOIN Especialidades e ON m.Id_Especialidad = e.Id_Especialidad
-        WHERE m.Estado = 1";
+            SELECT 
+    m.Legajo AS 'Legajo',
+    m.DNI AS 'Documento',
+    m.Nombre AS 'Nombre',
+    m.Apellido AS 'Apellido',
+    s.Descripcion_Sexo AS 'Sexo',
+    m.Id_Sexo AS Id_Sexo,
+    m.Nacionalidad AS 'Nacionalidad',
+    m.FechaNacimiento AS 'FechaNacimiento',
+    m.Direccion AS 'Direccion',
+    l.DescripcionLocalidad AS 'Localidad',
+    pr.DescripcionProvincia AS 'Provincia',
+    l.Id_Provincia AS Id_Provincia,
+    l.Id_Localidad AS Id_Localidad,
+    e.Id_Especialidad AS Id_Especialidad,
+    e.DescripcionEspecialidad AS 'Especialidad',
+    m.Email AS 'CorreoElectronico',
+    m.Telefono AS 'Telefono',
+    m.Estado AS 'Estado',
+    u.Id_Usuario,
+    u.NombreUsuario,
+    u.Contrasena
+FROM Medicos m
+JOIN Sexo s ON m.Id_Sexo = s.Id_Sexo
+JOIN Localidades l ON m.Id_Localidad = l.Id_Localidad
+JOIN Provincias pr ON l.Id_Provincia = pr.Id_Provincia
+JOIN Especialidades e ON m.Id_Especialidad = e.Id_Especialidad
+JOIN Usuarios u ON m.Legajo = u.Legajo_Medico
+WHERE m.Estado = 1;
+";
 
             return accesoDatos.ObtenerTabla("Medicos", consulta);
         }
@@ -437,6 +449,139 @@ namespace Datos
 
         //-------------------------------------------------------------------------------------------------
 
+        
+
+        //Actualizar Paciente
+        //--------------------------------------------------------------------------------------------
+        private void ArmarParametrosActualizarPaciente(ref SqlCommand Comando, Pacientes pacientes)
+        {
+            SqlParameter SqlParametros = new SqlParameter();
+            SqlParametros = Comando.Parameters.Add("@DNI", SqlDbType.Char);
+            SqlParametros.Value = pacientes.getDni();
+            SqlParametros = Comando.Parameters.Add("@Nombre", SqlDbType.VarChar);
+            SqlParametros.Value = pacientes.getNombre();
+            SqlParametros = Comando.Parameters.Add("@Apellido", SqlDbType.VarChar);
+            SqlParametros.Value = pacientes.getApellido();
+            SqlParametros = Comando.Parameters.Add("@Id_Sexo", SqlDbType.Int);
+            SqlParametros.Value = pacientes.getId_Sexo();
+            SqlParametros = Comando.Parameters.Add("@Nacionalidad", SqlDbType.VarChar);
+            SqlParametros.Value = pacientes.getNacionalidad();
+            SqlParametros = Comando.Parameters.Add("@FechaNacimiento", SqlDbType.Date);
+            SqlParametros.Value = pacientes.getFechaNacimiento();
+            SqlParametros = Comando.Parameters.Add("@Direccion", SqlDbType.VarChar);
+            SqlParametros.Value = pacientes.getDireccion();
+            SqlParametros = Comando.Parameters.Add("@Id_Localidad", SqlDbType.Int);
+            SqlParametros.Value = pacientes.getId_Localidad();
+            SqlParametros = Comando.Parameters.Add("@Email", SqlDbType.VarChar);
+            SqlParametros.Value = pacientes.getEmail();
+            SqlParametros = Comando.Parameters.Add("@Telefono", SqlDbType.VarChar);
+            SqlParametros.Value = pacientes.getTelefono();
+            
+
+
+        }
+
+        public int actualizarPaciente(Pacientes pacientes)
+        {
+
+            SqlCommand comando = new SqlCommand();
+            ArmarParametrosActualizarPaciente(ref comando, pacientes);
+            return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spActualizarPaciente");
+        }
+
+
+        public DataTable ObtenerLocalidadesPorProvincia(int idProvincia)
+        {
+            string consulta = "SELECT * FROM Localidades WHERE Id_Provincia = @Id_Provincia";
+
+            SqlCommand comando = new SqlCommand(consulta);
+            comando.Parameters.AddWithValue("@Id_Provincia", idProvincia);
+
+            return accesoDatos.ObtenerTablaConParametros("Localidades", comando);
+        }
+
+        //--------------------------------------------------------------------------------------------
+
+
+        //Actualizar Medico
+        //--------------------------------------------------------------------------------------------
+        private void ArmarParametrosActualizarMedico(ref SqlCommand Comando, Medicos medicos)
+        {
+            SqlParameter SqlParametros = new SqlParameter();
+            SqlParametros = Comando.Parameters.Add("@Legajo", SqlDbType.Char);
+            SqlParametros.Value = medicos.GetLegajo();
+            SqlParametros = Comando.Parameters.Add("@DNI", SqlDbType.Char);
+            SqlParametros.Value = medicos.GetDNI();
+            SqlParametros = Comando.Parameters.Add("@Nombre", SqlDbType.VarChar);
+            SqlParametros.Value = medicos.GetNombre();
+            SqlParametros = Comando.Parameters.Add("@Apellido", SqlDbType.VarChar);
+            SqlParametros.Value = medicos.GetApellido();
+            SqlParametros = Comando.Parameters.Add("@Id_Sexo", SqlDbType.Int);
+            SqlParametros.Value = medicos.GetId_Sexo();
+            SqlParametros = Comando.Parameters.Add("@Nacionalidad", SqlDbType.VarChar);
+            SqlParametros.Value = medicos.GetNacionalidad();
+            SqlParametros = Comando.Parameters.Add("@FechaNacimiento", SqlDbType.Date);
+            SqlParametros.Value = medicos.GetFechaNacimiento();
+            SqlParametros = Comando.Parameters.Add("@Direccion", SqlDbType.VarChar);
+            SqlParametros.Value = medicos.GetDireccion();
+            SqlParametros = Comando.Parameters.Add("@Id_Localidad", SqlDbType.Int);
+            SqlParametros.Value = medicos.GetId_Localidad();
+            SqlParametros = Comando.Parameters.Add("@Email", SqlDbType.VarChar);
+            SqlParametros.Value = medicos.GetEmail();
+            SqlParametros = Comando.Parameters.Add("@Telefono", SqlDbType.VarChar);
+            SqlParametros.Value = medicos.GetTelefono();
+            SqlParametros = Comando.Parameters.Add("@Id_Especialidad", SqlDbType.Int);
+            SqlParametros.Value = medicos.GetId_Especialidad();
+
+
+
+        }
+
+
+        public int actualizarMedico(Medicos medicos)
+        {
+            SqlCommand comando = new SqlCommand();
+            ArmarParametrosActualizarMedico(ref comando, medicos);
+            return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spActualizarMedico");
+        }
+
+        //--------------------------------------------------------------------------------------------
+
+
+        //Actualizar Usuario
+        //--------------------------------------------------------------------------------------------
+        private void ArmarParametrosActualizarUsuario(ref SqlCommand Comando, Usuarios usuarios)
+        {
+            SqlParameter SqlParametros = new SqlParameter();
+            SqlParametros = Comando.Parameters.Add("@NombreUsuario", SqlDbType.VarChar);
+            SqlParametros.Value = usuarios.GetNombreUsuario();
+            SqlParametros = Comando.Parameters.Add("@Contrasena", SqlDbType.VarChar);
+            SqlParametros.Value = usuarios.GetContrasena();
+            SqlParametros = Comando.Parameters.Add("@TipoUsuario", SqlDbType.VarChar);
+            SqlParametros.Value = usuarios.GetTipoUsuario();
+            SqlParametros = Comando.Parameters.Add("@Legajo_Medico", SqlDbType.Char);
+            SqlParametros.Value = usuarios.GetLegajo_Medico();
+
+
+
+        }
+
+
+        public int actualizarUsuario(Usuarios usuarios)
+        {
+            SqlCommand comando = new SqlCommand();
+            ArmarParametrosActualizarUsuario(ref comando, usuarios);
+            return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spActualizarUsuario");
+        }
+        //--------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
 
 
         //Seccion Asignar Turno
@@ -564,59 +709,8 @@ namespace Datos
         //-------------------------------------------------------------------------------------------------
 
 
-
-        /*ver luego*/
-
-        private void ArmarParametrosActualizarPaciente(ref SqlCommand Comando, Pacientes pacientes)
-        {
-            SqlParameter SqlParametros = new SqlParameter();
-            SqlParametros = Comando.Parameters.Add("@DNI", SqlDbType.Char);
-            SqlParametros.Value = pacientes.getDni();
-            SqlParametros = Comando.Parameters.Add("@Nombre", SqlDbType.VarChar);
-            SqlParametros.Value = pacientes.getNombre();
-            SqlParametros = Comando.Parameters.Add("@Apellido", SqlDbType.VarChar);
-            SqlParametros.Value = pacientes.getApellido();
-            SqlParametros = Comando.Parameters.Add("@Id_Sexo", SqlDbType.Int);
-            SqlParametros.Value = pacientes.getId_Sexo();
-            SqlParametros = Comando.Parameters.Add("@Nacionalidad", SqlDbType.VarChar);
-            SqlParametros.Value = pacientes.getNacionalidad();
-            SqlParametros = Comando.Parameters.Add("@FechaNacimiento", SqlDbType.Date);
-            SqlParametros.Value = pacientes.getFechaNacimiento();
-            SqlParametros = Comando.Parameters.Add("@Direccion", SqlDbType.VarChar);
-            SqlParametros.Value = pacientes.getDireccion();
-            SqlParametros = Comando.Parameters.Add("@Id_Localidad", SqlDbType.Int);
-            SqlParametros.Value = pacientes.getId_Localidad();
-            SqlParametros = Comando.Parameters.Add("@Email", SqlDbType.VarChar);
-            SqlParametros.Value = pacientes.getEmail();
-            SqlParametros = Comando.Parameters.Add("@Telefono", SqlDbType.VarChar);
-            SqlParametros.Value = pacientes.getTelefono();
-            
-
-
-        }
-
-        public int actualizarPaciente(Pacientes pacientes)
-        {
-
-            SqlCommand comando = new SqlCommand();
-            ArmarParametrosActualizarPaciente(ref comando, pacientes);
-            return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spActualizarPaciente");
-        }
-
-
-        public DataTable ObtenerLocalidadesPorProvincia(int idProvincia)
-        {
-            string consulta = "SELECT * FROM Localidades WHERE Id_Provincia = @Id_Provincia";
-
-            SqlCommand comando = new SqlCommand(consulta);
-            comando.Parameters.AddWithValue("@Id_Provincia", idProvincia);
-
-            return accesoDatos.ObtenerTablaConParametros("Localidades", comando);
-        }
-
-
-
-
+        //Busquedas/filtrar
+        //-------------------------------------------------------------------------------------------------
         public DataTable BuscarMedicos(string criterio)
         {
             SqlCommand comando = new SqlCommand(@"
@@ -648,7 +742,7 @@ namespace Datos
             return accesoDatos.ObtenerTablaConParametros("Medicos", comando);
         }
 
-    }
+    }//-------------------------------------------------------------------------------------------------
 }
 
 
