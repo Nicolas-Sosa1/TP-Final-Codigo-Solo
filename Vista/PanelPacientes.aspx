@@ -46,7 +46,7 @@
     OnRowCancelingEdit="gvPacientes_RowCancelingEdit" 
     OnRowEditing="gvPacientes_RowEditing" 
     OnRowUpdating="gvPacientes_RowUpdating" 
-    AutoGenerateColumns="False" OnRowDataBound="gvPacientes_RowDataBound" BackColor="White" BorderColor="#336666" BorderStyle="Double" BorderWidth="3px" CellPadding="4" GridLines="Horizontal">
+    AutoGenerateColumns="False" OnRowDataBound="gvPacientes_RowDataBound" BackColor="White" BorderColor="#336666" BorderStyle="Double" BorderWidth="3px" CellPadding="4" GridLines="Horizontal" AllowPaging="True" OnPageIndexChanging="gvPacientes_PageIndexChanging" PageSize="5">
     <Columns>
         <asp:TemplateField HeaderText="DNI">
             <EditItemTemplate>

@@ -18,7 +18,7 @@
             <asp:Label ID="lblEliminar" runat="server" Text="Dar de baja un paciente" Font-Bold="True" Font-Size="X-Large"></asp:Label>
             <br /><br />
             Eliminar paciente por DNI:&nbsp;&nbsp;
-            <asp:TextBox ID="txtEliminarPaciente" runat="server" Width="200px"></asp:TextBox>
+            <asp:TextBox ID="txtEliminarPaciente" runat="server" Width="200px" MaxLength="8"></asp:TextBox>
             &nbsp;<asp:RequiredFieldValidator ID="rfvEliminar" runat="server" ErrorMessage="Debe ingresar un DNI" ControlToValidate="txtEliminarPaciente" ForeColor="Red" ValidationGroup="1">*</asp:RequiredFieldValidator>
             &nbsp;<asp:RegularExpressionValidator ID="revEliminar" runat="server" ErrorMessage="Debe ingresar 8 numeros" ControlToValidate="txtEliminarPaciente" ForeColor="Red" ValidationExpression="^\d{8}$" ValidationGroup="1">*</asp:RegularExpressionValidator>
             &nbsp;&nbsp;

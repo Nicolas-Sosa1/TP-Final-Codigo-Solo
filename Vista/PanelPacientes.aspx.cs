@@ -157,5 +157,11 @@ namespace Vista
             }
 
         }
+
+        protected void gvPacientes_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            gvPacientes.PageIndex = e.NewPageIndex;
+            cargarGridView();
+        }
     }
 }
