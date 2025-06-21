@@ -12,6 +12,9 @@
         <div>
             <asp:HyperLink ID="hlListadoPacientes" runat="server" NavigateUrl="~/PanelPacientes.aspx">Listado de pacientes</asp:HyperLink>
             <br /><br />
+            Usuario:&nbsp;&nbsp;
+            <asp:Label ID="lblUsuario" runat="server" Text=""></asp:Label>
+            <br /><br />
             <asp:Label ID="lblAgregar" runat="server" Text="Registrar nuevo paciente" Font-Bold="True" Font-Size="X-Large"></asp:Label>
             <br /><br />
             DNI:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

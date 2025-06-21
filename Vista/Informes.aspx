@@ -12,6 +12,9 @@
         <div>
             <asp:HyperLink ID="hlVolverPanelAdmin" runat="server" NavigateUrl="~/PanelUsuarioAdministrador.aspx">Panel de Administrador</asp:HyperLink>
             <br /><br />
+            Usuario:&nbsp;&nbsp;
+            <asp:Label ID="lblUsuario" runat="server" Text=""></asp:Label>
+            <br /><br />
             <asp:Label ID="lblInformes" runat="server" Text="Informes" Font-Bold="True" Font-Size="X-Large"></asp:Label>
             <br /><br />
             <asp:Button ID="btnInforme1" runat="server" Text="Informe ejemplo 1" />

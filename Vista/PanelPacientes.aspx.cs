@@ -21,6 +21,10 @@ namespace Vista
             if (IsPostBack == false)
             {
                 cargarGridView();
+
+                string user;
+                user = Session["Usuario"].ToString();
+                lblUsuario.Text = user;
             }
         }
 

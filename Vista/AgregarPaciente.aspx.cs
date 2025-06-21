@@ -25,6 +25,10 @@ namespace Vista
                 cargarDdlSexo();
                 cargarDdlSexo();
 
+                string user;
+                user = Session["Usuario"].ToString();
+                lblUsuario.Text = user;
+
             }
         }
 

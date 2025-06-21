@@ -23,6 +23,10 @@ namespace Vista
                 cargaDdlEspecialidades();
                 cargarDdlPacientes();
 
+                string user;
+                user = Session["Usuario"].ToString();
+                lblUsuario.Text = user;
+
             }
         }
 

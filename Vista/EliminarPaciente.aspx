@@ -12,6 +12,9 @@
         <div>
             <asp:HyperLink ID="hlListadoPacientes" runat="server" NavigateUrl="~/PanelPacientes.aspx">Listado de pacientes</asp:HyperLink>
             <br /><br />
+            Usuario:&nbsp;&nbsp;
+            <asp:Label ID="lblUsuario" runat="server" Text=""></asp:Label>
+            <br /><br />
             <asp:Label ID="lblEliminar" runat="server" Text="Dar de baja un paciente" Font-Bold="True" Font-Size="X-Large"></asp:Label>
             <br /><br />
             Eliminar paciente por DNI:&nbsp;&nbsp;

@@ -11,7 +11,9 @@ namespace Vista
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            string user;
+            user = Session["Usuario"].ToString();
+            lblUsuario.Text = user;
         }
     }
 }

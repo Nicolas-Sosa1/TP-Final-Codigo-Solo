@@ -29,6 +29,9 @@
             </tr>
             </table>
             <br /><br />
+            Usuario:&nbsp;&nbsp;
+            <asp:Label ID="lblUsuario" runat="server" Text=""></asp:Label>
+            <br /><br />
             <asp:Label ID="lblMedicos" runat="server" Text="Listado de medicos" Font-Bold="True" Font-Size="X-Large"></asp:Label>
             <br /><br />
             Buscar medico:&nbsp;&nbsp;

@@ -15,6 +15,10 @@ namespace Vista
         protected void Page_Load(object sender, EventArgs e)
         {
             UnobtrusiveValidationMode = UnobtrusiveValidationMode.None;
+
+            string user;
+            user = Session["Usuario"].ToString();
+            lblUsuario.Text = user;
         }
         protected void btnEliminarMedico_Click(object sender, EventArgs e)
         {
