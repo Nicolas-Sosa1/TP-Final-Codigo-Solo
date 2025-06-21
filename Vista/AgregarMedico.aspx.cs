@@ -18,20 +18,23 @@ namespace Vista
         {
             UnobtrusiveValidationMode = UnobtrusiveValidationMode.None;
 
-            if (IsPostBack == false)
+            if (!IsPostBack)
             {
                 cargaDdlProvincias();
                 cargarDdlSexo();
                 cargaDdlEspecialidades();
-                cargarDdlSexo();
-                cargarDdlDias();
                 cargarDdlHorarios();
+                cargarDdlDias();
 
-                string user;
-                user = Session["Usuario"].ToString();
+                // Para tener al menos un checkbox seleccionado (pero falta validar que al menos haya alguno marcado siempre)
+                if (cblDias.Items.Count > 0)
+                    cblDias.Items[0].Selected = true;
+
+                string user = Session["Usuario"].ToString();
                 lblNombreUsuario.Text = user;
             }
         }
+        
 
         public void cargaDdlProvincias()
         {
@@ -159,12 +162,50 @@ namespace Vista
                 negocioClinica.RegistrarFechasAtencion(medico.GetLegajo(), diasSeleccionados, idHorario);
 
                 lblMensaje.Text = "✔ Registro exitoso con fechas de atención.";
+                lblMensaje.ForeColor = Color.Green;
             }
+            else
+            {
+                lblMensaje.Text = "Ocurrió un error al agregar el Medico.";
+                lblMensaje.ForeColor = Color.Red;
+            }
+
+            LimpiarCampos();
 
         }
 
-        public void limpiarCampos()
+        public void LimpiarCampos()
         {
+            txtLegajo.Text = "";
+            txtDNI.Text = "";
+            txtNombre.Text = "";
+            txtApellido.Text = "";
+            ddlSexo.SelectedIndex = 0;
+            txtNacionalidad.Text = "";
+            txtFechaNac.Text = "";
+            txtDireccion.Text = "";
+            ddlProvincia.SelectedIndex = 0;
+            ddlLocalidad.SelectedIndex = 0;
+            txtCorreo.Text = "";
+            txtTelefono.Text = "";
+            ddlEspecialidades.SelectedIndex = 0;
+            
+            // Para que siempre quede Lunes por defecto, pero se sigue pudiendo destildar
+            if (cblDias.Items.Count > 0) 
+            {
+                cblDias.Items[0].Selected = true;
+                cblDias.Items[1].Selected = false;
+                cblDias.Items[2].Selected = false;
+                cblDias.Items[3].Selected = false;
+                cblDias.Items[4].Selected = false;
+                cblDias.Items[5].Selected = false;
+                cblDias.Items[6].Selected = false;
+            }
+
+            ddlHorarioAtencion.SelectedIndex = 0;
+            txtUsuario.Text = "";
+            txtContra.Text = "";
+            txtRepetirContra.Text = "";
 
         }
     }

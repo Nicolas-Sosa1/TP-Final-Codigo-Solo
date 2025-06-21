@@ -110,10 +110,10 @@ namespace Vista
                 lblMensaje.ForeColor = Color.Red;
             }
 
-            limpiarCampos();
+            LimpiarCampos();
         }
 
-        public void limpiarCampos()
+        public void LimpiarCampos()
         {
             txtDNI.Text = "";
             txtNombre.Text = "";

@@ -110,7 +110,7 @@
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <asp:Button ID="btnAgregarMedico" runat="server" Text="Agregar medico" ValidationGroup="1" OnClick="btnAgregarMedico_Click" />
             <br /><br />
-            <asp:Label ID="lblMensaje" runat="server" Text=""></asp:Label>
+            <asp:Label ID="lblMensaje" runat="server"></asp:Label>
             <br />
             <br />
             <asp:ValidationSummary ID="vsErrores" runat="server" ForeColor="Red" ValidationGroup="1" />
