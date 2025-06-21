@@ -29,8 +29,8 @@
             </tr>
             </table>
             <br /><br />
-            Usuario:&nbsp;&nbsp;
-            <asp:Label ID="lblUsuario" runat="server" Text=""></asp:Label>
+            <asp:Label ID="lblUsuario" runat="server" Text="Usuario:" Font-Bold="True" ForeColor="#006600"></asp:Label>&nbsp;
+            <asp:Label ID="lblNombreUsuario" runat="server" Font-Bold="True"></asp:Label>
             <br /><br />
             <asp:Label ID="lblMedicos" runat="server" Text="Listado de medicos" Font-Bold="True" Font-Size="X-Large"></asp:Label>
             <br /><br />

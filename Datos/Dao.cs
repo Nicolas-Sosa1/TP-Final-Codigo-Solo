@@ -33,27 +33,27 @@ namespace Datos
         public DataTable ObtenerTodosLosPacientes()
         {
             string consulta = @"
-    SELECT 
-        p.DNI AS 'Documento',
-        p.Nombre AS 'Nombre',
-        p.Apellido AS 'Apellido',
-        s.Descripcion_Sexo AS 'Sexo',
-        P.Id_Sexo AS Id_Sexo,
-        p.Nacionalidad AS 'Nacionalidad',
-        p.FechaNacimiento AS 'FechaNacimiento',
-        p.Direccion AS 'Direccion',
-        l.DescripcionLocalidad AS 'Localidad',
-        pr.DescripcionProvincia AS 'Provincia',
-        l.Id_Provincia AS Id_Provincia,          
-        l.Id_Localidad AS Id_Localidad,              
-        p.Email AS 'CorreoElectronico',
-        p.Telefono AS 'Telefono',
-        p.Estado AS 'Estado'
-    FROM Pacientes p
-    JOIN Sexo s ON p.Id_Sexo = s.Id_Sexo
-    JOIN Localidades l ON p.Id_Localidad = l.Id_Localidad
-    JOIN Provincias pr ON l.Id_Provincia = pr.Id_Provincia
-    WHERE p.Estado = 1";
+            SELECT 
+                p.DNI AS 'Documento',
+                p.Nombre AS 'Nombre',
+                p.Apellido AS 'Apellido',
+                s.Descripcion_Sexo AS 'Sexo',
+                P.Id_Sexo AS Id_Sexo,
+                p.Nacionalidad AS 'Nacionalidad',
+                p.FechaNacimiento AS 'FechaNacimiento',
+                p.Direccion AS 'Direccion',
+                l.DescripcionLocalidad AS 'Localidad',
+                pr.DescripcionProvincia AS 'Provincia',
+                l.Id_Provincia AS Id_Provincia,          
+                l.Id_Localidad AS Id_Localidad,              
+                p.Email AS 'CorreoElectronico',
+                p.Telefono AS 'Telefono',
+                p.Estado AS 'Estado'
+            FROM Pacientes p
+            JOIN Sexo s ON p.Id_Sexo = s.Id_Sexo
+            JOIN Localidades l ON p.Id_Localidad = l.Id_Localidad
+            JOIN Provincias pr ON l.Id_Provincia = pr.Id_Provincia
+            WHERE p.Estado = 1";
 
             return accesoDatos.ObtenerTabla("Pacientes", consulta);
         }
@@ -63,35 +63,35 @@ namespace Datos
         {
             string consulta = @"
             SELECT 
-    m.Legajo AS 'Legajo',
-    m.DNI AS 'Documento',
-    m.Nombre AS 'Nombre',
-    m.Apellido AS 'Apellido',
-    s.Descripcion_Sexo AS 'Sexo',
-    m.Id_Sexo AS Id_Sexo,
-    m.Nacionalidad AS 'Nacionalidad',
-    m.FechaNacimiento AS 'FechaNacimiento',
-    m.Direccion AS 'Direccion',
-    l.DescripcionLocalidad AS 'Localidad',
-    pr.DescripcionProvincia AS 'Provincia',
-    l.Id_Provincia AS Id_Provincia,
-    l.Id_Localidad AS Id_Localidad,
-    e.Id_Especialidad AS Id_Especialidad,
-    e.DescripcionEspecialidad AS 'Especialidad',
-    m.Email AS 'CorreoElectronico',
-    m.Telefono AS 'Telefono',
-    m.Estado AS 'Estado',
-    u.Id_Usuario,
-    u.NombreUsuario,
-    u.Contrasena
-FROM Medicos m
-JOIN Sexo s ON m.Id_Sexo = s.Id_Sexo
-JOIN Localidades l ON m.Id_Localidad = l.Id_Localidad
-JOIN Provincias pr ON l.Id_Provincia = pr.Id_Provincia
-JOIN Especialidades e ON m.Id_Especialidad = e.Id_Especialidad
-JOIN Usuarios u ON m.Legajo = u.Legajo_Medico
-WHERE m.Estado = 1;
-";
+                m.Legajo AS 'Legajo',
+                m.DNI AS 'Documento',
+                m.Nombre AS 'Nombre',
+                m.Apellido AS 'Apellido',
+                s.Descripcion_Sexo AS 'Sexo',
+                m.Id_Sexo AS Id_Sexo,
+                m.Nacionalidad AS 'Nacionalidad',
+                m.FechaNacimiento AS 'FechaNacimiento',
+                m.Direccion AS 'Direccion',
+                l.DescripcionLocalidad AS 'Localidad',
+                pr.DescripcionProvincia AS 'Provincia',
+                l.Id_Provincia AS Id_Provincia,
+                l.Id_Localidad AS Id_Localidad,
+                e.Id_Especialidad AS Id_Especialidad,
+                e.DescripcionEspecialidad AS 'Especialidad',
+                m.Email AS 'CorreoElectronico',
+                m.Telefono AS 'Telefono',
+                m.Estado AS 'Estado',
+                u.Id_Usuario,
+                u.NombreUsuario,
+                u.Contrasena
+            FROM Medicos m
+            JOIN Sexo s ON m.Id_Sexo = s.Id_Sexo
+            JOIN Localidades l ON m.Id_Localidad = l.Id_Localidad
+            JOIN Provincias pr ON l.Id_Provincia = pr.Id_Provincia
+            JOIN Especialidades e ON m.Id_Especialidad = e.Id_Especialidad
+            JOIN Usuarios u ON m.Legajo = u.Legajo_Medico
+            WHERE m.Estado = 1;
+            ";
 
             return accesoDatos.ObtenerTabla("Medicos", consulta);
         }
@@ -114,12 +114,12 @@ WHERE m.Estado = 1;
         public DataTable ObtenerTodosLosHorarios()
         {
             string consulta = @"
-        SELECT 
-            Id_Horario,
-            CAST(Id_Horario AS VARCHAR(10)) + ' - ' + 
-            CONVERT(VARCHAR(5), HoraDesde, 108) + ' - ' + 
-            CONVERT(VARCHAR(5), HoraHasta, 108) AS DescripcionHorario
-        FROM Horarios";
+            SELECT 
+                Id_Horario,
+                CAST(Id_Horario AS VARCHAR(10)) + ' - ' + 
+                CONVERT(VARCHAR(5), HoraDesde, 108) + ' - ' + 
+                CONVERT(VARCHAR(5), HoraHasta, 108) AS DescripcionHorario
+            FROM Horarios";
 
             return accesoDatos.ObtenerTabla("Horarios", consulta);
         }
@@ -736,6 +736,36 @@ WHERE m.Estado = 1;
                 m.Nombre LIKE '%' + @Criterio + '%' OR
                 m.Apellido LIKE '%' + @Criterio + '%' OR
                 m.DNI LIKE '%' + @Criterio + '%';");
+
+            comando.Parameters.AddWithValue("@Criterio", criterio);
+
+            return accesoDatos.ObtenerTablaConParametros("Medicos", comando);
+        }
+
+        public DataTable BuscarPacientes(string criterio)
+        {
+            SqlCommand comando = new SqlCommand(@"
+            SELECT 
+                p.DNI AS 'Documento',
+                p.Nombre,
+                p.Apellido,
+                s.Descripcion_Sexo AS 'Sexo',
+                p.Nacionalidad,
+                p.FechaNacimiento,
+                p.Direccion,
+                l.DescripcionLocalidad AS 'Localidad',
+                pr.DescripcionProvincia AS 'Provincia',
+                p.Email AS 'CorreoElectronico',
+                p.Telefono,
+                p.Estado
+            FROM Pacientes p
+            JOIN Sexo s ON p.Id_Sexo = s.Id_Sexo
+            JOIN Localidades l ON p.Id_Localidad = l.Id_Localidad
+            JOIN Provincias pr ON l.Id_Provincia = pr.Id_Provincia
+            WHERE 
+                p.Nombre LIKE '%' + @Criterio + '%' OR
+                p.Apellido LIKE '%' + @Criterio + '%' OR
+                p.DNI LIKE '%' + @Criterio + '%';");
 
             comando.Parameters.AddWithValue("@Criterio", criterio);
 

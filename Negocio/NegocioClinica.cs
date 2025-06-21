@@ -237,6 +237,11 @@ namespace Negocio
             return dao.BuscarMedicos(criterio);
         }
 
+        public DataTable BuscarPacientes(string criterio)
+        {
+            Dao dao = new Dao();
+            return dao.BuscarPacientes(criterio);
+        }
 
         public DataTable validarLogin(string usuario, string contrasena)
         {

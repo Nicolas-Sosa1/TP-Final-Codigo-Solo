@@ -23,7 +23,7 @@ namespace Vista
 
                 string user;
                 user = Session["Usuario"].ToString();
-                lblUsuario.Text = user;
+                lblNombreUsuario.Text = user;
             }
         }
 

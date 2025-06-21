@@ -12,8 +12,8 @@
         <div>
             <asp:HyperLink ID="hlListadoMedicos" runat="server" NavigateUrl="~/PanelMedicos.aspx">Listado de medicos</asp:HyperLink>
             <br /><br />
-            Usuario:&nbsp;&nbsp;
-            <asp:Label ID="lblUsuario" runat="server" Text=""></asp:Label>
+            <asp:Label ID="lblUsuario" runat="server" Text="Usuario:" Font-Bold="True" ForeColor="#006600"></asp:Label>&nbsp;
+            <asp:Label ID="lblNombreUsuario" runat="server" Font-Bold="True"></asp:Label>
             <br /><br />
             <asp:Label ID="lblAgregar" runat="server" Text="Registrar nuevo medico" Font-Bold="True" Font-Size="X-Large"></asp:Label>
             <br /><br />

@@ -24,7 +24,7 @@ namespace Vista
 
                 string user;
                 user = Session["Usuario"].ToString();
-                lblUsuario.Text = user;
+                lblNombreUsuario.Text = user;
             }
         }
 
@@ -39,11 +39,21 @@ namespace Vista
         protected void btnMostrar_Click(object sender, EventArgs e)
         {
             cargarGridView();
+            txtBuscar.Text = "";
         }
 
         protected void btnFiltrar_Click(object sender, EventArgs e)
         {
-            
+            string criterio = txtBuscar.Text.Trim();
+
+            if (!string.IsNullOrEmpty(criterio))
+            {
+                DataTable dt = negocioClinica.BuscarPacientes(criterio);
+                gvPacientes.DataSource = dt;
+                gvPacientes.DataBind();
+
+                txtBuscar.Text = "";
+            }
 
         }
 
@@ -110,7 +120,6 @@ namespace Vista
                 ddlLocalidad.DataValueField = "Id_Localidad";
                 ddlLocalidad.DataBind();
 
-                ddlLocalidad.Items.Insert(0, new ListItem("Seleccione", ""));
             }
         }
 

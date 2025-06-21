@@ -12,8 +12,8 @@
         <div>
             <asp:Label ID="lblAdmin" runat="server" Text="Panel de Administrador" Font-Bold="True" Font-Size="X-Large"></asp:Label>
             <br /><br />
-            Usuario:&nbsp;&nbsp;
-            <asp:Label ID="lblUsuario" runat="server" Text=""></asp:Label>
+            <asp:Label ID="lblUsuario" runat="server" Text="Usuario:" Font-Bold="True" ForeColor="#006600"></asp:Label>&nbsp;
+            <asp:Label ID="lblNombreUsuario" runat="server" Font-Bold="True"></asp:Label>
             <br /><br />
             <asp:Button ID="btnPacientes" runat="server" Text="ABML Pacientes" Width="200px" OnClick="btnPacientes_Click" />
             <br /><br />

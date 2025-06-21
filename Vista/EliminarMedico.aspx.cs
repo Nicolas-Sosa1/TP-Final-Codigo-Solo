@@ -18,7 +18,7 @@ namespace Vista
 
             string user;
             user = Session["Usuario"].ToString();
-            lblUsuario.Text = user;
+            lblNombreUsuario.Text = user;
         }
         protected void btnEliminarMedico_Click(object sender, EventArgs e)
         {

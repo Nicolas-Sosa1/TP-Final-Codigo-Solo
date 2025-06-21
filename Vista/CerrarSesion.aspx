@@ -10,7 +10,8 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            <asp:Label ID="lblUsuario" runat="server" Text=""></asp:Label>
+            Hola
+            <asp:Label ID="lblUsuario" runat="server" Font-Bold="True"></asp:Label>
             <asp:Label ID="lblPregunta" runat="server" Text=", estás seguro que deseas cerrar sesión?"></asp:Label>
             <br />
             <br />
