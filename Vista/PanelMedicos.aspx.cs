@@ -133,8 +133,6 @@ namespace Vista
                 ddlLocalidad.DataTextField = "DescripcionLocalidad";
                 ddlLocalidad.DataValueField = "Id_Localidad";
                 ddlLocalidad.DataBind();
-
-                ddlLocalidad.Items.Insert(0, new ListItem("Seleccione", ""));
             }
         }
 
@@ -180,6 +178,12 @@ namespace Vista
                 ddlEspecialidades.DataBind();
                 ddlEspecialidades.SelectedValue = idEspecialidad.ToString();
             }
+        }
+
+        protected void gvMedicos_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            gvMedicos.PageIndex = e.NewPageIndex;
+            cargarGridView();
         }
     }
 }

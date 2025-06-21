@@ -19,13 +19,13 @@
             <br /><br />
             Legajo:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <asp:TextBox ID="txtLegajo" runat="server" Width="200px" ValidationGroup="1"></asp:TextBox>
+            <asp:TextBox ID="txtLegajo" runat="server" Width="200px" ValidationGroup="1" MaxLength="6"></asp:TextBox>
             <asp:RequiredFieldValidator ID="rfvLegajo" runat="server" ControlToValidate="txtLegajo" ErrorMessage="Debe ingresar un legajo" ForeColor="Red" ValidationGroup="1">*</asp:RequiredFieldValidator>
             &nbsp;<asp:RegularExpressionValidator ID="revDni" runat="server" ControlToValidate="txtLegajo" ErrorMessage="Debe ingresar 6 numeros en el legajo" ForeColor="Red" ValidationExpression="^\d{6}$" ValidationGroup="1">*</asp:RegularExpressionValidator>
             <br /><br />
             DNI:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <asp:TextBox ID="txtDNI" runat="server" Width="200px" ValidationGroup="1"></asp:TextBox>
+            <asp:TextBox ID="txtDNI" runat="server" Width="200px" ValidationGroup="1" MaxLength="8"></asp:TextBox>
             <asp:RequiredFieldValidator ID="rfvDNI" runat="server" ControlToValidate="txtDNI" ErrorMessage="Debe ingresar un dni" ForeColor="Red" ValidationGroup="1">*</asp:RequiredFieldValidator>
             &nbsp;<asp:RegularExpressionValidator ID="revDni0" runat="server" ControlToValidate="txtDNI" ErrorMessage="Debe ingresar 8 numeros en el Dni" ForeColor="Red" ValidationExpression="^\d{8}$" ValidationGroup="1">*</asp:RegularExpressionValidator>
             <br /><br />
@@ -89,7 +89,8 @@
             </asp:CheckBoxList>
             <br /><br />
             Horario de atención:&nbsp; <asp:DropDownList ID="ddlHorarioAtencion" runat="server" Width="200px" ValidationGroup="1"></asp:DropDownList>
-            &nbsp;<br /><br />
+            &nbsp;<asp:RequiredFieldValidator ID="rfvHorarios" runat="server" ControlToValidate="ddlHorarioAtencion" ErrorMessage="Debe seleccionar un horario" ForeColor="Red" ValidationGroup="1">*</asp:RequiredFieldValidator>
+            <br /><br />
             Crear usuario:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <asp:TextBox ID="txtUsuario" runat="server" ValidationGroup="1"></asp:TextBox>
             <asp:RequiredFieldValidator ID="rfvUsuario" runat="server" ErrorMessage="Debe ingresar un Usuario" ControlToValidate="txtUsuario" ForeColor="Red" ValidationGroup="1">*</asp:RequiredFieldValidator>

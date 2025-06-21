@@ -115,6 +115,17 @@ namespace Vista
 
         public void limpiarCampos()
         {
+            txtDNI.Text = "";
+            txtNombre.Text = "";
+            txtApellido.Text = "";
+            ddlSexo.SelectedIndex = 0;
+            txtNacionalidad.Text = "";
+            txtFechaNac.Text = "";
+            txtDireccion.Text = "";
+            ddlProvincia.SelectedIndex = 0;
+            ddlLocalidad.SelectedIndex = 0;
+            txtCorreo.Text = "";
+            txtTelefono.Text = "";
 
         }
     }
