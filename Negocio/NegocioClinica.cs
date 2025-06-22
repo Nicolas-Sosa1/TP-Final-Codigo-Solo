@@ -107,8 +107,36 @@ namespace Negocio
         public DataTable getTablaMedicos()
         {
             Dao dao = new Dao();
-            return dao.ObtenerTodosLosMedicos();
+            DataTable tablaMedicos = dao.ObtenerTodosLosMedicos();
+
+            tablaMedicos.Columns.Add("DiasDescripcion", typeof(string));
+            tablaMedicos.Columns.Add("HorarioDescripcion", typeof(string));
+
+            foreach (DataRow row in tablaMedicos.Rows)
+            {
+                string legajo = row["Legajo"].ToString();
+                DataTable diasHorarios = dao.ObtenerDiasHorariosDeMedico(legajo);
+
+                // 🔹 Armar string de días
+                string dias = string.Join(", ", diasHorarios.AsEnumerable()
+                                        .Select(r => r["DescripcionDia"].ToString())
+                                        .Distinct());
+
+                // 🔹 Armar string de horarios desde columnas HoraDesde y HoraHasta
+                string horarios = string.Join(", ", diasHorarios.AsEnumerable()
+                    .Select(r =>
+                        TimeSpan.Parse(r["HoraDesde"].ToString()).ToString(@"hh\:mm") + " - " +
+                        TimeSpan.Parse(r["HoraHasta"].ToString()).ToString(@"hh\:mm")
+                    ).Distinct());
+
+                row["DiasDescripcion"] = dias;
+                row["HorarioDescripcion"] = horarios;
+            }
+
+            return tablaMedicos;
         }
+
+
 
         public string RegistrarMedicoYUsuario(Medicos medico, Usuarios usuario)
         {
@@ -157,6 +185,47 @@ namespace Negocio
                 }
             }
         }
+
+        public void ActualizarDiasHorariosFechasMedico(string legajoMedico, List<int> diasSeleccionados, List<int> horariosSeleccionados)
+        {
+            Dao dao = new Dao();
+            DataTable fechas = dao.ObtenerTodasLasFechas();
+            List<int> todosLosHorarios = dao.getTodosLosIdHorarios(); // ← Trae todos los horarios existentes
+
+            foreach (DataRow fila in fechas.Rows)
+            {
+                DateTime fecha = Convert.ToDateTime(fila["Fecha"]);
+                int diaSemana = ((int)fecha.DayOfWeek + 1); // Lunes = 1 ... Domingo = 7
+
+                if (diasSeleccionados.Contains(diaSemana))
+                {
+                    foreach (int idHorario in horariosSeleccionados)
+                    {
+                        dao.insertarDiasXHorarios(diaSemana, idHorario);
+                        dao.insertarDiasXHorariosXFechas(diaSemana, idHorario, fecha);
+                        dao.insertarDiasXHorariosXFechasXMedico(diaSemana, idHorario, fecha, legajoMedico);
+                    }
+
+                    // ✅ Eliminar horarios deseleccionados (pero solo si no hay turnos asignados)
+                    foreach (int idHorario in todosLosHorarios.Except(horariosSeleccionados))
+                    {
+                        dao.EliminarDiasXHorariosXFechasXMedicoSiNoHayTurno(diaSemana, idHorario, fecha, legajoMedico);
+                    }
+                }
+                else
+                {
+                    // ✅ Día completo deseleccionado → eliminar todos los horarios
+                    foreach (int idHorario in todosLosHorarios)
+                    {
+                        dao.EliminarDiasXHorariosXFechasXMedicoSiNoHayTurno(diaSemana, idHorario, fecha, legajoMedico);
+                    }
+                }
+            }
+        }
+
+
+
+
 
 
         //Seccion AsignarTurno---------------------------------------------------------------
@@ -228,6 +297,15 @@ namespace Negocio
             Dao dao = new Dao();
             dao.actualizarUsuario(usuarios);
         }
+
+
+
+        public DataTable GetDiasHorariosPorMedico(string legajo)
+        {
+            Dao dao = new Dao();
+            return dao.ObtenerDiasHorariosDeMedico(legajo);
+        }
+
 
 
 

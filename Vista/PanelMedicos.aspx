@@ -167,6 +167,24 @@
                     <asp:Label ID="lbl_Contrasena" runat="server" Text='<%# Bind("Contrasena") %>'></asp:Label>
                 </ItemTemplate>
             </asp:TemplateField>
+            <asp:TemplateField HeaderText="Días de Atención">
+            <ItemTemplate>
+                <asp:Label ID="lblDias" runat="server" Text='<%# Eval("DiasDescripcion") %>'></asp:Label>
+            </ItemTemplate>
+            <EditItemTemplate>
+                <asp:CheckBoxList ID="cblDias" runat="server" RepeatDirection="Horizontal" />
+            </EditItemTemplate>
+        </asp:TemplateField>
+
+            <asp:TemplateField HeaderText="Horarios de Atención">
+        <ItemTemplate>
+            <asp:Label ID="lblHorario" runat="server" Text='<%# Eval("HorarioDescripcion") %>' />
+        </ItemTemplate>
+        <EditItemTemplate>
+            <asp:CheckBoxList ID="cblHorarios" runat="server" RepeatDirection="Horizontal" />
+        </EditItemTemplate>
+    </asp:TemplateField>
+
               
             </Columns>
                 <FooterStyle BackColor="White" ForeColor="#333333" />

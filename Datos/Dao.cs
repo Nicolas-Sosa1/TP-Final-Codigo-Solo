@@ -125,6 +125,8 @@ namespace Datos
         }
 
 
+  
+
         //-----------------------------------------------------------------------------------------
 
 
@@ -575,10 +577,54 @@ namespace Datos
         }
         //--------------------------------------------------------------------------------------------
 
+        //Actualizar FechasxDiasxHorarios
+        //--------------------------------------------------------------------------------------------
+
+        public DataTable ObtenerDiasHorariosDeMedico(string legajo)
+        {
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = @"
+        SELECT Id_Dia, DescripcionDia, Id_Horario, HoraDesde, HoraHasta
+        FROM vw_DiasHorariosPorMedico
+        WHERE Legajo_Medico = @Legajo";
+
+            cmd.Parameters.AddWithValue("@Legajo", legajo);
+
+            return accesoDatos.ObtenerTablaConParametros("DiasHorariosMedico", cmd);
+        }
+
+        public void EliminarDiasXHorariosXFechasXMedicoSiNoHayTurno(int idDia, int idHorario, DateTime fecha, string legajo)
+        {
+            SqlCommand cmd = new SqlCommand();
+            cmd.Parameters.AddWithValue("@Id_Dia", idDia);
+            cmd.Parameters.AddWithValue("@Id_Horario", idHorario);
+            cmd.Parameters.AddWithValue("@Fecha", fecha);
+            cmd.Parameters.AddWithValue("@Legajo_Medico", legajo);
+            AccesoDatos instancia = new AccesoDatos();
+            instancia.EjecutarProcedimientoAlmacenado(cmd, "spEliminarDiasXHorariosXFechasXMedicoSiNoTurno");
+        }
+
+        public List<int> getTodosLosIdHorarios()
+        {
+            List<int> lista = new List<int>();
+            SqlConnection conexion = accesoDatos.ObtenerConexion();
+            SqlCommand comando = new SqlCommand("SELECT Id_Horario FROM Horarios", conexion);
+
+            SqlDataReader reader = comando.ExecuteReader();
+
+            while (reader.Read())
+            {
+                lista.Add(Convert.ToInt32(reader["Id_Horario"]));
+            }
+
+            reader.Close();
+            conexion.Close();
+
+            return lista;
+        }
 
 
-
-
+        //--------------------------------------------------------------------------------------------
 
 
 

@@ -21,9 +21,9 @@ namespace Vista
             {
                 cargarGridView();
 
-                string user;
-                user = Session["Usuario"].ToString();
-                lblNombreUsuario.Text = user;
+                //string user;
+               // user = Session["Usuario"].ToString();
+                //lblNombreUsuario.Text = user;
             }
         }
 
@@ -76,7 +76,6 @@ namespace Vista
             GridViewRow row = gvMedicos.Rows[e.RowIndex];
 
             Medicos medicos = new Medicos();
-
             medicos.SetLegajo(((Label)row.FindControl("lbl_eit_legajo")).Text);
             medicos.SetDNI(((Label)row.FindControl("lbl_eit_dni")).Text);
             medicos.SetNombre(((TextBox)row.FindControl("txt_eit_nombre")).Text);
@@ -101,18 +100,40 @@ namespace Vista
             DropDownList ddlEspecialidades = (DropDownList)row.FindControl("ddlEspecialidades");
             medicos.SetId_Especialidad(int.Parse(ddlEspecialidades.SelectedValue));
 
-
             Usuarios usuario = new Usuarios();
             usuario.SetNombreUsuario(((TextBox)row.FindControl("txt_eit_usuario")).Text);
             usuario.SetContrasena(((TextBox)row.FindControl("txt_eit_contrasena")).Text);
-            usuario.SetTipoUsuario("Medico");  // fijo si es solo para médicos
-            usuario.SetLegajo_Medico(((Label)row.FindControl("lbl_eit_legajo")).Text);
+            usuario.SetTipoUsuario("Medico");
+            usuario.SetLegajo_Medico(medicos.GetLegajo());
 
-
-
-
+            // ✅ ACTUALIZAR DATOS PERSONALES
             negocioClinica.ActualizarMedico(medicos);
             negocioClinica.ActualizarUsuario(usuario);
+
+            // ✅ ACTUALIZAR DÍAS
+            CheckBoxList cblDias = (CheckBoxList)row.FindControl("cblDias");
+            List<int> diasSeleccionados = new List<int>();
+            foreach (ListItem item in cblDias.Items)
+            {
+                if (item.Selected)
+                    diasSeleccionados.Add(int.Parse(item.Value));
+            }
+
+            // ✅ ACTUALIZAR HORARIOS (CheckBoxList)
+            CheckBoxList cblHorarios = (CheckBoxList)row.FindControl("cblHorarios");
+            List<int> horariosSeleccionados = new List<int>();
+            foreach (ListItem item in cblHorarios.Items)
+            {
+                if (item.Selected)
+                    horariosSeleccionados.Add(int.Parse(item.Value));
+            }
+
+            // ✅ Registrar fechas según días y horarios seleccionados
+            if (diasSeleccionados.Count > 0 && horariosSeleccionados.Count > 0)
+            {
+                negocioClinica.ActualizarDiasHorariosFechasMedico(medicos.GetLegajo(), diasSeleccionados, horariosSeleccionados);
+            }
+
 
             gvMedicos.EditIndex = -1;
             cargarGridView();
@@ -177,6 +198,46 @@ namespace Vista
                 ddlEspecialidades.DataValueField = "Id_Especialidad";
                 ddlEspecialidades.DataBind();
                 ddlEspecialidades.SelectedValue = idEspecialidad.ToString();
+
+
+                // Obtener el legajo del médico actual
+                string legajo = DataBinder.Eval(e.Row.DataItem, "Legajo").ToString();
+
+                // Obtener los días y horarios asignados desde la BD
+                DataTable diasHorarios = negocioClinica.GetDiasHorariosPorMedico(legajo);
+
+                // Cargar CheckBoxList de días
+                CheckBoxList cblDias = (CheckBoxList)e.Row.FindControl("cblDias");
+                cblDias.DataSource = negocioClinica.getTablaDias();
+                cblDias.DataTextField = "DescripcionDia";
+                cblDias.DataValueField = "Id_Dia";
+                cblDias.DataBind();
+
+                // Marcar los días que tiene asignados
+                foreach (ListItem item in cblDias.Items)
+                {
+                    if (diasHorarios.AsEnumerable().Any(r => r["Id_Dia"].ToString() == item.Value))
+                    {
+                        item.Selected = true;
+                    }
+                }
+
+                CheckBoxList cblHorarios = (CheckBoxList)e.Row.FindControl("cblHorarios");
+                DataTable horarios = negocioClinica.getTablaHorarios();
+                cblHorarios.DataSource = horarios;
+                cblHorarios.DataTextField = "DescripcionHorario";
+                cblHorarios.DataValueField = "Id_Horario";
+                cblHorarios.DataBind();
+
+                // Marcar los horarios ya asignados al médico
+                foreach (ListItem item in cblHorarios.Items)
+                {
+                    if (diasHorarios.AsEnumerable().Any(r => r["Id_Horario"].ToString() == item.Value))
+                    {
+                        item.Selected = true;
+                    }
+                }
+
             }
         }
 
