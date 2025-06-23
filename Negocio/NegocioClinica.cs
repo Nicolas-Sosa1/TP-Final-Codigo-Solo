@@ -228,6 +228,12 @@ namespace Negocio
 
 
 
+
+
+
+
+
+
         //Seccion AsignarTurno---------------------------------------------------------------
         public bool RegistrarTurno(Turnos turnos)
         {
@@ -269,6 +275,23 @@ namespace Negocio
 
         //-------------------------------------------------------------------------------------
 
+        //--------------------------------------------------------------------------------------
+        //Seccion Buscar Medico
+        public DataTable BuscarMedicos(string criterio)
+        {
+            Dao dao = new Dao();
+            return dao.BuscarMedicos(criterio);
+        }
+
+        //--------------------------------------------------------------------------------------
+        //Seccion Buscar Medico
+        public DataTable BuscarPacientes(string criterio)
+        {
+            Dao dao = new Dao();
+            return dao.BuscarPacientes(criterio);
+        }
+
+        //--------------------------------------------------------------------------------------
 
 
 
@@ -306,20 +329,6 @@ namespace Negocio
             return dao.ObtenerDiasHorariosDeMedico(legajo);
         }
 
-
-
-
-        public DataTable BuscarMedicos(string criterio)
-        {
-            Dao dao = new Dao();
-            return dao.BuscarMedicos(criterio);
-        }
-
-        public DataTable BuscarPacientes(string criterio)
-        {
-            Dao dao = new Dao();
-            return dao.BuscarPacientes(criterio);
-        }
 
         public DataTable validarLogin(string usuario, string contrasena)
         {
