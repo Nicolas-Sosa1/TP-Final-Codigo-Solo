@@ -47,6 +47,13 @@ namespace Negocio
             return dao.ObtenerTodosLosHorarios();
         }
 
+        public DataTable ObtenerTodosLosTurnos(string nombreUsuario)
+        {
+            Dao dao = new Dao(); 
+            return dao.ObtenerTodosLosTurnos(nombreUsuario);
+        }
+
+
         public int agregarPaciente(Pacientes pacientes)
         {
             Dao dao = new Dao();
@@ -279,6 +286,20 @@ namespace Negocio
 
 
         //-------------------------------------------------------------------------------------
+
+        //-------------------------------------------------------------------------------------
+        //Seccion Actualizar Turnos
+        public int ActualizarTurno(Turnos turno)
+        {
+            Dao dao = new Dao();
+            return dao.actualizarTurno(turno);
+        }
+
+
+
+        //-------------------------------------------------------------------------------------
+
+
 
         //--------------------------------------------------------------------------------------
         //Seccion Buscar Medico

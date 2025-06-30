@@ -96,6 +96,37 @@ namespace Datos
             return accesoDatos.ObtenerTabla("Medicos", consulta);
         }
 
+        public DataTable ObtenerTodosLosTurnos(string nombreUsuario)
+        {
+            string consulta = @"
+            SELECT 
+                t.Id_Turno,
+                t.Fecha,
+                t.Hora,
+                d.DescripcionDia,
+                h.HoraDesde,
+                h.HoraHasta,
+                t.EstadoTurno,
+                t.Observacion,
+                p.DNI AS DNI_Paciente,
+                p.Nombre + ' ' + p.Apellido AS NombrePaciente
+            FROM Turnos t
+            INNER JOIN Usuarios u ON u.Legajo_Medico = t.Legajo_Medico
+            INNER JOIN Dias d ON d.Id_Dia = t.Id_Dia
+            INNER JOIN Horarios h ON h.Id_Horario = t.Id_Horario
+            INNER JOIN Pacientes p ON p.DNI = t.DNI_Paciente
+            WHERE u.NombreUsuario = @nombreUsuario
+            ORDER BY t.Id_Turno";
+
+            SqlCommand cmd = new SqlCommand(consulta);
+            cmd.Parameters.AddWithValue("@nombreUsuario", nombreUsuario);
+
+            return accesoDatos.ObtenerTablaConParametros("Turnos", cmd);
+
+        }
+
+
+
 
         public DataTable ObtenerTodasLasEspecialidades()
         {
@@ -811,6 +842,31 @@ namespace Datos
             DataTable tabla = accesoDatos.ObtenerTabla("Turnos", consulta);
             return Convert.ToInt32(tabla.Rows[0][0]) > 0;
         }
+
+        //-------------------------------------------------------------------------------------------------
+
+
+        //-------------------------------------------------------------------------------------------------
+        //Actualizar Turno
+        private void ArmarParametrosActualizarTurno(ref SqlCommand Comando, Turnos turnos)
+        {
+            SqlParameter SqlParametros = new SqlParameter();
+            SqlParametros = Comando.Parameters.Add("@Id_Turno", SqlDbType.Int);
+            SqlParametros.Value = turnos.getId_Turno();
+            SqlParametros = Comando.Parameters.Add("@EstadoTurno", SqlDbType.VarChar);
+            SqlParametros.Value = turnos.getEstadoTurno();
+            SqlParametros = Comando.Parameters.Add("@Observacion", SqlDbType.VarChar);
+            SqlParametros.Value = turnos.getObservacion();
+                
+        }
+
+        public int actualizarTurno(Turnos turnos)
+        {
+            SqlCommand comando = new SqlCommand();
+            ArmarParametrosActualizarTurno(ref comando, turnos);
+            return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spActaulizarTurno");
+        }
+
 
         //-------------------------------------------------------------------------------------------------
 
