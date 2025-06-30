@@ -106,7 +106,7 @@ namespace Vista
             }
             else
             {
-                lblMensaje.Text = "Ocurrió un error al agregar el Paciente.";
+                lblMensaje.Text = "El numero de DNI del paciente ya existe";
                 lblMensaje.ForeColor = Color.Red;
             }
 

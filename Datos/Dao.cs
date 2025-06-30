@@ -185,7 +185,24 @@ namespace Datos
         //-----------------------------------------------------------------------------------
 
 
+        // Verificar si existe DNI del paciente
 
+        public bool ExisteDNI(string dni)
+        {
+            string consulta = "SELECT * FROM Pacientes WHERE DNI = @DNI";
+            SqlConnection conexion = new AccesoDatos().ObtenerConexion();
+            SqlCommand comando = new SqlCommand(consulta, conexion);
+
+            comando.Parameters.AddWithValue("@DNI", dni);
+
+            SqlDataAdapter adapter = new SqlDataAdapter(comando);
+            DataTable tabla = new DataTable();
+
+            adapter.Fill(tabla);
+
+            // Si en el DataTable hay al menos 1 fila, el DNI ya existe
+            return tabla.Rows.Count > 0;
+        }
 
 
 
@@ -220,6 +237,11 @@ namespace Datos
 
         public int agregarPaciente(Pacientes pacientes)
         {
+            // Verificar si existe DNI con metodo creado (si existe sale con return)
+            if (ExisteDNI(pacientes.getDni()))
+            {
+                return 0;
+            }
 
             SqlCommand comando = new SqlCommand();
             ArmarParametrosAgregarPaciente(ref comando, pacientes);
