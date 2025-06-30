@@ -23,7 +23,7 @@
             <br /><br />
             <asp:Button ID="btnInforme2" runat="server" Text="Informe ejemplo 2" />
             <br />
-            <asp:GridView ID="gvInforme2" runat="server"></asp:GridView>
+            <asp:GridView ID="gvInformeEspecialidad" runat="server"></asp:GridView>
         </div>
     </form>
 </body>

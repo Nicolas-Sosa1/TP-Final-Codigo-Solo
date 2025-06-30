@@ -940,7 +940,53 @@ namespace Datos
             return accesoDatos.ObtenerTablaConParametros("Pacientes", comando);
         }
 
-    }//-------------------------------------------------------------------------------------------------
+
+        //-------------------------------------------------------------------------------------------------
+        //Seccion Informes
+        // === DAO (Acceso a Datos) ===
+        public DataTable ObtenerResumenAsistenciaTurnos(DateTime fechaDesde, DateTime fechaHasta)
+        {
+            string consulta = @"
+        SELECT 
+            EstadoTurno,
+            COUNT(*) AS Cantidad,
+            ROUND(CAST(COUNT(*) * 100.0 / 
+                (SELECT COUNT(*) FROM Turnos 
+                 WHERE Fecha BETWEEN @Desde AND @Hasta) AS FLOAT), 2) AS Porcentaje
+        FROM Turnos
+        WHERE Fecha BETWEEN @Desde AND @Hasta
+        GROUP BY EstadoTurno";
+
+            SqlCommand cmd = new SqlCommand(consulta);
+            cmd.Parameters.AddWithValue("@Desde", fechaDesde);
+            cmd.Parameters.AddWithValue("@Hasta", fechaHasta);
+
+            return accesoDatos.ObtenerTablaConParametros("Turnos", cmd);
+        }
+
+
+        public DataTable ObtenerEspecialidadMasFrecuente()
+        {
+            string consulta = @"
+        SELECT 
+            e.DescripcionEspecialidad,
+            COUNT(*) AS CantidadMedicos,
+            ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM Medicos), 2) AS Porcentaje
+        FROM Medicos m
+        INNER JOIN Especialidades e ON m.Id_Especialidad = e.Id_Especialidad
+        GROUP BY e.DescripcionEspecialidad
+        ORDER BY CantidadMedicos DESC;";
+
+            return accesoDatos.ObtenerTabla("InformeEspecialidad", consulta);
+        }
+
+
+        //-------------------------------------------------------------------------------------------------
+
+    }
+
+
+
 }
 
 

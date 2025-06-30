@@ -287,6 +287,7 @@ namespace Negocio
 
         //-------------------------------------------------------------------------------------
 
+
         //-------------------------------------------------------------------------------------
         //Seccion Actualizar Turnos
         public int ActualizarTurno(Turnos turno)
@@ -298,6 +299,19 @@ namespace Negocio
 
 
         //-------------------------------------------------------------------------------------
+        //Seccion Informes
+        public DataTable ObtenerResumenAsistenciaTurnos(DateTime desde, DateTime hasta)
+        {
+            Dao dao = new Dao();
+            return dao.ObtenerResumenAsistenciaTurnos(desde, hasta);
+        }
+
+        public DataTable ObtenerEspecialidadMasFrecuente()
+        {
+            Dao dao = new Dao();
+            return dao.ObtenerEspecialidadMasFrecuente();
+        }
+        //--------------------------------------------------------------------------------------
 
 
 
