@@ -166,7 +166,7 @@ namespace Vista
             }
             else
             {
-                lblMensaje.Text = "Ocurrió un error al agregar el Medico.";
+                lblMensaje.Text = resultado; // Da el mensaje segun error (legajo o DNI)
                 lblMensaje.ForeColor = Color.Red;
             }
 

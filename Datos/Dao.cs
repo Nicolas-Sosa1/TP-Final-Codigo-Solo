@@ -187,7 +187,7 @@ namespace Datos
 
         // Verificar si existe DNI del paciente
 
-        public bool ExisteDNI(string dni)
+        public bool ExistePacienteRegistrado(string dni)
         {
             string consulta = "SELECT * FROM Pacientes WHERE DNI = @DNI";
             SqlConnection conexion = new AccesoDatos().ObtenerConexion();
@@ -238,7 +238,7 @@ namespace Datos
         public int agregarPaciente(Pacientes pacientes)
         {
             // Verificar si existe DNI con metodo creado (si existe sale con return)
-            if (ExisteDNI(pacientes.getDni()))
+            if (ExistePacienteRegistrado(pacientes.getDni()))
             {
                 return 0;
             }
@@ -329,7 +329,39 @@ namespace Datos
 
         //--------------------------------------------------------------------------------------
 
+        public bool ExisteLegajoMedico(string legajo)
+        {
+            string consulta = "SELECT * FROM Medicos WHERE Legajo = @Legajo";
+            SqlConnection conexion = new AccesoDatos().ObtenerConexion();
+            SqlCommand comando = new SqlCommand(consulta, conexion);
 
+            comando.Parameters.AddWithValue("@Legajo", legajo);
+
+            SqlDataAdapter adapter = new SqlDataAdapter(comando);
+            DataTable tabla = new DataTable();
+
+            adapter.Fill(tabla);
+
+            // Si en el DataTable hay al menos 1 fila, el legajo del medico ya existe
+            return tabla.Rows.Count > 0;
+        }
+
+        public bool ExisteDNIMedico(string dni)
+        {
+            string consulta = "SELECT * FROM Medicos WHERE DNI = @DNI";
+            SqlConnection conexion = new AccesoDatos().ObtenerConexion();
+            SqlCommand comando = new SqlCommand(consulta, conexion);
+
+            comando.Parameters.AddWithValue("@DNI", dni);
+
+            SqlDataAdapter adapter = new SqlDataAdapter(comando);
+            DataTable tabla = new DataTable();
+
+            adapter.Fill(tabla);
+
+            // Si en el DataTable hay al menos 1 fila, el DNI del medico ya existe
+            return tabla.Rows.Count > 0;
+        }
 
 
         //Agregar medico mediante interfaz---------------------------------------------------------------
@@ -371,6 +403,12 @@ namespace Datos
 
         public int agregarMedico(Medicos medicos)
         {
+            if (ExisteDNIMedico(medicos.GetDNI()))
+                return -1; // Código para "DNI ya existe"
+
+            if (ExisteLegajoMedico(medicos.GetLegajo()))
+                return -2; // Código para "Legajo ya existe"
+
             SqlCommand comando = new SqlCommand();
             ArmarParametrosAgregarMedico(ref comando, medicos);
             return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spAgregarMedico");

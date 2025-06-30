@@ -144,9 +144,14 @@ namespace Negocio
 
             int resultadoMedico = dao.agregarMedico(medico); // ← Usás el método del DAO
 
-            if (resultadoMedico <= 0)
+            if (resultadoMedico == -1)
             {
-                return "Error al registrar al médico.";
+                return "El DNI del medico ya existe";
+            }
+
+            if (resultadoMedico == -2)
+            {
+                return "El legajo del medico ya existe";
             }
 
             usuario.SetLegajo_Medico(medico.GetLegajo()); // Asociás el legajo médico al usuario
