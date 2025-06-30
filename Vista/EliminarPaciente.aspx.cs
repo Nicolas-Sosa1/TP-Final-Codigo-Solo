@@ -50,6 +50,8 @@ namespace Vista
                     lblMensaje.ForeColor = Color.Red;
                     break;
             }
+
+            LimpiarCampos();
         }
 
 

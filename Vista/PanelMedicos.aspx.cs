@@ -48,6 +48,7 @@ namespace Vista
             if (!string.IsNullOrEmpty(criterio))
             {
                 DataTable dt = negocioClinica.BuscarMedicos(criterio);
+
                 gvMedicos.DataSource = dt;
                 gvMedicos.DataBind();
             }

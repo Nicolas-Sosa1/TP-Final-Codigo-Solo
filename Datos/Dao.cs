@@ -762,17 +762,17 @@ namespace Datos
             SqlCommand comando = new SqlCommand(@"
             SELECT 
                 m.Legajo,
-                m.DNI AS Documento,
+                m.DNI AS 'Documento',
                 m.Nombre,
                 m.Apellido,
                 s.Descripcion_Sexo AS Sexo,
                 m.Nacionalidad,
                 m.FechaNacimiento,
                 m.Direccion,
-                l.DescripcionLocalidad AS Localidad,
+                l.DescripcionLocalidad AS 'Localidad',
                 pr.DescripcionProvincia AS 'Provincia',
                 e.DescripcionEspecialidad AS Especialidad,
-                m.Email AS [CorreoElectronico],
+                m.Email AS 'CorreoElectronico',
                 m.Telefono,
                 m.Estado,
                 u.NombreUsuario,
@@ -821,7 +821,7 @@ namespace Datos
 
             comando.Parameters.AddWithValue("@Criterio", criterio);
 
-            return accesoDatos.ObtenerTablaConParametros("Medicos", comando);
+            return accesoDatos.ObtenerTablaConParametros("Pacientes", comando);
         }
 
     }//-------------------------------------------------------------------------------------------------

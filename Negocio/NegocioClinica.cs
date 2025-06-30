@@ -280,7 +280,34 @@ namespace Negocio
         public DataTable BuscarMedicos(string criterio)
         {
             Dao dao = new Dao();
-            return dao.BuscarMedicos(criterio);
+            DataTable tablaMedicos = dao.BuscarMedicos(criterio);
+
+            tablaMedicos.Columns.Add("DiasDescripcion", typeof(string));
+            tablaMedicos.Columns.Add("HorarioDescripcion", typeof(string));
+
+            foreach (DataRow row in tablaMedicos.Rows)
+            {
+                string legajo = row["Legajo"].ToString();
+                DataTable diasHorarios = dao.ObtenerDiasHorariosDeMedico(legajo);
+
+                // 🔹 Armar string de días
+                string dias = string.Join(", ", diasHorarios.AsEnumerable()
+                                        .Select(r => r["DescripcionDia"].ToString())
+                                        .Distinct());
+
+                // 🔹 Armar string de horarios desde columnas HoraDesde y HoraHasta
+                string horarios = string.Join(", ", diasHorarios.AsEnumerable()
+                    .Select(r =>
+                        TimeSpan.Parse(r["HoraDesde"].ToString()).ToString(@"hh\:mm") + " - " +
+                        TimeSpan.Parse(r["HoraHasta"].ToString()).ToString(@"hh\:mm")
+                    ).Distinct());
+
+                row["DiasDescripcion"] = dias;
+                row["HorarioDescripcion"] = horarios;
+            }
+
+            return tablaMedicos;
+            
         }
 
         //--------------------------------------------------------------------------------------
