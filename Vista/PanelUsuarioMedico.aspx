@@ -35,7 +35,7 @@
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <asp:Button ID="btnMostrar" runat="server" Text="Mostrar todos" />
             <br /><br />
-            <asp:GridView ID="gvTurnos" runat="server" AutoGenerateColumns="False" DataKeyNames="Id_Turno"  AutoGenerateEditButton="True"  OnPageIndexChanging="gvTurnos_PageIndexChanging" OnRowCancelingEdit="gvTurnos_RowCancelingEdit" OnRowDataBound="gvTurnos_RowDataBound" OnRowEditing="gvTurnos_RowEditing" OnRowUpdating="gvTurnos_RowUpdating">
+            <asp:GridView ID="gvTurnos" runat="server" AutoGenerateColumns="False" DataKeyNames="Id_Turno"  AutoGenerateEditButton="True"  OnPageIndexChanging="gvTurnos_PageIndexChanging" OnRowCancelingEdit="gvTurnos_RowCancelingEdit" OnRowDataBound="gvTurnos_RowDataBound" OnRowEditing="gvTurnos_RowEditing" OnRowUpdating="gvTurnos_RowUpdating" BackColor="White" BorderColor="#336666" BorderStyle="Double" BorderWidth="3px" CellPadding="4" GridLines="Horizontal">
                 <Columns>
                      <asp:TemplateField HeaderText="Turno">
                      <EditItemTemplate>
@@ -104,6 +104,16 @@
                          </ItemTemplate>
                     </asp:TemplateField>
                 </Columns>
+
+                <FooterStyle BackColor="White" ForeColor="#333333" />
+                <HeaderStyle BackColor="#336666" Font-Bold="True" ForeColor="White" />
+                <PagerStyle BackColor="#336666" ForeColor="White" HorizontalAlign="Center" />
+                <RowStyle BackColor="White" ForeColor="#333333" />
+                <SelectedRowStyle BackColor="#339966" Font-Bold="True" ForeColor="White" />
+                <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                <SortedAscendingHeaderStyle BackColor="#487575" />
+                <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                <SortedDescendingHeaderStyle BackColor="#275353" />
 
             </asp:GridView>
             <br />

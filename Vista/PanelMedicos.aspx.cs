@@ -21,9 +21,9 @@ namespace Vista
             {
                 cargarGridView();
 
-                //string user;
-               // user = Session["Usuario"].ToString();
-                //lblNombreUsuario.Text = user;
+                string user;
+                user = Session["Usuario"].ToString();
+                lblNombreUsuario.Text = user;
             }
         }
 

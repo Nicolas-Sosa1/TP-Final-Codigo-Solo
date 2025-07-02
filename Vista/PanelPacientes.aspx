@@ -93,7 +93,7 @@
                 <asp:TextBox ID="txt_eit_fecha_nac" runat="server" Text='<%# Bind("FechaNacimiento", "{0:yyyy-MM-dd}") %>' TextMode="Date"></asp:TextBox>
             </EditItemTemplate>
             <ItemTemplate>
-                <asp:Label ID="lbl_fecha_nacimiento" runat="server" Text='<%# Bind("FechaNacimiento") %>'></asp:Label>
+                <asp:Label ID="lbl_fecha_nacimiento" runat="server" Text='<%# Bind("FechaNacimiento", "{0:yyyy-MM-dd}") %>'></asp:Label>
             </ItemTemplate>
         </asp:TemplateField>
         <asp:TemplateField HeaderText="Dirección">
