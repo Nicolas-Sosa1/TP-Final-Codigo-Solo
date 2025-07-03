@@ -12,8 +12,10 @@
         <div>
             <asp:HyperLink ID="hlVolverPanelAdmin" runat="server" NavigateUrl="~/PanelUsuarioAdministrador.aspx">Panel de Administrador</asp:HyperLink>
             <br /><br />
-            Usuario:&nbsp;&nbsp;
-            <asp:Label ID="lblUsuario" runat="server" Text=""></asp:Label>
+            <strong>
+            <asp:Label ID="lblUsuarios" runat="server" ForeColor="#006600" Text="Usuario:"></asp:Label>
+            </strong>&nbsp;<strong><asp:Label ID="lblUsuario" runat="server" ForeColor="Black"></asp:Label>
+            </strong>
             <br /><br />
             <asp:Label ID="lblAsignacion" runat="server" Text="Asignación de turnos" Font-Bold="True" Font-Size="X-Large"></asp:Label>
             <br />

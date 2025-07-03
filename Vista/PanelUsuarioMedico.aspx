@@ -13,8 +13,10 @@
         <div>
             <asp:Label ID="lblMedico" runat="server" Text="Panel de Médico" Font-Bold="True" Font-Size="X-Large"></asp:Label>
             <br /><br />
-            Usuario:&nbsp;&nbsp;
-            <asp:Label ID="lblUsuario" runat="server" Text=""></asp:Label>
+            <strong>
+            <asp:Label ID="lblUsuarios" runat="server" ForeColor="#006600" Text="Usuario:"></asp:Label>
+            </strong>&nbsp;<strong><asp:Label ID="lblUsuario" runat="server" ForeColor="Black"></asp:Label>
+            </strong>
             <br />
             <asp:HyperLink ID="hlCerrar" runat="server" NavigateUrl="~/CerrarSesion.aspx">Cerrar sesion</asp:HyperLink>
             <br />

@@ -33,6 +33,15 @@ namespace Vista
         protected global::System.Web.UI.WebControls.HyperLink hlVolverPanelAdmin;
 
         /// <summary>
+        /// Control lblUsuarios.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblUsuarios;
+
+        /// <summary>
         /// Control lblUsuario.
         /// </summary>
         /// <remarks>
@@ -51,15 +60,6 @@ namespace Vista
         protected global::System.Web.UI.WebControls.Label lblInformes;
 
         /// <summary>
-        /// Control btnInforme1.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnInforme1;
-
-        /// <summary>
         /// Control gvInforme1.
         /// </summary>
         /// <remarks>
@@ -67,15 +67,6 @@ namespace Vista
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvInforme1;
-
-        /// <summary>
-        /// Control btnInforme2.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnInforme2;
 
         /// <summary>
         /// Control gvInformeEspecialidad.

@@ -12,17 +12,18 @@
         <div>
             <asp:HyperLink ID="hlVolverPanelAdmin" runat="server" NavigateUrl="~/PanelUsuarioAdministrador.aspx">Panel de Administrador</asp:HyperLink>
             <br /><br />
-            Usuario:&nbsp;&nbsp;
-            <asp:Label ID="lblUsuario" runat="server" Text=""></asp:Label>
+            &nbsp;<strong><asp:Label ID="lblUsuarios" runat="server" ForeColor="#006600" Text="Usuario:"></asp:Label>
+            </strong>&nbsp;<strong><asp:Label ID="lblUsuario" runat="server" ForeColor="Black"></asp:Label>
+            </strong>
             <br /><br />
             <asp:Label ID="lblInformes" runat="server" Text="Informes" Font-Bold="True" Font-Size="X-Large"></asp:Label>
-            <br /><br />
-            <asp:Button ID="btnInforme1" runat="server" Text="Informe ejemplo 1" />
             <br />
+            <br />
+            <h3>Cantidad de ausentes en el año 2025</h3>
             <asp:GridView ID="gvInforme1" runat="server"></asp:GridView>
-            <br /><br />
-            <asp:Button ID="btnInforme2" runat="server" Text="Informe ejemplo 2" />
             <br />
+            <br />
+            <h3>Cantidad de Medicos por Especialidad</h3>
             <asp:GridView ID="gvInformeEspecialidad" runat="server"></asp:GridView>
         </div>
     </form>
