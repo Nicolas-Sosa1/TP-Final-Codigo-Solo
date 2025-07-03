@@ -101,9 +101,20 @@ namespace Vista
         public void cargarDdlPacientes()
         {
             DataTable pacientes = negocioClinica.getTablaPacientes();
+
+            pacientes.Columns.Add("NombreCompleto", typeof(string));
+
+            // Mostrar nombre y apellido en el DropDownList
+            foreach (DataRow row in pacientes.Rows)
+            {
+                string nombre = row["Nombre"].ToString();
+                string apellido = row["Apellido"].ToString();
+                row["NombreCompleto"] = $"{apellido}, {nombre}";
+            }
+
             ddlPacientes.DataSource = pacientes;
-            ddlPacientes.DataTextField = "Nombre"; // o solo "Nombre"
-            ddlPacientes.DataValueField = "Documento"; // asegurate que esta sea la columna correcta
+            ddlPacientes.DataTextField = "NombreCompleto";
+            ddlPacientes.DataValueField = "Documento";
             ddlPacientes.DataBind();
             ddlPacientes.Items.Insert(0, new ListItem("-- Seleccione un paciente --", ""));
         }

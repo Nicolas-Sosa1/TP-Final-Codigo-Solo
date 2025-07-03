@@ -766,27 +766,34 @@ namespace Datos
 
         public DataTable ObtenerDiasDisponibles(int legajo, DateTime fecha)
         {
-            string consulta = $@"
-        SELECT DISTINCT d.Id_Dia, di.DescripcionDia
-        FROM DiasXHorariosXFechasXMedico d
-        JOIN Dias di ON d.Id_Dia = di.Id_Dia
-        WHERE d.Legajo_Medico = '{legajo}'
-          AND d.Fecha = '{fecha:yyyy-MM-dd}'";
+            SqlCommand comando = new SqlCommand($@"
+            SELECT DISTINCT d.Id_Dia, di.DescripcionDia
+            FROM DiasXHorariosXFechasXMedico d
+            JOIN Dias di ON d.Id_Dia = di.Id_Dia
+            WHERE d.Legajo_Medico = @legajo
+              AND d.Fecha = @fecha");
 
-            return accesoDatos.ObtenerTabla("DiasDisponibles", consulta);
+            comando.Parameters.AddWithValue("@legajo", legajo);
+            comando.Parameters.AddWithValue("@fecha", fecha.Date);
+
+            return accesoDatos.ObtenerTablaConParametros("DiasDisponibles", comando);
         }
 
         public DataTable ObtenerHorariosDisponibles(int idDia, int legajo, DateTime fecha)
         {
-            string consulta = $@"
-        SELECT h.Id_Horario, h.HoraDesde, h.HoraHasta
-        FROM DiasXHorariosXFechasXMedico d
-        JOIN Horarios h ON d.Id_Horario = h.Id_Horario
-        WHERE d.Id_Dia = {idDia}
-          AND d.Legajo_Medico = '{legajo}'
-          AND d.Fecha = '{fecha:yyyy-MM-dd}'";
+            SqlCommand comando = new SqlCommand($@"
+            SELECT h.Id_Horario, h.HoraDesde, h.HoraHasta
+            FROM DiasXHorariosXFechasXMedico d
+            JOIN Horarios h ON d.Id_Horario = h.Id_Horario
+            WHERE d.Id_Dia = @IdDia
+              AND d.Legajo_Medico = @legajo
+              AND d.Fecha = @fecha");
 
-            return accesoDatos.ObtenerTabla("HorariosDisponibles", consulta);
+            comando.Parameters.AddWithValue("@idDia", idDia);
+            comando.Parameters.AddWithValue("@legajo", legajo);
+            comando.Parameters.AddWithValue("@fecha", fecha.Date);
+
+            return accesoDatos.ObtenerTablaConParametros("HorariosDisponibles", comando);
         }
 
 
