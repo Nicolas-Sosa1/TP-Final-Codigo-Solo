@@ -15,6 +15,8 @@ namespace Vista
         NegocioClinica negocioClinica = new NegocioClinica();
         protected void Page_Load(object sender, EventArgs e)
         {
+            UnobtrusiveValidationMode = UnobtrusiveValidationMode.None;
+
             if (!IsPostBack)
             {
                 string user;
@@ -22,6 +24,7 @@ namespace Vista
                 lblUsuario.Text = user;
 
                 CargarTurnos();
+                CargarDdlEstado();
             }
 
         }
@@ -121,6 +124,43 @@ namespace Vista
                 // Habilitar sólo si está en "Presente"
                 txtObservaciones.Enabled = ddlEstado.SelectedValue == "Presente";
             }
+        }
+
+        protected void btnMostrar_Click(object sender, EventArgs e)
+        {
+            CargarTurnos();
+        }
+
+        protected void btnFiltrar_Click(object sender, EventArgs e)
+        {
+            string nombreUsuario = Session["Usuario"].ToString();
+            string nombrePaciente = txtNombre.Text.Trim();
+            string nTurno = txtTurno.Text.Trim();
+            string estado = ddlBuscarEstado.Text;
+
+            if (!string.IsNullOrEmpty(nombreUsuario) || !string.IsNullOrEmpty(nombrePaciente) || !string.IsNullOrEmpty(nTurno) || !string.IsNullOrEmpty(estado))
+            {
+                int? nroTurno = null;
+                if (!string.IsNullOrEmpty(nTurno))
+                {
+                    nroTurno = Convert.ToInt32(nTurno);
+                }
+
+                DataTable dataTable = negocioClinica.BuscarTurno(nombreUsuario, nombrePaciente, nroTurno, estado);
+                gvTurnos.DataSource = dataTable;
+                gvTurnos.DataBind();
+            }
+                
+        }
+
+        public void CargarDdlEstado()
+        {
+            ddlBuscarEstado.Items.Clear();
+            ddlBuscarEstado.Items.Add(new ListItem("-- Seleccionar estado --", ""));
+            ddlBuscarEstado.Items.Add(new ListItem("Presente", "Presente"));
+            ddlBuscarEstado.Items.Add(new ListItem("Ausente", "Ausente"));
+            ddlBuscarEstado.Items.Add(new ListItem("Pendiente", "Pendiente"));
+
         }
     }
 }

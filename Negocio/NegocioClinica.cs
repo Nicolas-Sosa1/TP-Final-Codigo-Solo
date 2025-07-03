@@ -284,6 +284,12 @@ namespace Negocio
             return dao.ExisteTurno(legajo, fecha, hora);
         }
 
+        public DataTable BuscarTurno(string nombreUsuario, string nombrePaciente, int? nroTurno, string estado)
+        {
+            Dao dao = new Dao();
+            return dao.BuscarTurno(nombreUsuario, nombrePaciente, nroTurno, estado);
+        }
+
 
         //-------------------------------------------------------------------------------------
 

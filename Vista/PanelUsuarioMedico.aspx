@@ -33,9 +33,9 @@
             </asp:DropDownList>
             <br />
             <br />
-            <asp:Button ID="btnFiltrar" runat="server" Text="Filtrar" />
+            <asp:Button ID="btnFiltrar" runat="server" Text="Filtrar" OnClick="btnFiltrar_Click" />
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <asp:Button ID="btnMostrar" runat="server" Text="Mostrar todos" />
+            <asp:Button ID="btnMostrar" runat="server" Text="Mostrar todos" OnClick="btnMostrar_Click" />
             <br /><br />
             <asp:GridView ID="gvTurnos" runat="server" AutoGenerateColumns="False" DataKeyNames="Id_Turno"  AutoGenerateEditButton="True"  OnPageIndexChanging="gvTurnos_PageIndexChanging" OnRowCancelingEdit="gvTurnos_RowCancelingEdit" OnRowDataBound="gvTurnos_RowDataBound" OnRowEditing="gvTurnos_RowEditing" OnRowUpdating="gvTurnos_RowUpdating" BackColor="White" BorderColor="#336666" BorderStyle="Double" BorderWidth="3px" CellPadding="4" GridLines="Horizontal">
                 <Columns>

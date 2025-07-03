@@ -874,7 +874,7 @@ namespace Datos
             return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spActaulizarTurno");
         }
 
-
+       
         //-------------------------------------------------------------------------------------------------
 
 
@@ -947,6 +947,42 @@ namespace Datos
             return accesoDatos.ObtenerTablaConParametros("Pacientes", comando);
         }
 
+        public DataTable BuscarTurno(string nombreUsuario, string nombrePaciente, int? nroTurno, string estado)
+        {
+            string consulta = @"
+            SELECT 
+                t.Id_Turno,
+                t.Fecha,
+                t.Hora,
+                d.DescripcionDia,
+                h.HoraDesde,
+                h.HoraHasta,
+                t.EstadoTurno,
+                t.Observacion,
+                p.DNI AS DNI_Paciente,
+                p.Nombre + ' ' + p.Apellido AS NombrePaciente
+            FROM Turnos t
+            INNER JOIN Usuarios u ON u.Legajo_Medico = t.Legajo_Medico
+            INNER JOIN Dias d ON d.Id_Dia = t.Id_Dia
+            INNER JOIN Horarios h ON h.Id_Horario = t.Id_Horario
+            INNER JOIN Pacientes p ON p.DNI = t.DNI_Paciente
+            WHERE u.NombreUsuario = @nombreUsuario
+                AND (@nombrePaciente IS NULL OR p.Nombre LIKE '%' + @nombrePaciente + '%' OR p.Apellido LIKE '%' + @nombrePaciente + '%')
+                AND (@nroTurno IS NULL OR t.Id_Turno = @nroTurno)
+                AND (@estado IS NULL OR t.EstadoTurno LIKE '%' + @estado + '%')
+            ORDER BY t.Id_Turno";
+
+            SqlCommand comando = new SqlCommand(consulta);
+            comando.Parameters.AddWithValue("@nombreUsuario", nombreUsuario);
+            // Si el string está vacío, pasamos DBNull.Value
+            comando.Parameters.AddWithValue("@nombrePaciente", string.IsNullOrEmpty(nombrePaciente) ? (object)DBNull.Value : nombrePaciente);
+            comando.Parameters.AddWithValue("@estado", string.IsNullOrEmpty(estado) ? (object)DBNull.Value : estado);
+
+            // Si nroTurno es null, pasamos DBNull, sino el valor
+            comando.Parameters.AddWithValue("@nroTurno", nroTurno.HasValue ? (object)nroTurno.Value : DBNull.Value);
+
+            return accesoDatos.ObtenerTablaConParametros("Turnos", comando);
+        }
 
         //-------------------------------------------------------------------------------------------------
         //Seccion Informes
