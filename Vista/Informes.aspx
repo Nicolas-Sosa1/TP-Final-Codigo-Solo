@@ -109,7 +109,12 @@
         </div>
 
         <div class="form-group">
-            <h3>Cantidad de Medicos por Especialidad</h3>
+            <h3>Cantidad de Medicos por Especialidad:</h3>
+            <asp:Label ID="lblEspecialidades" runat="server" Text="Especialidades:" Font-Bold="True"></asp:Label>&nbsp;
+            <asp:DropDownList ID="ddlEspecialidades" runat="server" Width="200px"></asp:DropDownList>&nbsp;
+            <asp:RequiredFieldValidator ID="rfvEspecialidades" runat="server" ControlToValidate="ddlEspecialidades" ErrorMessage="Debe seleccionar una especialidad" ForeColor="Red" ValidationGroup="1">*</asp:RequiredFieldValidator>&nbsp;
+            <asp:Button ID="btnInforme2" runat="server" Text="Recibir informe" OnClick="btnInforme2_Click" ValidationGroup="1" />
+            <br /><br />
             <asp:GridView ID="gvInformeEspecialidad" runat="server"></asp:GridView>
         </div>
     </div>

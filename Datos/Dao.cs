@@ -1000,15 +1000,15 @@ namespace Datos
         WHERE Fecha BETWEEN @Desde AND @Hasta
         GROUP BY EstadoTurno";
 
-            SqlCommand cmd = new SqlCommand(consulta);
-            cmd.Parameters.AddWithValue("@Desde", fechaDesde);
-            cmd.Parameters.AddWithValue("@Hasta", fechaHasta);
+            SqlCommand comando = new SqlCommand(consulta);
+            comando.Parameters.AddWithValue("@Desde", fechaDesde);
+            comando.Parameters.AddWithValue("@Hasta", fechaHasta);
 
-            return accesoDatos.ObtenerTablaConParametros("Turnos", cmd);
+            return accesoDatos.ObtenerTablaConParametros("Turnos", comando);
         }
 
 
-        public DataTable ObtenerEspecialidadMasFrecuente()
+        public DataTable ObtenerEspecialidadMasFrecuente(int IdEspecialidad)
         {
             string consulta = @"
         SELECT 
@@ -1017,10 +1017,15 @@ namespace Datos
             ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM Medicos), 2) AS Porcentaje
         FROM Medicos m
         INNER JOIN Especialidades e ON m.Id_Especialidad = e.Id_Especialidad
+        WHERE e.Id_Especialidad = @IdEspecialidad
         GROUP BY e.DescripcionEspecialidad
         ORDER BY CantidadMedicos DESC;";
 
-            return accesoDatos.ObtenerTabla("InformeEspecialidad", consulta);
+
+            SqlCommand comando = new SqlCommand(consulta);
+            comando.Parameters.AddWithValue("@IdEspecialidad", IdEspecialidad);
+
+            return accesoDatos.ObtenerTablaConParametros("InformeEspecialidad", comando);
         }
 
 

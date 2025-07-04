@@ -312,10 +312,10 @@ namespace Negocio
             return dao.ObtenerResumenAsistenciaTurnos(desde, hasta);
         }
 
-        public DataTable ObtenerEspecialidadMasFrecuente()
+        public DataTable ObtenerEspecialidadMasFrecuente(int IdEspecialidad)
         {
             Dao dao = new Dao();
-            return dao.ObtenerEspecialidadMasFrecuente();
+            return dao.ObtenerEspecialidadMasFrecuente(IdEspecialidad);
         }
         //--------------------------------------------------------------------------------------
 

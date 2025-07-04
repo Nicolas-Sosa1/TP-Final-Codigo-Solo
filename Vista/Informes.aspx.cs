@@ -11,14 +11,19 @@ namespace Vista
 {
     public partial class Informes : System.Web.UI.Page
     {
+        NegocioClinica negocioClinica = new NegocioClinica();
         protected void Page_Load(object sender, EventArgs e)
         {
+            UnobtrusiveValidationMode = UnobtrusiveValidationMode.None;
+
             string user;
             user = Session["Usuario"].ToString();
             lblUsuario.Text = user;
-            
 
-            CargarInformeEspecialidad();
+            if (!IsPostBack)
+            {
+                CargarDdlEspecialidades();
+            }
         }
 
         private void CargarResumenTurnos(DateTime desde, DateTime hasta)
@@ -29,13 +34,7 @@ namespace Vista
             gvInforme1.DataBind();
         }
 
-        private void CargarInformeEspecialidad()
-        {
-            NegocioClinica negocio = new NegocioClinica();
-            DataTable dt = negocio.ObtenerEspecialidadMasFrecuente();
-            gvInformeEspecialidad.DataSource = dt;
-            gvInformeEspecialidad.DataBind();
-        }
+      
 
         protected void btnInforme1_Click(object sender, EventArgs e)
         {
@@ -47,6 +46,32 @@ namespace Vista
                 CargarResumenTurnos(fechaDesde, fechaHasta);
             }
 
+        }
+
+        private void CargarInformeEspecialidad(int IdEspecialidad)
+        {
+            NegocioClinica negocio = new NegocioClinica();
+            DataTable dt = negocio.ObtenerEspecialidadMasFrecuente(IdEspecialidad);
+            gvInformeEspecialidad.DataSource = dt;
+            gvInformeEspecialidad.DataBind();
+        }
+
+        public void CargarDdlEspecialidades()
+        {
+            DataTable dataTable = negocioClinica.getTablaEspecialidades();
+            ddlEspecialidades.DataSource = dataTable;
+            ddlEspecialidades.DataTextField = "DescripcionEspecialidad";
+            ddlEspecialidades.DataValueField = "Id_Especialidad";
+            ddlEspecialidades.DataBind();
+            ddlEspecialidades.Items.Insert(0, new ListItem("-- Seleccione una especialidad --", ""));
+
+        }
+
+        protected void btnInforme2_Click(object sender, EventArgs e)
+        {
+            int IdEspecialidad = Convert.ToInt32(ddlEspecialidades.SelectedValue);
+            
+            CargarInformeEspecialidad(IdEspecialidad);
         }
     }
 }
