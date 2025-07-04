@@ -98,7 +98,13 @@
         </div>
 
         <div class="form-group">
-            <h3>Cantidad de ausentes en el año 2025</h3>
+            <h3>Elija un rango de fechas para saber la cantidad de turnos:</h3>
+            <asp:Label ID="lblDesde" runat="server" Text="Desde:" Font-Bold="True"></asp:Label>&nbsp;
+            <asp:TextBox ID="txtFechaDesde" runat="server" TextMode="Date"></asp:TextBox>&nbsp;
+            <asp:Label ID="lblHasta" runat="server" Text="Hasta:" Font-Bold="True"></asp:Label>&nbsp;
+            <asp:TextBox ID="txtFechaHasta" runat="server" TextMode="Date"></asp:TextBox>&nbsp;
+            <asp:Button ID="btnInforme1" runat="server" Text="Recibir informe" OnClick="btnInforme1_Click" />
+            <br /><br />
             <asp:GridView ID="gvInforme1" runat="server"></asp:GridView>
         </div>
 

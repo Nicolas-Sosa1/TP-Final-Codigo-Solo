@@ -16,30 +16,11 @@ namespace Vista
             string user;
             user = Session["Usuario"].ToString();
             lblUsuario.Text = user;
+            
 
-
-
-            CargarResumenTurnos(FechaDesdeEnero(), FechaHastaDiciembre());
             CargarInformeEspecialidad();
         }
 
-        public DateTime FechaDesdeEnero()
-        {
-
-            DateTime desde = new DateTime(2025, 1, 1);
-            return desde;
-
-
-        }
-
-        public DateTime FechaHastaDiciembre()
-        {
-
-            DateTime hasta = new DateTime(2025, 12, 31);
-            return hasta;
-
-
-        }
         private void CargarResumenTurnos(DateTime desde, DateTime hasta)
         {
             NegocioClinica negocio = new NegocioClinica();
@@ -54,6 +35,18 @@ namespace Vista
             DataTable dt = negocio.ObtenerEspecialidadMasFrecuente();
             gvInformeEspecialidad.DataSource = dt;
             gvInformeEspecialidad.DataBind();
+        }
+
+        protected void btnInforme1_Click(object sender, EventArgs e)
+        {
+            DateTime fechaDesde;
+            DateTime fechaHasta;
+            if (DateTime.TryParse(txtFechaDesde.Text, out fechaDesde) && (DateTime.TryParse(txtFechaHasta.Text, out fechaHasta)))
+            {
+
+                CargarResumenTurnos(fechaDesde, fechaHasta);
+            }
+
         }
     }
 }
