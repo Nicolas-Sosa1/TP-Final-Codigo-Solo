@@ -189,18 +189,10 @@ namespace Datos
         public DataTable ObtenerLocalidadesPorProvincia(Provincias provincia)
         {
             string consulta = "SELECT * FROM Localidades WHERE Id_Provincia = @idProvincia";
-
-            SqlConnection conexion = new AccesoDatos().ObtenerConexion();
-            SqlCommand comando = new SqlCommand(consulta, conexion);
+            SqlCommand comando = new SqlCommand(consulta);
             ArmarParametrosLocalidadesPorProvincia(ref comando, provincia);
 
-            SqlDataAdapter adaptador = new SqlDataAdapter(comando);
-            DataSet dataSet = new DataSet();
-            adaptador.Fill(dataSet, "Localidades");
-
-            conexion.Close();
-
-            return dataSet.Tables["Localidades"];
+            return accesoDatos.ObtenerTablaConParametros("Localidades", comando);
         }
 
 
@@ -221,15 +213,12 @@ namespace Datos
         public bool ExistePacienteRegistrado(string dni)
         {
             string consulta = "SELECT * FROM Pacientes WHERE DNI = @DNI";
-            SqlConnection conexion = new AccesoDatos().ObtenerConexion();
-            SqlCommand comando = new SqlCommand(consulta, conexion);
+            SqlCommand comando = new SqlCommand(consulta);
 
             comando.Parameters.AddWithValue("@DNI", dni);
 
-            SqlDataAdapter adapter = new SqlDataAdapter(comando);
-            DataTable tabla = new DataTable();
 
-            adapter.Fill(tabla);
+            DataTable tabla = accesoDatos.ObtenerTablaConParametros("Pacientes", comando);
 
             // Si en el DataTable hay al menos 1 fila, el DNI ya existe
             return tabla.Rows.Count > 0;
@@ -311,7 +300,9 @@ namespace Datos
             DataTable tabla = accesoDatos.ObtenerTablaConParametros("Pacientes", cmd);
 
             if (tabla.Rows.Count == 0)
+            {
                 return false;
+            }
 
             bool estado = Convert.ToBoolean(tabla.Rows[0]["Estado"]);
             yaBaja = !estado;
@@ -363,15 +354,13 @@ namespace Datos
         public bool ExisteLegajoMedico(string legajo)
         {
             string consulta = "SELECT * FROM Medicos WHERE Legajo = @Legajo";
-            SqlConnection conexion = new AccesoDatos().ObtenerConexion();
-            SqlCommand comando = new SqlCommand(consulta, conexion);
+            
+            SqlCommand comando = new SqlCommand(consulta);
 
             comando.Parameters.AddWithValue("@Legajo", legajo);
 
-            SqlDataAdapter adapter = new SqlDataAdapter(comando);
-            DataTable tabla = new DataTable();
-
-            adapter.Fill(tabla);
+            
+            DataTable tabla = accesoDatos.ObtenerTablaConParametros("Medicos",comando);
 
             // Si en el DataTable hay al menos 1 fila, el legajo del medico ya existe
             return tabla.Rows.Count > 0;
@@ -380,16 +369,15 @@ namespace Datos
         public bool ExisteDNIMedico(string dni)
         {
             string consulta = "SELECT * FROM Medicos WHERE DNI = @DNI";
-            SqlConnection conexion = new AccesoDatos().ObtenerConexion();
-            SqlCommand comando = new SqlCommand(consulta, conexion);
+            
+            SqlCommand comando = new SqlCommand(consulta);
 
             comando.Parameters.AddWithValue("@DNI", dni);
 
-            SqlDataAdapter adapter = new SqlDataAdapter(comando);
-            DataTable tabla = new DataTable();
+            
+            DataTable tabla = accesoDatos.ObtenerTablaConParametros("Medicos", comando);
 
-            adapter.Fill(tabla);
-
+           
             // Si en el DataTable hay al menos 1 fila, el DNI del medico ya existe
             return tabla.Rows.Count > 0;
         }

@@ -89,7 +89,7 @@ namespace Vista
             gvTurnos.EditIndex = -1;
             CargarTurnos();
 
-            // Opcional: mensaje de éxito
+            
             if (filasAfectadas > 0)
                 lblMensaje.Text = "Turno actualizado correctamente.";
             else
