@@ -161,7 +161,7 @@ namespace Vista
                 // Registrar las fechas que corresponden a esos días
                 negocioClinica.RegistrarFechasAtencion(medico.GetLegajo(), diasSeleccionados, idHorario);
 
-                lblMensaje.Text = "✔ Registro exitoso con fechas de atención.";
+                lblMensaje.Text = "✔ Registro exitoso.";
                 lblMensaje.ForeColor = Color.Green;
             }
             else

@@ -66,17 +66,23 @@ namespace Negocio
             bool yaBaja;
             bool existe = dao.ExistePacienteYActivo(dni, out yaBaja);
 
-            if (!existe)
-                return "noExiste";
+            if (existe == false)
+            {
 
-            if (yaBaja)
+                return "noExiste";
+            }
+
+            if (yaBaja == true)
+            {
+
                 return "yaBaja";
+            }
 
             Pacientes paciente = new Pacientes();
             paciente.setDni(dni);
-            int op = dao.DarBajaPaciente(paciente);
+            int resultado = dao.DarBajaPaciente(paciente);
 
-            return (op == 1) ? "ok" : "error";
+            return (resultado == 1) ? "ok" : "error";
         }
 
 
@@ -86,18 +92,24 @@ namespace Negocio
             bool yaBaja;
             bool existe = dao.ExisteMedicoYActivo(legajo, out yaBaja);
 
-            if (!existe)
+            if (existe == false)
+            {
+
                 return "noExiste";
+            }
 
-            if (yaBaja)
+            if (yaBaja==true)
+            {
+
                 return "yaBaja";
+            }
 
-            // Dar de baja (Estado = 0)
+            
             Medicos medicos = new Medicos();
             medicos.SetLegajo(legajo);
-            int op = dao.DarBajaMedico(medicos);
+            int resultado = dao.DarBajaMedico(medicos);
 
-            return (op == 1) ? "ok" : "error";
+            return (resultado == 1) ? "ok" : "error";
         }
 
 
