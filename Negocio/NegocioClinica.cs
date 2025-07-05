@@ -194,7 +194,7 @@ namespace Negocio
             foreach (DataRow fila in fechas.Rows)
             {
                 DateTime fecha = Convert.ToDateTime(fila["Fecha"]);
-                int diaSemana = ((int)fecha.DayOfWeek + 1); // Lunes = 1, ..., Domingo = 7
+                int diaSemana = ((int)fecha.DayOfWeek + 1); 
 
                 if (diasSeleccionados.Contains(diaSemana))
                 {
