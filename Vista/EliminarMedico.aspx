@@ -45,6 +45,7 @@
         font-size: 16px;
     }
 </style>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
 
 </head>
 <body>
@@ -71,7 +72,10 @@
         </div>
 
         <div class="form-group">
-            <asp:Button ID="btnEliminarMedico" runat="server" Text="Eliminar médico" ValidationGroup="1" OnClick="btnEliminarMedico_Click" CssClass="btn" />
+            <asp:Button ID="btnAbrirModal" runat="server" Text="Eliminar médico"
+    CssClass="btn btn-danger"
+    OnClientClick="$('#modalConfirmarEliminacion').modal('show'); return false;" />
+
         </div>
 
         <div class="form-group">
@@ -82,7 +86,44 @@
             <asp:ValidationSummary ID="vsEliminar" runat="server" ForeColor="Red" ValidationGroup="1" />
         </div>
     </div>
+
+  <div class="modal fade" id="modalConfirmarEliminacion" tabindex="-1" role="dialog" aria-labelledby="modalTitulo" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header bg-danger text-dark">
+        <h5 class="modal-title" id="modalTitulo">Confirmar eliminación</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        ¿Está seguro de que desea eliminar al médico con el legajo ingresado?
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        
+        <!-- Este sí elimina -->
+        <asp:Button ID="btnEliminarMedico" runat="server" Text="Sí, eliminar"
+            CssClass="btn btn-danger"
+            OnClick="btnEliminarMedico_Click"
+            ValidationGroup="1" />
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
 </form>
+
+<!-- jQuery (requisito de Bootstrap JS) -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+<!-- Bootstrap JS (interactividad como modals, tooltips, etc.) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

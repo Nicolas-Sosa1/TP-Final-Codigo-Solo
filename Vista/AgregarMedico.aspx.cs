@@ -152,7 +152,9 @@ namespace Vista
                 foreach (ListItem item in cblDias.Items)
                 {
                     if (item.Selected)
-                        diasSeleccionados.Add(int.Parse(item.Value)); // Valores: 1 a 7
+                    {
+                        diasSeleccionados.Add(int.Parse(item.Value));
+                    }
                 }
 
                 // Obtener horario

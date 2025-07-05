@@ -815,10 +815,10 @@ namespace Datos
 
             // Paso 2: Traer las horas ya asignadas como turnos
             string queryOcupadas = $@"
-        SELECT Hora
-        FROM Turnos
-        WHERE Fecha = '{fecha:yyyy-MM-dd}'
-          AND Legajo_Medico = '{legajo}'";
+            SELECT Hora
+            FROM Turnos
+            WHERE Fecha = '{fecha:yyyy-MM-dd}'
+              AND Legajo_Medico = '{legajo}'";
             DataTable ocupadas = accesoDatos.ObtenerTabla("Ocupadas", queryOcupadas);
 
             HashSet<TimeSpan> horasOcupadas = new HashSet<TimeSpan>(

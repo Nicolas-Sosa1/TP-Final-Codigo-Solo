@@ -16,9 +16,9 @@ namespace Vista
         {
             UnobtrusiveValidationMode = UnobtrusiveValidationMode.None;
 
-            string user;
-            user = Session["Usuario"].ToString();
-            lblUsuario.Text = user;
+            //string user;
+            //user = Session["Usuario"].ToString();
+            //lblUsuario.Text = user;
 
             if (!IsPostBack)
             {
