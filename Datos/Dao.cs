@@ -118,10 +118,10 @@ namespace Datos
             WHERE u.NombreUsuario = @nombreUsuario
             ORDER BY t.Id_Turno";
 
-            SqlCommand cmd = new SqlCommand(consulta);
-            cmd.Parameters.AddWithValue("@nombreUsuario", nombreUsuario);
+            SqlCommand comando = new SqlCommand(consulta);
+            comando.Parameters.AddWithValue("@nombreUsuario", nombreUsuario);
 
-            return accesoDatos.ObtenerTablaConParametros("Turnos", cmd);
+            return accesoDatos.ObtenerTablaConParametros("Turnos", comando);
 
         }
 
@@ -155,8 +155,12 @@ namespace Datos
             return accesoDatos.ObtenerTabla("Horarios", consulta);
         }
 
+        public DataTable ObtenerTodasLasFechas()
+        {
+            string consulta = "SELECT Fecha FROM Fechas";
+            return accesoDatos.ObtenerTabla("Fechas", consulta);
+        }
 
-  
 
         //-----------------------------------------------------------------------------------------
 
@@ -165,9 +169,9 @@ namespace Datos
 
         public DataTable validarLogin(string usuario, string contraseña)
         {
-            string sql = "SELECT * FROM Usuarios WHERE NombreUsuario = @NombreUsuario AND Contrasena = @Contrasena";
+            string consulta = "SELECT * FROM Usuarios WHERE NombreUsuario = @NombreUsuario AND Contrasena = @Contrasena";
 
-            SqlCommand comando = new SqlCommand(sql);
+            SqlCommand comando = new SqlCommand(consulta);
 
             SqlParameter parametroUsuario = new SqlParameter("@NombreUsuario", SqlDbType.VarChar, 50); // Ajustá el tamaño a tu DB
             parametroUsuario.Value = usuario;
@@ -294,10 +298,10 @@ namespace Datos
         {
             yaBaja = false;
             string consulta = "SELECT Estado FROM Pacientes WHERE DNI = @DNI";
-            SqlCommand cmd = new SqlCommand(consulta);
-            cmd.Parameters.AddWithValue("@DNI", dni);
+            SqlCommand comando = new SqlCommand(consulta);
+            comando.Parameters.AddWithValue("@DNI", dni);
 
-            DataTable tabla = accesoDatos.ObtenerTablaConParametros("Pacientes", cmd);
+            DataTable tabla = accesoDatos.ObtenerTablaConParametros("Pacientes", comando);
 
             if (tabla.Rows.Count == 0)
             {
@@ -423,11 +427,15 @@ namespace Datos
         public int agregarMedico(Medicos medicos)
         {
             if (ExisteDNIMedico(medicos.GetDNI()))
-                return -1; // Código para "DNI ya existe"
+            {
+                 return -1; // Código para "DNI ya existe"
+            }
 
             if (ExisteLegajoMedico(medicos.GetLegajo()))
+            {
                 return -2; // Código para "Legajo ya existe"
-
+            }
+                
             SqlCommand comando = new SqlCommand();
             ArmarParametrosAgregarMedico(ref comando, medicos);
             return accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spAgregarMedico");
@@ -519,19 +527,7 @@ namespace Datos
 
         //------------------------------------------------------------------------------------------------
 
-
-        public DataTable ObtenerTodasLasFechas()
-        {
-            string consulta = "SELECT Fecha FROM Fechas";
-            return accesoDatos.ObtenerTabla("Fechas", consulta);
-        }
-
-
-
-        //-------------------------------------------------------------------------------------------------
-
         
-
         //Actualizar Paciente
         //--------------------------------------------------------------------------------------------
         private void ArmarParametrosActualizarPaciente(ref SqlCommand Comando, Pacientes pacientes)
@@ -661,46 +657,60 @@ namespace Datos
 
         public DataTable ObtenerDiasHorariosDeMedico(string legajo)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandText = @"
+            string consulta = @"
         SELECT Id_Dia, DescripcionDia, Id_Horario, HoraDesde, HoraHasta
         FROM vw_DiasHorariosPorMedico
         WHERE Legajo_Medico = @Legajo";
 
-            cmd.Parameters.AddWithValue("@Legajo", legajo);
+            SqlCommand comando = new SqlCommand(consulta);
 
-            return accesoDatos.ObtenerTablaConParametros("DiasHorariosMedico", cmd);
+            comando.Parameters.AddWithValue("@Legajo", legajo);
+
+            return accesoDatos.ObtenerTablaConParametros("DiasHorariosMedico", comando);
         }
 
         public void EliminarDiasXHorariosXFechasXMedicoSiNoHayTurno(int idDia, int idHorario, DateTime fecha, string legajo)
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.Parameters.AddWithValue("@Id_Dia", idDia);
-            cmd.Parameters.AddWithValue("@Id_Horario", idHorario);
-            cmd.Parameters.AddWithValue("@Fecha", fecha);
-            cmd.Parameters.AddWithValue("@Legajo_Medico", legajo);
-            AccesoDatos instancia = new AccesoDatos();
-            instancia.EjecutarProcedimientoAlmacenado(cmd, "spEliminarDiasXHorariosXFechasXMedicoSiNoTurno");
+            SqlCommand comando = new SqlCommand();
+            comando.Parameters.AddWithValue("@Id_Dia", idDia);
+            comando.Parameters.AddWithValue("@Id_Horario", idHorario);
+            comando.Parameters.AddWithValue("@Fecha", fecha);
+            comando.Parameters.AddWithValue("@Legajo_Medico", legajo);
+
+            accesoDatos.EjecutarProcedimientoAlmacenado(comando, "spEliminarDiasXHorariosXFechasXMedicoSiNoTurno");
         }
 
         public List<int> getTodosLosIdHorarios()
         {
+            // Creamos una lista vacía para guardar los Id_Horario que obtenemos de la base de datos
             List<int> lista = new List<int>();
+
+            // Obtenemos una conexión a la base de datos (usando un método propio llamado ObtenerConexion)
             SqlConnection conexion = accesoDatos.ObtenerConexion();
+
+            // Creamos un comando SQL con la consulta que selecciona todos los Id_Horario
             SqlCommand comando = new SqlCommand("SELECT Id_Horario FROM Horarios", conexion);
 
+            // Ejecutamos la consulta y obtenemos un lector de datos que lee cada fila
             SqlDataReader reader = comando.ExecuteReader();
 
+            // Mientras haya filas por leer, seguimos leyendo
             while (reader.Read())
             {
+                // Leemos el valor de la columna "Id_Horario" de la fila actual
+                // Convertimos ese valor a int y lo agregamos a la lista
                 lista.Add(Convert.ToInt32(reader["Id_Horario"]));
             }
 
+            
             reader.Close();
+
             conexion.Close();
 
+          
             return lista;
         }
+
 
 
         //--------------------------------------------------------------------------------------------
@@ -754,12 +764,14 @@ namespace Datos
 
         public DataTable ObtenerDiasDisponibles(int legajo, DateTime fecha)
         {
-            SqlCommand comando = new SqlCommand($@"
+            string consulta = @"
             SELECT DISTINCT d.Id_Dia, di.DescripcionDia
             FROM DiasXHorariosXFechasXMedico d
             JOIN Dias di ON d.Id_Dia = di.Id_Dia
             WHERE d.Legajo_Medico = @legajo
-              AND d.Fecha = @fecha");
+              AND d.Fecha = @fecha";
+
+            SqlCommand comando = new SqlCommand(consulta);
 
             comando.Parameters.AddWithValue("@legajo", legajo);
             comando.Parameters.AddWithValue("@fecha", fecha.Date);
@@ -769,13 +781,15 @@ namespace Datos
 
         public DataTable ObtenerHorariosDisponibles(int idDia, int legajo, DateTime fecha)
         {
-            SqlCommand comando = new SqlCommand($@"
+            string consulta = @"
             SELECT h.Id_Horario, h.HoraDesde, h.HoraHasta
             FROM DiasXHorariosXFechasXMedico d
             JOIN Horarios h ON d.Id_Horario = h.Id_Horario
             WHERE d.Id_Dia = @IdDia
               AND d.Legajo_Medico = @legajo
-              AND d.Fecha = @fecha");
+              AND d.Fecha = @fecha";
+
+            SqlCommand comando = new SqlCommand(consulta);
 
             comando.Parameters.AddWithValue("@idDia", idDia);
             comando.Parameters.AddWithValue("@legajo", legajo);
@@ -870,7 +884,7 @@ namespace Datos
         //-------------------------------------------------------------------------------------------------
         public DataTable BuscarMedicos(string criterio)
         {
-            SqlCommand comando = new SqlCommand(@"
+            string consulta = @"
             SELECT 
                 m.Legajo,
                 m.DNI AS 'Documento',
@@ -898,7 +912,9 @@ namespace Datos
                 m.Nombre LIKE '%' + @Criterio + '%' OR
                 m.Apellido LIKE '%' + @Criterio + '%' OR
                 m.DNI LIKE '%' + @Criterio + '%' OR
-                m.Legajo LIKE '%' + @Criterio + '%';");
+                m.Legajo LIKE '%' + @Criterio + '%';";
+
+            SqlCommand comando = new SqlCommand(consulta);
 
             comando.Parameters.AddWithValue("@Criterio", criterio);
 
@@ -907,7 +923,8 @@ namespace Datos
 
         public DataTable BuscarPacientes(string criterio)
         {
-            SqlCommand comando = new SqlCommand(@"
+
+            string consulta =@"
             SELECT 
                 p.DNI AS 'Documento',
                 p.Nombre,
@@ -928,7 +945,9 @@ namespace Datos
             WHERE 
                 p.Nombre LIKE '%' + @Criterio + '%' OR
                 p.Apellido LIKE '%' + @Criterio + '%' OR
-                p.DNI LIKE '%' + @Criterio + '%';");
+                p.DNI LIKE '%' + @Criterio + '%';";
+
+            SqlCommand comando = new SqlCommand(consulta);
 
             comando.Parameters.AddWithValue("@Criterio", criterio);
 
