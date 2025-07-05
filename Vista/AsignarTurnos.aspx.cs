@@ -41,6 +41,7 @@ namespace Vista
         string.IsNullOrEmpty(txtFechaTurno.Text))
             {
                 lblMensaje.Text = "⚠️ Complete todos los campos antes de continuar.";
+                lblMensaje.ForeColor = System.Drawing.Color.Red;
                 return;
             }
 

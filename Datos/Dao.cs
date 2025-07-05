@@ -803,9 +803,9 @@ namespace Datos
         {
             // Paso 1: Obtener rango horario
             string queryRango = $@"
-        SELECT HoraDesde, HoraHasta
-        FROM Horarios
-        WHERE Id_Horario = {idHorario}";
+            SELECT HoraDesde, HoraHasta
+            FROM Horarios
+            WHERE Id_Horario = {idHorario}";
             DataTable tablaRango = accesoDatos.ObtenerTabla("Rango", queryRango);
 
             if (tablaRango.Rows.Count == 0) return new DataTable();
@@ -813,7 +813,7 @@ namespace Datos
             TimeSpan desde = (TimeSpan)tablaRango.Rows[0]["HoraDesde"];
             TimeSpan hasta = (TimeSpan)tablaRango.Rows[0]["HoraHasta"];
 
-            // Paso 2: Traer las horas ya asignadas como turnos
+            // Paso 2: Obtener horas ya ocupadas
             string queryOcupadas = $@"
             SELECT Hora
             FROM Turnos
@@ -821,24 +821,31 @@ namespace Datos
               AND Legajo_Medico = '{legajo}'";
             DataTable ocupadas = accesoDatos.ObtenerTabla("Ocupadas", queryOcupadas);
 
-            HashSet<TimeSpan> horasOcupadas = new HashSet<TimeSpan>(
-                ocupadas.Rows.Cast<DataRow>().Select(r => (TimeSpan)r["Hora"])
-            );
+            List<TimeSpan> horasOcupadas = new List<TimeSpan>();
+            foreach (DataRow fila in ocupadas.Rows)
+            {
+                horasOcupadas.Add((TimeSpan)fila["Hora"]);
+            }
 
-            // Paso 3: Generar horas posibles por bloques de 1 hora
+            // Paso 3: Generar las horas disponibles de forma más clara
             DataTable disponibles = new DataTable();
             disponibles.Columns.Add("Hora", typeof(string));
 
-            for (TimeSpan h = desde; h.Add(TimeSpan.FromHours(1)) <= hasta; h = h.Add(TimeSpan.FromHours(1)))
+            TimeSpan horaActual = desde;
+            while (horaActual < hasta)
             {
-                if (!horasOcupadas.Contains(h))
+                if (!horasOcupadas.Contains(horaActual))
                 {
-                    disponibles.Rows.Add(h.ToString(@"hh\:mm"));
+                    disponibles.Rows.Add(horaActual.ToString(@"hh\:mm"));
                 }
+
+                horaActual = horaActual.Add(TimeSpan.FromHours(1));
             }
 
             return disponibles;
         }
+
+
 
         public bool ExisteTurno(string legajo, DateTime fecha, TimeSpan hora)
         {
