@@ -10,8 +10,8 @@ namespace Datos
 {
     public class AccesoDatos
     {
-        string cadenaConexion = @"Data Source=LOCALHOST\SQLEXPRESS;Initial Catalog = ClinicaMedicaPruebaFinal1; Integrated Security = True";
-
+        //string cadenaConexion = @"Data Source=LOCALHOST\SQLEXPRESS;Initial Catalog = ClinicaMedicaPruebaFinal1; Integrated Security = True";
+        string cadenaConexion = @"Data Source=LOCALHOST\SQLEXPRESS;Initial Catalog = ClinicaMedicaPruebaFinal; Integrated Security = True";
         public SqlConnection ObtenerConexion()
         {
             SqlConnection conexion = new SqlConnection(cadenaConexion);

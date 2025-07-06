@@ -214,14 +214,21 @@ namespace Vista
                 cblDias.DataValueField = "Id_Dia";
                 cblDias.DataBind();
 
-                // Marcar los días que tiene asignados
+                // Recorremos todos los ítems del CheckBoxList de días
                 foreach (ListItem item in cblDias.Items)
                 {
-                    if (diasHorarios.AsEnumerable().Any(r => r["Id_Dia"].ToString() == item.Value))
+                    // Recorremos todas las filas del DataTable diasHorarios
+                    foreach (DataRow fila in diasHorarios.Rows)
                     {
-                        item.Selected = true;
+                        // Si el Id_Dia de la fila coincide con el valor del ítem, lo marcamos
+                        if (fila["Id_Dia"].ToString() == item.Value)
+                        {
+                            item.Selected = true;
+                            break; // Ya se encontró, no hace falta seguir buscando
+                        }
                     }
                 }
+
 
                 CheckBoxList cblHorarios = (CheckBoxList)e.Row.FindControl("cblHorarios");
                 DataTable horarios = negocioClinica.getTablaHorarios();
@@ -230,14 +237,21 @@ namespace Vista
                 cblHorarios.DataValueField = "Id_Horario";
                 cblHorarios.DataBind();
 
-                // Marcar los horarios ya asignados al médico
+                // Recorremos todos los ítems del CheckBoxList de horarios
                 foreach (ListItem item in cblHorarios.Items)
                 {
-                    if (diasHorarios.AsEnumerable().Any(r => r["Id_Horario"].ToString() == item.Value))
+                    // Recorremos todas las filas del DataTable diasHorarios
+                    foreach (DataRow fila in diasHorarios.Rows)
                     {
-                        item.Selected = true;
+                        // Si el Id_Horario de la fila coincide con el valor del ítem, lo marcamos
+                        if (fila["Id_Horario"].ToString() == item.Value)
+                        {
+                            item.Selected = true;
+                            break; // Salimos del segundo foreach si ya se encontró
+                        }
                     }
                 }
+
 
             }
         }
