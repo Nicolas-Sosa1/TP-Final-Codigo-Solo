@@ -128,32 +128,51 @@ namespace Negocio
             Dao dao = new Dao();
             DataTable tablaMedicos = dao.ObtenerTodosLosMedicos();
 
+            // Agregar columnas para los textos descriptivos
             tablaMedicos.Columns.Add("DiasDescripcion", typeof(string));
             tablaMedicos.Columns.Add("HorarioDescripcion", typeof(string));
 
+            // Recorrer cada médico
             foreach (DataRow row in tablaMedicos.Rows)
             {
                 string legajo = row["Legajo"].ToString();
                 DataTable diasHorarios = dao.ObtenerDiasHorariosDeMedico(legajo);
 
-                // 🔹 Armar string de días
-                string dias = string.Join(", ", diasHorarios.AsEnumerable()
-                                        .Select(r => r["DescripcionDia"].ToString())
-                                        .Distinct());
+                // Armar lista de días únicos
+                List<string> listaDias = new List<string>();
+                foreach (DataRow fila in diasHorarios.Rows)
+                {
+                    string dia = fila["DescripcionDia"].ToString();
+                    if (!listaDias.Contains(dia))
+                    {
+                        listaDias.Add(dia);
+                    }
+                }
+                string dias = string.Join(", ", listaDias);
 
-                // 🔹 Armar string de horarios desde columnas HoraDesde y HoraHasta
-                string horarios = string.Join(", ", diasHorarios.AsEnumerable()
-                    .Select(r =>
-                        TimeSpan.Parse(r["HoraDesde"].ToString()).ToString(@"hh\:mm") + " - " +
-                        TimeSpan.Parse(r["HoraHasta"].ToString()).ToString(@"hh\:mm")
-                    ).Distinct());
+                // Armar lista de horarios únicos
+                List<string> listaHorarios = new List<string>();
+                foreach (DataRow fila in diasHorarios.Rows)
+                {
+                    TimeSpan desde = TimeSpan.Parse(fila["HoraDesde"].ToString());
+                    TimeSpan hasta = TimeSpan.Parse(fila["HoraHasta"].ToString());
+                    string horario = desde.ToString(@"hh\:mm") + " - " + hasta.ToString(@"hh\:mm");
 
+                    if (!listaHorarios.Contains(horario))
+                    {
+                        listaHorarios.Add(horario);
+                    }
+                }
+                string horarios = string.Join(", ", listaHorarios);
+
+                // Asignar los resultados armados a la fila del médico
                 row["DiasDescripcion"] = dias;
                 row["HorarioDescripcion"] = horarios;
             }
 
             return tablaMedicos;
         }
+
 
 
 
@@ -248,16 +267,6 @@ namespace Negocio
         }
 
 
-
-
-
-
-
-
-
-
-
-
         //Seccion AsignarTurno---------------------------------------------------------------
         public bool RegistrarTurno(Turnos turnos)
         {
@@ -340,6 +349,7 @@ namespace Negocio
             Dao dao = new Dao();
             DataTable tablaMedicos = dao.BuscarMedicos(criterio);
 
+            // Agregamos columnas para mostrar días y horarios en formato texto
             tablaMedicos.Columns.Add("DiasDescripcion", typeof(string));
             tablaMedicos.Columns.Add("HorarioDescripcion", typeof(string));
 
@@ -348,25 +358,43 @@ namespace Negocio
                 string legajo = row["Legajo"].ToString();
                 DataTable diasHorarios = dao.ObtenerDiasHorariosDeMedico(legajo);
 
-                // 🔹 Armar string de días
-                string dias = string.Join(", ", diasHorarios.AsEnumerable()
-                                        .Select(r => r["DescripcionDia"].ToString())
-                                        .Distinct());
+                // 🔹 Construir texto de días
+                List<string> listaDias = new List<string>();
+                foreach (DataRow fila in diasHorarios.Rows)
+                {
+                    string dia = fila["DescripcionDia"].ToString();
+                    if (!listaDias.Contains(dia))
+                    {
+                        listaDias.Add(dia);
+                    }
+                }
 
-                // 🔹 Armar string de horarios desde columnas HoraDesde y HoraHasta
-                string horarios = string.Join(", ", diasHorarios.AsEnumerable()
-                    .Select(r =>
-                        TimeSpan.Parse(r["HoraDesde"].ToString()).ToString(@"hh\:mm") + " - " +
-                        TimeSpan.Parse(r["HoraHasta"].ToString()).ToString(@"hh\:mm")
-                    ).Distinct());
+                string dias = string.Join(", ", listaDias);
 
+                // 🔹 Construir texto de horarios
+                List<string> listaHorarios = new List<string>();
+                foreach (DataRow fila in diasHorarios.Rows)
+                {
+                    string desde = TimeSpan.Parse(fila["HoraDesde"].ToString()).ToString(@"hh\:mm");
+                    string hasta = TimeSpan.Parse(fila["HoraHasta"].ToString()).ToString(@"hh\:mm");
+                    string horario = desde + " - " + hasta;
+
+                    if (!listaHorarios.Contains(horario))
+                    {
+                        listaHorarios.Add(horario);
+                    }
+                }
+
+                string horarios = string.Join(", ", listaHorarios);
+
+                // 🔹 Asignar los textos armados a las columnas nuevas
                 row["DiasDescripcion"] = dias;
                 row["HorarioDescripcion"] = horarios;
             }
 
             return tablaMedicos;
-            
         }
+
 
         //--------------------------------------------------------------------------------------
         //Seccion Buscar Medico
