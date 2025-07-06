@@ -26,6 +26,7 @@
             <br />
             Buscar por numero de turno:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <asp:TextBox ID="txtTurno" runat="server" Width="200px"></asp:TextBox>
+            <asp:RegularExpressionValidator ID="revTurno" runat="server" ControlToValidate="txtTurno" ErrorMessage="Debe ingresar solo numeros para buscar por turno" ForeColor="Red" ValidationGroup="1" ValidationExpression="^$|^\d+$">*</asp:RegularExpressionValidator>
             <br />
             <br />
             Buscar por estado del turno:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -33,7 +34,7 @@
             </asp:DropDownList>
             <br />
             <br />
-            <asp:Button ID="btnFiltrar" runat="server" Text="Filtrar" OnClick="btnFiltrar_Click" />
+            <asp:Button ID="btnFiltrar" runat="server" Text="Filtrar" OnClick="btnFiltrar_Click" ValidationGroup="1" />
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <asp:Button ID="btnMostrar" runat="server" Text="Mostrar todos" OnClick="btnMostrar_Click" />
             <br /><br />
@@ -116,10 +117,10 @@
                 <SortedAscendingHeaderStyle BackColor="#487575" />
                 <SortedDescendingCellStyle BackColor="#E5E5E5" />
                 <SortedDescendingHeaderStyle BackColor="#275353" />
-
             </asp:GridView>
             <br />
             <asp:Label ID="lblMensaje" runat="server"></asp:Label>
+            <asp:ValidationSummary ID="ValidationSummary1" runat="server" ForeColor="Red" ValidationGroup="1" />
         </div>
     </form>
 </body>
